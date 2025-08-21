@@ -1,0 +1,46 @@
+include: package:very_good_analysis/analysis_options.yaml
+
+formatter:
+  page_width: 100
+  trailing_commas: preserve
+
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - "test/.test_coverage.dart"
+    - "bin/cache/**"
+    - "lib/generated_plugin_registrant.dart"
+
+  errors:
+    unused_import: warning
+    todo: ignore
+
+linter:
+  rules:
+    # Allow relative imports for files within the same package
+    always_use_package_imports: false
+    # Prefer using relative imports within the same package
+    prefer_relative_imports: true
+    # Allow lines to exceed 80 characters
+    lines_longer_than_80_chars: false
+    # Prefer using const constructors where possible
+    prefer_const_constructors: true
+    # Prefer declaring local variables as final if they are not reassigned
+    prefer_final_locals: true
+    # Allow mutable literal lists/maps/sets even if they could be const
+    prefer_const_literals_to_create_immutables: false
+    # Allow explicitly typing closure parameters
+    avoid_types_on_closure_parameters: false
+    # Allow TODOs without the Flutter-style format (e.g., missing author tags)
+    flutter_style_todos: false
+
+    # Jaspr
+    # Do not require trailing commas in multi-line collections or function calls
+    require_trailing_commas: false
+
+    # Prototyping and Development:
+    # Allow public classes and members without documentation comments
+    public_member_api_docs: false
+    # Allow using print() for debugging purposes
+    avoid_print: false
