@@ -1,6 +1,6 @@
 # UI Components
 
-This repository contains a Proof of Concept UI component packages for [Jaspr](https://jaspr.dev), built with Dart.
+This repository contains a Proof of Concept UI component packages for [Jaspr](https://jaspr.site), built with Dart.
 
 ## Package
 
