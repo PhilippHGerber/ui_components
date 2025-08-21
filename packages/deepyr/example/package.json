@@ -1,0 +1,20 @@
+{
+  "name": "deepyr_example",
+  "version": "1.0.0",
+  "description": "A new Jaspr project",
+  "main": "tailwind.config.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "daisyui": "^5.0.50",
+    "tailwindcss": "^4.1.12"
+  }
+}
