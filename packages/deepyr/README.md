@@ -24,7 +24,7 @@ This package currently serves as a proof-of-concept for integrating DaisyUI with
 
     ```yaml
     dependencies:
-      deepyr: ^... # Replace with the latest version
+      deepyr: ^0.0.1
     ```
 
 2. **Setup Tailwind CSS**
