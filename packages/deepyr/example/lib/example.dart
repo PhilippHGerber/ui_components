@@ -82,51 +82,53 @@ class DeepyrShowcase extends StatelessComponent {
             [
               div(classes: 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4', [
                 // Basic card
-                Card([
-                  div(classes: 'card-body', [
-                    h2(classes: 'card-title', [text('Basic Card')]),
-                    p([text('This is a simple card with some content inside.')]),
-                    div(classes: 'card-actions justify-end', [
-                      Button([text('Action')], style: [Button.primary, Button.sm]),
+                Card(
+                  style: [BgUtil.base300, Effects.shadowLg],
+                  [
+                    CardBody([
+                      CardTitle([text('Basic Card')]),
+                      p([text('This is a simple card with some content inside.')]),
+                      CardActions([
+                        Button([text('Action')], style: [Button.primary, Button.sm]),
+                      ]),
                     ]),
-                  ]),
-                ], style: [
-                  Card.border
-                ]),
+                  ],
+                ),
 
                 // Card with image
-                Card([
-                  figure([
-                    img(
-                      src: 'https://picsum.photos/400/200?random=1',
-                      alt: 'Random image',
-                    ),
-                  ]),
-                  div(classes: 'card-body', [
-                    h2(classes: 'card-title', [
-                      text('Image Card'),
-                      Badge([text('NEW')], style: [Badge.secondary]),
+                Card(
+                  style: [BgUtil.base300, Effects.shadowLg],
+                  [
+                    Figure([
+                      img(
+                        src: 'https://picsum.photos/400/200?random=1',
+                        alt: 'Random image',
+                      ),
                     ]),
-                    p([text('Card with a beautiful image and badge.')]),
-                    div(classes: 'card-actions justify-end', [
-                      Button([text('View')], style: [Button.ghost]),
-                      Button([text('Buy Now')], style: [Button.primary]),
+                    CardBody([
+                      CardTitle([
+                        text('Image Card'),
+                        Badge([text('NEW')], style: [Badge.secondary]),
+                      ]),
+                      p([text('Card with a beautiful image and badge.')]),
+                      CardActions([
+                        Button([text('View')], style: [Button.ghost]),
+                        Button([text('Buy Now')], style: [Button.primary]),
+                      ]),
                     ]),
-                  ]),
-                ], style: [
-                  Card.border
-                ]),
+                  ],
+                ),
 
                 // Compact card
-                Card([
-                  div(classes: 'card-body', [
-                    h2(classes: 'card-title text-sm', [text('Compact Card')]),
-                    p(classes: 'text-sm', [text('Smaller card perfect for dashboards.')]),
-                  ]),
-                ], style: [
-                  Card.border,
-                  Card.xs
-                ]),
+                Card(
+                  style: [Card.border, Effects.shadowLg, Card.xs],
+                  [
+                    CardBody([
+                      CardTitle([text('Compact Card')]),
+                      p([text('Smaller card perfect for dashboards.')]),
+                    ]),
+                  ],
+                ),
               ]),
             ],
           ),
@@ -319,41 +321,42 @@ class DeepyrShowcase extends StatelessComponent {
             'Examples showing components working together',
             [
               // Login card example
-              Card([
-                div(classes: 'card-body', [
-                  div(classes: 'text-center mb-4', [
-                    h2(classes: 'card-title justify-center', [
-                      text('Login'),
-                      Badge([text('Secure')], style: [Badge.success, Badge.sm]),
+              div(classes: 'max-w-md mx-auto', [
+                Card(
+                  style: [Card.border, Card.lg],
+                  [
+                    CardBody([
+                      div(classes: 'text-center mb-4', [
+                        CardTitle([
+                          text('Login'),
+                          Badge([text('Secure')], style: [Badge.success, Badge.sm]),
+                        ]),
+                      ]),
+                      Alert([
+                        text('Please enter your credentials to continue.'),
+                      ], style: [
+                        Alert.info,
+                        Alert.soft
+                      ]),
+                      div(classes: 'space-y-4 mt-4', [
+                        Input(
+                          type: 'email',
+                          placeholder: 'Email address',
+                          style: [Input.primary],
+                        ),
+                        Input(
+                          type: 'password',
+                          placeholder: 'Password',
+                          style: [Input.primary],
+                        ),
+                      ]),
+                      CardActions([
+                        Button([text('Cancel')], style: [Button.ghost]),
+                        Button([text('Sign In')], style: [Button.primary]),
+                      ]),
                     ]),
-                  ]),
-                  Alert([
-                    text('Please enter your credentials to continue.'),
-                  ], style: [
-                    Alert.info,
-                    Alert.soft
-                  ]),
-                  div(classes: 'space-y-4 mt-4', [
-                    Input(
-                      type: 'email',
-                      placeholder: 'Email address',
-                      style: [Input.primary],
-                    ),
-                    Input(
-                      type: 'password',
-                      placeholder: 'Password',
-                      style: [Input.primary],
-                    ),
-                  ]),
-                  div(classes: 'card-actions justify-center mt-6', [
-                    Button([text('Cancel')], style: [Button.ghost]),
-                    Button([text('Sign In')], style: [Button.primary]),
-                  ]),
-                ]),
-              ], style: [
-                Card.border,
-                Card.lg,
-                'max-w-md mx-auto'
+                  ],
+                ),
               ]),
             ],
           ),
