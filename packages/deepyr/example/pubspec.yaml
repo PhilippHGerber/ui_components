@@ -1,9 +1,10 @@
 name: example
 description: A new Jaspr project, Deepyr example
 version: 0.0.2
+publish_to: none
 
 environment:
-  sdk: '>=3.6.0 <4.0.0'
+  sdk: ">=3.6.0 <4.0.0"
 
 dependencies:
   jaspr: ^0.20.0
@@ -18,4 +19,3 @@ dev_dependencies:
 
 jaspr:
   mode: static
-
