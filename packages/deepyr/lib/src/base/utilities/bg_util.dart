@@ -1,4 +1,3 @@
-// Hintergründe und deren Eigenschaften
 import '../common_style.dart';
 import '../style_type.dart' show StyleType;
 import '../ui_prefix_modifier.dart';

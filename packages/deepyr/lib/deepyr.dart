@@ -12,6 +12,8 @@ export 'src/base/ui_events.dart';
 export 'src/base/ui_prefix_modifier.dart';
 // General-purpose styling classes for layout, spacing, typography, etc.
 export 'src/base/utilities/alignment.dart';
+export 'src/base/utilities/bg_util.dart';
+export 'src/base/utilities/effects.dart';
 // Alert
 export 'src/components/alert/alert.dart';
 export 'src/components/alert/alert_style.dart' show AlertStyling;
