@@ -1,9 +1,16 @@
 # Changelog
 
-## 0.0.1
+## 0.0.2
 
 ### Added
 
-* Initial project setup and foundation for the `deepyr` package.
-* Proof of Concept (PoC) release with the first component: `Button`.
-* Basic API structure for creating and styling DaisyUI components in Jaspr.
+- **Input Component** - Text input field with full styling support
+- **Badge Component** - Status indicators and labels
+- **Alert Component** - User notification messages
+- **Card Component** - Content containers and layout blocks
+
+## 0.0.1
+
+- Initial project setup and foundation for the `deepyr` package.
+- Proof of Concept (PoC) release with the first component: `Button`.
+- Basic API structure for creating and styling DaisyUI components in Jaspr.
