@@ -12,11 +12,11 @@ This package currently serves as a proof-of-concept for integrating DaisyUI with
 
 ## **Design Principles**
 
-🎯 **Type Safety** - Catch styling errors at compile time
-🔧 **Fluent API** - Chain modifiers intuitively
-📱 **Responsive** - Built-in breakpoint support
-🎨 **DaisyUI Faithful** - 1:1 component mapping
-⚡ **Performance** - Minimal runtime overhead
+- 🎯 **Type Safety** - Catch styling errors at compile time
+- 🔧 **Fluent API** - Chain modifiers intuitively
+- 📱 **Responsive** - Built-in breakpoint support
+- 🎨 **DaisyUI Faithful** - 1:1 component mapping
+- ⚡ **Performance** - Minimal runtime overhead
 
 ## Getting Started
 
@@ -59,7 +59,6 @@ class MyComponent extends StatelessComponent {
 ```
 
 ## Deepyr Component Roadmap
-
 
 ### **Phase 1: Core Foundation**
 
