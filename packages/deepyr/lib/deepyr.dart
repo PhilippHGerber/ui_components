@@ -32,6 +32,9 @@ export 'src/components/icon/icon_style.dart' show IconStyling;
 // Input
 export 'src/components/input/input.dart';
 export 'src/components/input/input_style.dart' show InputStyling;
+// Loading
+export 'src/components/loading/loading.dart';
+export 'src/components/loading/loading_style.dart' show LoadingStyling;
 // --- ELEMENTS ---
 // Generic HTML element wrappers like Container and Figure.
 export 'src/elements/container.dart';
