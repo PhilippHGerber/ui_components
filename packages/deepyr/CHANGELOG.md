@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.0.3
+
+### Added
+
+- **Loading Component** - to show animations for loading states.
+- **Divider Component** - to separate content.
+
 ## 0.0.2
 
 ### Added

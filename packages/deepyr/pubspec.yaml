@@ -1,6 +1,6 @@
 name: deepyr
 description: A type-safe Dart implementation of DaisyUI components for Jaspr, providing a fluent API for building beautiful web apps (PoC)
-version: 0.0.2
+version: 0.0.3
 homepage: https://github.com/PhilippHGerber/ui_components
 repository: https://github.com/PhilippHGerber/ui_components
 issue_tracker: https://github.com/PhilippHGerber/ui_components/issues
