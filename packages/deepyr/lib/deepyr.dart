@@ -26,6 +26,9 @@ export 'src/components/button/button_style.dart' show ButtonStyling;
 // Card
 export 'src/components/card/card.dart';
 export 'src/components/card/card_style.dart' show CardStyling;
+// Divider
+export 'src/components/divider/divider.dart';
+export 'src/components/divider/divider_style.dart' show DividerStyling;
 // Icon
 export 'src/components/icon/icon.dart';
 export 'src/components/icon/icon_style.dart' show IconStyling;
