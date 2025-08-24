@@ -1,20 +1,32 @@
 # Changelog
 
+## 0.0.4
+
+### Added
+
+- **`Checkbox`** - Boolean selection with custom styling
+- **`Radio`** - Single choice selection from multiple options
+- **`Toggle`** - Modern switch-style boolean input
+- **`Textarea`** - Multi-line text input with resize options
+- **`Select`** - Dropdown selection with custom styling
+- **`Progress`** - Task completion and loading progress bars
+- **`Link`** - Enhanced hyperlinks with hover states
+
 ## 0.0.3
 
 ### Added
 
-- **Loading Component** - to show animations for loading states.
-- **Divider Component** - to separate content.
+- **`Loading`** - to show animations for loading states.
+- **`Divider`** - to separate content.
 
 ## 0.0.2
 
 ### Added
 
-- **Input Component** - Text input field with full styling support
-- **Badge Component** - Status indicators and labels
-- **Alert Component** - User notification messages
-- **Card Component** - Content containers and layout blocks
+- **`Input`** - Text input field with full styling support
+- **`Badge`** - Status indicators and labels
+- **`Alert`** - User notification messages
+- **`Card`** - Content containers and layout blocks
 
 ## 0.0.1
 
