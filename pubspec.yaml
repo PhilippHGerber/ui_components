@@ -7,9 +7,6 @@ environment:
 
 workspace:
   - packages/deepyr
-  - packages/elevyr
-  - examples/deepyr_example
-  - examples/elevyr_example
 
 dependencies:
   jaspr: ^0.21.1
