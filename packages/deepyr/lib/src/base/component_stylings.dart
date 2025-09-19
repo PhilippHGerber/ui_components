@@ -1,33 +1,52 @@
-import '../components/alert/alert_style.dart';
-import '../components/badge/badge_style.dart';
-import '../components/button/button_style.dart';
-import '../components/card/card_style.dart';
-import '../components/checkbox/checkbox_style.dart';
-import '../components/divider/divider_style.dart';
-import '../components/icon/icon_style.dart';
-import '../components/link/link_style.dart';
-import '../components/loading/loading_style.dart';
-import '../components/progress/progress_style.dart';
-import '../components/radio/radio_style.dart';
-import '../components/select/select_style.dart';
-import '../components/textarea/textarea_style.dart';
-import '../components/toggle/toggle_style.dart';
+import '../../deepyr.dart';
 
 mixin AllComponentStylings
     implements
+        AccordionStyling,
         AlertStyling,
+        AvatarStyling,
         BadgeStyling,
         ButtonStyling,
+        BreadcrumbsStyling,
         CardStyling,
         CheckboxStyling,
+        CollapseStyling,
+        DiffStyling,
         DividerStyling,
+        DrawerStyling,
+        DropdownStyling,
+        DropdownContentStyling,
+        FieldsetStyling,
+        FileInputStyling,
+        FooterStyling,
+        FormLabelStyling,
+        HeroStyling,
         IconStyling,
+        IndicatorStyling,
+        IndicatorItemStyling,
+        InputStyling,
+        JoinStyling,
+        KbdStyling,
+        LabelStyling,
+        LegendStyling,
         LinkStyling,
         LoadingStyling,
+        MenuStyling,
+        MenuItemStyling,
+        ModalStyling,
+        NavbarStyling,
         ProgressStyling,
         RadioStyling,
+        RangeStyling,
         SelectStyling,
+        SkeletonStyling,
+        SwapStyling,
+        TabsStyling,
+        TabStyling,
         TextareaStyling,
-        ToggleStyling {
+        ThemeControllerStyling,
+        ToggleStyling,
+        TooltipStyling,
+        ValidatorHintStyling {
   // Empty mixin - only Interface
 }

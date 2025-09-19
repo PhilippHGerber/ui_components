@@ -1,0 +1,6 @@
+{
+  "devDependencies": {
+    "daisyui": "^5.1.10",
+    "tailwindcss": "^4.1.13"
+  }
+}

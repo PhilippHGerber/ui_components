@@ -5,376 +5,277 @@ import 'package:jaspr/server.dart';
 import 'jaspr_options.dart';
 
 void main() {
-  Jaspr.initializeApp(
-    options: defaultJasprOptions,
-  );
+  Jaspr.initializeApp(options: defaultJasprOptions);
 
-  runApp(Document(
-    title: 'Deepyr Example - Component Showcase',
-    head: <Component>[
-      link(href: 'styles.css', rel: 'stylesheet'),
-      meta(name: 'viewport', content: 'width=device-width, initial-scale=1'),
-    ],
-    body: const DeepyrShowcase(),
-  ));
+  runApp(
+    Document(
+      title: 'Deepyr Example - Component Showcase',
+      head: <Component>[
+        link(href: 'styles.css', rel: 'stylesheet'),
+        meta(name: 'viewport', content: 'width=device-width, initial-scale=1'),
+      ],
+      body: const DeepyrShowcase(),
+    ),
+  );
 }
 
 class DeepyrShowcase extends StatelessComponent {
   const DeepyrShowcase({super.key});
 
   @override
-  Iterable<Component> build(BuildContext context) sync* {
-    yield div(
-      classes: 'min-h-screen bg-base-100 p-8',
-      [
-        // Header
-        div(classes: 'max-w-6xl mx-auto', [
-          h1(classes: 'text-4xl font-bold text-center mb-2', [
-            text('🎨 Deepyr Component Showcase'),
+  Component build(BuildContext context) {
+    return div(classes: 'min-h-screen bg-base-100 p-8', [
+      // Header
+      div(classes: 'max-w-6xl mx-auto', [
+        h1(classes: 'text-4xl font-bold text-center mb-2', [text('🎨 Deepyr Component Showcase')]),
+        p(classes: 'text-center text-base-content/70 mb-12', [
+          text('Type-safe DaisyUI components for Jaspr'),
+        ]),
+
+        // Alert Examples
+        _buildSection('Alert Components', 'User notifications and feedback messages', [
+          Alert([text('🎉 Welcome to Deepyr! This is a success message.')], style: [Alert.success]),
+
+          Alert([text('⚠️ Please check your input. This is a warning.')], style: [Alert.warning]),
+
+          Alert([text('❌ Something went wrong. This is an error message.')], style: [Alert.error]),
+
+          Alert([text('ℹ️ Here\'s some helpful information for you.')], style: [Alert.info]),
+
+          // Outlined style
+          Alert(
+            [text('🔄 Processing your request... (outlined style)')],
+            style: [Alert.info, Alert.outline],
+          ),
+        ]),
+
+        // Card Examples
+        _buildSection('Card Components', 'Content containers and layout blocks', [
+          div(classes: 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4', [
+            // Basic card
+            Card(
+              style: [BgUtil.base300, Effects.shadowLg],
+              [
+                CardBody([
+                  CardTitle([text('Basic Card')]),
+                  p([text('This is a simple card with some content inside.')]),
+                  CardActions([
+                    Button([text('Action')], style: [Button.primary, Button.sm]),
+                  ]),
+                ]),
+              ],
+            ),
+
+            // Card with image
+            Card(
+              style: [BgUtil.base300, Effects.shadowLg],
+              [
+                Figure([img(src: 'https://picsum.photos/400/200?random=1', alt: 'Random image')]),
+                CardBody([
+                  CardTitle([
+                    text('Image Card'),
+                    Badge([text('NEW')], style: [Badge.secondary]),
+                  ]),
+                  p([text('Card with a beautiful image and badge.')]),
+                  CardActions([
+                    Button([text('View')], style: [Button.ghost]),
+                    Button([text('Buy Now')], style: [Button.primary]),
+                  ]),
+                ]),
+              ],
+            ),
+
+            // Compact card
+            Card(
+              style: [Card.border, Effects.shadowLg, Card.xs],
+              [
+                CardBody([
+                  CardTitle([text('Compact Card')]),
+                  p([text('Smaller card perfect for dashboards.')]),
+                ]),
+              ],
+            ),
           ]),
-          p(classes: 'text-center text-base-content/70 mb-12', [
-            text('Type-safe DaisyUI components for Jaspr'),
+        ]),
+
+        // Button Examples
+        _buildSection('Button Components', 'Interactive elements with various styles and states', [
+          // Color variants
+          div(classes: 'flex flex-wrap gap-2 mb-4', [
+            Button([text('Neutral')], style: [Button.neutral]),
+            Button([text('Primary')], style: [Button.primary]),
+            Button([text('Secondary')], style: [Button.secondary]),
+            Button([text('Accent')], style: [Button.accent]),
+            Button([text('Info')], style: [Button.info]),
+            Button([text('Success')], style: [Button.success]),
+            Button([text('Warning')], style: [Button.warning]),
+            Button([text('Error')], style: [Button.error]),
           ]),
 
-          // Alert Examples
-          _buildSection(
-            'Alert Components',
-            'User notifications and feedback messages',
-            [
-              Alert([
-                text('🎉 Welcome to Deepyr! This is a success message.'),
-              ], style: [
-                Alert.success
-              ]),
+          // Style variants
+          div(classes: 'flex flex-wrap gap-2 mb-4', [
+            Button([text('Outline')], style: [Button.outline]),
+            Button([text('Ghost')], style: [Button.ghost]),
+            Button([text('Link')], style: [Button.link]),
+            Button([text('Soft')], style: [Button.soft]),
+            Button([text('Dash')], style: [Button.dash]),
+          ]),
 
-              Alert([
-                text('⚠️ Please check your input. This is a warning.'),
-              ], style: [
-                Alert.warning
-              ]),
+          // Size variants
+          div(classes: 'flex flex-wrap items-center gap-2 mb-4', [
+            Button([text('XS')], style: [Button.xs]),
+            Button([text('SM')], style: [Button.sm]),
+            Button([text('MD')], style: [Button.md]),
+            Button([text('LG')], style: [Button.lg]),
+            Button([text('XL')], style: [Button.xl]),
+          ]),
 
-              Alert([
-                text('❌ Something went wrong. This is an error message.'),
-              ], style: [
-                Alert.error
-              ]),
+          // Shape variants
+          div(classes: 'flex flex-wrap items-center gap-2', [
+            Button([text('Wide Button')], style: [Button.wide]),
+            Button([text('⭐')], style: [Button.square]),
+            Button([text('💝')], style: [Button.circle]),
+            Button([text('Block Button')], style: [Button.block]),
+          ]),
+        ]),
 
-              Alert([
-                text('ℹ️ Here\'s some helpful information for you.'),
-              ], style: [
-                Alert.info
-              ]),
+        // Input Examples
+        _buildSection('Input Components', 'Form inputs with validation and styling', [
+          div(classes: 'grid grid-cols-1 md:grid-cols-2 gap-4', [
+            // Basic inputs
+            div([
+              label(classes: 'block text-sm font-medium mb-2', [text('Email Address')]),
+              Input(type: 'email', placeholder: 'Enter your email', style: [Input.primary]),
+            ]),
 
-              // Outlined style
-              Alert([
-                text('🔄 Processing your request... (outlined style)'),
-              ], style: [
-                Alert.info,
-                Alert.outline
-              ]),
-            ],
-          ),
+            div([
+              label(classes: 'block text-sm font-medium mb-2', [text('Password')]),
+              Input(type: 'password', placeholder: 'Enter password', style: [Input.secondary]),
+            ]),
 
-          // Card Examples
-          _buildSection(
-            'Card Components',
-            'Content containers and layout blocks',
-            [
-              div(classes: 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4', [
-                // Basic card
-                Card(
-                  style: [BgUtil.base300, Effects.shadowLg],
-                  [
-                    CardBody([
-                      CardTitle([text('Basic Card')]),
-                      p([text('This is a simple card with some content inside.')]),
-                      CardActions([
-                        Button([text('Action')], style: [Button.primary, Button.sm]),
-                      ]),
-                    ]),
-                  ],
-                ),
+            // Different sizes
+            div([
+              label(classes: 'block text-sm font-medium mb-2', [text('Small Input')]),
+              Input(placeholder: 'Small size', style: [Input.sm]),
+            ]),
 
-                // Card with image
-                Card(
-                  style: [BgUtil.base300, Effects.shadowLg],
-                  [
-                    Figure([
-                      img(
-                        src: 'https://picsum.photos/400/200?random=1',
-                        alt: 'Random image',
-                      ),
-                    ]),
-                    CardBody([
-                      CardTitle([
-                        text('Image Card'),
-                        Badge([text('NEW')], style: [Badge.secondary]),
-                      ]),
-                      p([text('Card with a beautiful image and badge.')]),
-                      CardActions([
-                        Button([text('View')], style: [Button.ghost]),
-                        Button([text('Buy Now')], style: [Button.primary]),
-                      ]),
-                    ]),
-                  ],
-                ),
+            div([
+              label(classes: 'block text-sm font-medium mb-2', [text('Large Input')]),
+              Input(placeholder: 'Large size', style: [Input.lg]),
+            ]),
 
-                // Compact card
-                Card(
-                  style: [Card.border, Effects.shadowLg, Card.xs],
-                  [
-                    CardBody([
-                      CardTitle([text('Compact Card')]),
-                      p([text('Smaller card perfect for dashboards.')]),
-                    ]),
-                  ],
-                ),
-              ]),
-            ],
-          ),
+            // Validation states
+            div([
+              label(classes: 'block text-sm font-medium mb-2', [text('Success State')]),
+              Input(placeholder: 'Valid input', style: [Input.success]),
+            ]),
 
-          // Button Examples
-          _buildSection(
-            'Button Components',
-            'Interactive elements with various styles and states',
-            [
-              // Color variants
-              div(classes: 'flex flex-wrap gap-2 mb-4', [
-                Button([text('Neutral')], style: [Button.neutral]),
-                Button([text('Primary')], style: [Button.primary]),
-                Button([text('Secondary')], style: [Button.secondary]),
-                Button([text('Accent')], style: [Button.accent]),
-                Button([text('Info')], style: [Button.info]),
-                Button([text('Success')], style: [Button.success]),
-                Button([text('Warning')], style: [Button.warning]),
-                Button([text('Error')], style: [Button.error]),
-              ]),
+            div([
+              label(classes: 'block text-sm font-medium mb-2', [text('Error State')]),
+              Input(placeholder: 'Invalid input', style: [Input.error]),
+            ]),
+          ]),
 
-              // Style variants
-              div(classes: 'flex flex-wrap gap-2 mb-4', [
-                Button([text('Outline')], style: [Button.outline]),
-                Button([text('Ghost')], style: [Button.ghost]),
-                Button([text('Link')], style: [Button.link]),
-                Button([text('Soft')], style: [Button.soft]),
-                Button([text('Dash')], style: [Button.dash]),
-              ]),
+          // Ghost style
+          div(classes: 'mt-4', [
+            label(classes: 'block text-sm font-medium mb-2', [text('Ghost Style Input')]),
+            Input(placeholder: 'Transparent background', style: [Input.ghost, Input.lg]),
+          ]),
+        ]),
 
-              // Size variants
-              div(classes: 'flex flex-wrap items-center gap-2 mb-4', [
-                Button([text('XS')], style: [Button.xs]),
-                Button([text('SM')], style: [Button.sm]),
-                Button([text('MD')], style: [Button.md]),
-                Button([text('LG')], style: [Button.lg]),
-                Button([text('XL')], style: [Button.xl]),
-              ]),
+        // Badge Examples
+        _buildSection('Badge Components', 'Status indicators, labels, and counters', [
+          // Color variants
+          div(classes: 'flex flex-wrap gap-2 mb-4', [
+            Badge([text('Neutral')], style: [Badge.neutral]),
+            Badge([text('Primary')], style: [Badge.primary]),
+            Badge([text('Secondary')], style: [Badge.secondary]),
+            Badge([text('Accent')], style: [Badge.accent]),
+            Badge([text('Info')], style: [Badge.info]),
+            Badge([text('Success')], style: [Badge.success]),
+            Badge([text('Warning')], style: [Badge.warning]),
+            Badge([text('Error')], style: [Badge.error]),
+          ]),
 
-              // Shape variants
-              div(classes: 'flex flex-wrap items-center gap-2', [
-                Button([text('Wide Button')], style: [Button.wide]),
-                Button([text('⭐')], style: [Button.square]),
-                Button([text('💝')], style: [Button.circle]),
-                Button([text('Block Button')], style: [Button.block]),
-              ]),
-            ],
-          ),
+          // Style variants
+          div(classes: 'flex flex-wrap gap-2 mb-4', [
+            Badge([text('Outline')], style: [Badge.outline]),
+            Badge([text('Ghost')], style: [Badge.ghost]),
+            Badge([text('Soft')], style: [Badge.soft]),
+            Badge([text('Dash')], style: [Badge.dash]),
+          ]),
 
-          // Input Examples
-          _buildSection(
-            'Input Components',
-            'Form inputs with validation and styling',
-            [
-              div(classes: 'grid grid-cols-1 md:grid-cols-2 gap-4', [
-                // Basic inputs
-                div([
-                  label(classes: 'block text-sm font-medium mb-2', [
-                    text('Email Address'),
-                  ]),
-                  Input(
-                    type: 'email',
-                    placeholder: 'Enter your email',
-                    style: [Input.primary],
-                  ),
-                ]),
+          // Size variants
+          div(classes: 'flex flex-wrap items-center gap-2 mb-4', [
+            Badge([text('XS')], style: [Badge.xs]),
+            Badge([text('SM')], style: [Badge.sm]),
+            Badge([text('MD')], style: [Badge.md]),
+            Badge([text('LG')], style: [Badge.lg]),
+            Badge([text('XL')], style: [Badge.xl]),
+          ]),
 
-                div([
-                  label(classes: 'block text-sm font-medium mb-2', [
-                    text('Password'),
-                  ]),
-                  Input(
-                    type: 'password',
-                    placeholder: 'Enter password',
-                    style: [Input.secondary],
-                  ),
-                ]),
-
-                // Different sizes
-                div([
-                  label(classes: 'block text-sm font-medium mb-2', [
-                    text('Small Input'),
-                  ]),
-                  Input(
-                    placeholder: 'Small size',
-                    style: [Input.sm],
-                  ),
-                ]),
-
-                div([
-                  label(classes: 'block text-sm font-medium mb-2', [
-                    text('Large Input'),
-                  ]),
-                  Input(
-                    placeholder: 'Large size',
-                    style: [Input.lg],
-                  ),
-                ]),
-
-                // Validation states
-                div([
-                  label(classes: 'block text-sm font-medium mb-2', [
-                    text('Success State'),
-                  ]),
-                  Input(
-                    placeholder: 'Valid input',
-                    style: [Input.success],
-                  ),
-                ]),
-
-                div([
-                  label(classes: 'block text-sm font-medium mb-2', [
-                    text('Error State'),
-                  ]),
-                  Input(
-                    placeholder: 'Invalid input',
-                    style: [Input.error],
-                  ),
-                ]),
-              ]),
-
-              // Ghost style
-              div(classes: 'mt-4', [
-                label(classes: 'block text-sm font-medium mb-2', [
-                  text('Ghost Style Input'),
-                ]),
-                Input(
-                  placeholder: 'Transparent background',
-                  style: [Input.ghost, Input.lg],
-                ),
-              ]),
-            ],
-          ),
-
-          // Badge Examples
-          _buildSection(
-            'Badge Components',
-            'Status indicators, labels, and counters',
-            [
-              // Color variants
-              div(classes: 'flex flex-wrap gap-2 mb-4', [
-                Badge([text('Neutral')], style: [Badge.neutral]),
-                Badge([text('Primary')], style: [Badge.primary]),
-                Badge([text('Secondary')], style: [Badge.secondary]),
-                Badge([text('Accent')], style: [Badge.accent]),
-                Badge([text('Info')], style: [Badge.info]),
-                Badge([text('Success')], style: [Badge.success]),
-                Badge([text('Warning')], style: [Badge.warning]),
-                Badge([text('Error')], style: [Badge.error]),
-              ]),
-
-              // Style variants
-              div(classes: 'flex flex-wrap gap-2 mb-4', [
-                Badge([text('Outline')], style: [Badge.outline]),
-                Badge([text('Ghost')], style: [Badge.ghost]),
-                Badge([text('Soft')], style: [Badge.soft]),
-                Badge([text('Dash')], style: [Badge.dash]),
-              ]),
-
-              // Size variants
-              div(classes: 'flex flex-wrap items-center gap-2 mb-4', [
-                Badge([text('XS')], style: [Badge.xs]),
-                Badge([text('SM')], style: [Badge.sm]),
-                Badge([text('MD')], style: [Badge.md]),
-                Badge([text('LG')], style: [Badge.lg]),
-                Badge([text('XL')], style: [Badge.xl]),
-              ]),
-
-              // Practical examples
-              div(classes: 'space-y-2', [
-                p([
-                  text('Status: '),
-                  Badge([text('Online')], style: [Badge.success, Badge.sm]),
-                ]),
-                p([
-                  text('Notifications '),
-                  Badge([text('3')], style: [Badge.error, Badge.xs]),
-                ]),
-                p([
-                  text('Version '),
-                  Badge([text('v1.2.0')], style: [Badge.ghost]),
-                ]),
-              ]),
-            ],
-          ),
-
-          // Integration Examples
-          _buildSection(
-            'Component Integration',
-            'Examples showing components working together',
-            [
-              // Login card example
-              div(classes: 'max-w-md mx-auto', [
-                Card(
-                  style: [Card.border, Card.lg],
-                  [
-                    CardBody([
-                      div(classes: 'text-center mb-4', [
-                        CardTitle([
-                          text('Login'),
-                          Badge([text('Secure')], style: [Badge.success, Badge.sm]),
-                        ]),
-                      ]),
-                      Alert([
-                        text('Please enter your credentials to continue.'),
-                      ], style: [
-                        Alert.info,
-                        Alert.soft
-                      ]),
-                      div(classes: 'space-y-4 mt-4', [
-                        Input(
-                          type: 'email',
-                          placeholder: 'Email address',
-                          style: [Input.primary],
-                        ),
-                        Input(
-                          type: 'password',
-                          placeholder: 'Password',
-                          style: [Input.primary],
-                        ),
-                      ]),
-                      CardActions([
-                        Button([text('Cancel')], style: [Button.ghost]),
-                        Button([text('Sign In')], style: [Button.primary]),
-                      ]),
-                    ]),
-                  ],
-                ),
-              ]),
-            ],
-          ),
-
-          // Footer
-          div(classes: 'text-center mt-16 pt-8 border-t border-base-300', [
-            p(classes: 'text-base-content/60', [
-              text('Built with ❤️ using Deepyr • '),
-              a(
-                href: 'https://github.com/PhilippHGerber/ui_components',
-                classes: 'link link-primary',
-                [text('View on GitHub')],
-              ),
+          // Practical examples
+          div(classes: 'space-y-2', [
+            p([
+              text('Status: '),
+              Badge([text('Online')], style: [Badge.success, Badge.sm]),
+            ]),
+            p([
+              text('Notifications '),
+              Badge([text('3')], style: [Badge.error, Badge.xs]),
+            ]),
+            p([
+              text('Version '),
+              Badge([text('v1.2.0')], style: [Badge.ghost]),
             ]),
           ]),
         ]),
-      ],
-    );
+
+        // Integration Examples
+        _buildSection('Component Integration', 'Examples showing components working together', [
+          // Login card example
+          div(classes: 'max-w-md mx-auto', [
+            Card(
+              style: [Card.border, Card.lg],
+              [
+                CardBody([
+                  div(classes: 'text-center mb-4', [
+                    CardTitle([
+                      text('Login'),
+                      Badge([text('Secure')], style: [Badge.success, Badge.sm]),
+                    ]),
+                  ]),
+                  Alert(
+                    [text('Please enter your credentials to continue.')],
+                    style: [Alert.info, Alert.soft],
+                  ),
+                  div(classes: 'space-y-4 mt-4', [
+                    Input(type: 'email', placeholder: 'Email address', style: [Input.primary]),
+                    Input(type: 'password', placeholder: 'Password', style: [Input.primary]),
+                  ]),
+                  CardActions([
+                    Button([text('Cancel')], style: [Button.ghost]),
+                    Button([text('Sign In')], style: [Button.primary]),
+                  ]),
+                ]),
+              ],
+            ),
+          ]),
+        ]),
+
+        // Footer
+        div(classes: 'text-center mt-16 pt-8 border-t border-base-300', [
+          p(classes: 'text-base-content/60', [
+            text('Built with ❤️ using Deepyr • '),
+            a(
+              href: 'https://github.com/PhilippHGerber/ui_components',
+              classes: 'link link-primary',
+              [text('View on GitHub')],
+            ),
+          ]),
+        ]),
+      ]),
+    ]);
   }
 
   Component _buildSection(String title, String description, List<Component> content) {

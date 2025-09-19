@@ -1,13 +1,71 @@
-// TODO
+// packages/deepyr/lib/src/base/utilities/layout.dart
+
 import '../common_style.dart';
 import '../style_type.dart';
 import '../ui_prefix_modifier.dart';
-// - gap
-// - order
 
+/// A comprehensive utility class for applying layout styles.
+///
+/// This includes utilities for display, positioning, z-index, overflow,
+/// visibility, flexbox/grid spacing (gap), ordering, and other
+/// fundamental CSS layout properties.
 class Layout extends CommonStyle<Layout> {
-  const Layout(super.cssClass, {super.modifiers})
-      : super(type: StyleType.layout);
+  const Layout(super.cssClass, {super.modifiers}) : super(type: StyleType.layout);
+
+  // --- Z-Index ---
+  /// Creates a z-index utility. `z-{value}`
+  factory Layout.z(int value) => Layout('z-$value');
+
+  // --- Positioning ---
+  /// Creates an inset utility. `inset-{value}`
+  factory Layout.inset(num value) => Layout('inset-${_formatValue(value)}');
+
+  /// Creates a horizontal inset utility. `inset-x-{value}`
+  factory Layout.insetX(num value) => Layout('inset-x-${_formatValue(value)}');
+
+  /// Creates a vertical inset utility. `inset-y-{value}`
+  factory Layout.insetY(num value) => Layout('inset-y-${_formatValue(value)}');
+
+  /// Creates a top position utility. `top-{value}`
+  factory Layout.top(num value) => Layout('top-${_formatValue(value)}');
+
+  /// Creates a bottom position utility. `bottom-{value}`
+  factory Layout.bottom(num value) => Layout('bottom-${_formatValue(value)}');
+
+  /// Creates a left position utility. `left-{value}`
+  factory Layout.left(num value) => Layout('left-${_formatValue(value)}');
+
+  /// Creates a right position utility. `right-{value}`
+  factory Layout.right(num value) => Layout('right-${_formatValue(value)}');
+
+  // --- Gap, Order, and Spacing ---
+  /// Creates a gap utility for both axes. `gap-{value}`
+  factory Layout.gap(num value) => Layout('gap-${_formatValue(value)}');
+
+  /// Creates a horizontal gap utility. `gap-x-{value}`
+  factory Layout.gapX(num value) => Layout('gap-x-${_formatValue(value)}');
+
+  /// Creates a vertical gap utility. `gap-y-{value}`
+  factory Layout.gapY(num value) => Layout('gap-y-${_formatValue(value)}');
+
+  /// Creates a positive order utility. `order-{value}`
+  factory Layout.order(int value) => Layout('order-$value');
+
+  /// Creates a negative order utility. `-order-{value}`
+  factory Layout.orderNeg(int value) => Layout('-order-$value');
+
+  /// Helper to format a value, removing .0 for whole numbers.
+  static String _formatValue(num value) {
+    if (value == value.truncate()) {
+      return value.truncate().toString();
+    }
+    return value.toString();
+  }
+
+  @override
+  Layout create(List<PrefixModifier> modifiers) {
+    return Layout(cssClass, modifiers: modifiers);
+  }
 
   // --- Display ---
   /// `display: block`
@@ -28,12 +86,6 @@ class Layout extends CommonStyle<Layout> {
   /// `display: table`
   static const Layout table = Layout('table');
 
-  /// `display: inline-table`
-  static const Layout inlineTable = Layout('inline-table');
-
-  /// `display: table-caption`
-  static const Layout tableCaption = Layout('table-caption');
-  // ... add other display types as needed: table-cell, table-column, etc.
   /// `display: grid`
   static const Layout grid = Layout('grid');
 
@@ -46,26 +98,174 @@ class Layout extends CommonStyle<Layout> {
   /// `display: list-item`
   static const Layout listItem = Layout('list-item');
 
-  /// `display: hidden` (same as `hidden` in Tailwind, effectively `display: none`)
+  /// `display: hidden` (effectively `display: none`)
   static const Layout hidden = Layout('hidden');
 
-  // --- Flex Direction (from flex.dart, could be consolidated here or kept separate) ---
-  // Assuming Flex specific utilities (grow, shrink, basis) remain in flex.dart
-  // but basic direction and wrap can be here for general layout.
+  /// `display: flow-root`
+  static const Layout flowRoot = Layout('flow-root');
+
+  /// `z-index: auto`
+  static const Layout zAuto = Layout('z-auto');
+
+  /// `z-index: 0`
+  static const Layout z0 = Layout('z-0');
+
+  /// `z-index: 10`
+  static const Layout z10 = Layout('z-10');
+
+  /// `z-index: 20`
+  static const Layout z20 = Layout('z-20');
+
+  /// `z-index: 30`
+  static const Layout z30 = Layout('z-30');
+
+  /// `z-index: 40`
+  static const Layout z40 = Layout('z-40');
+
+  /// `z-index: 50`
+  static const Layout z50 = Layout('z-50');
+
+  /// `inset: 0`
+  static const Layout inset0 = Layout('inset-0');
+
+  /// `inset: auto`
+  static const Layout insetAuto = Layout('inset-auto');
+
+  /// `top: 0`
+  static const Layout top0 = Layout('top-0');
+
+  /// `bottom: 0`
+  static const Layout bottom0 = Layout('bottom-0');
+
+  /// `left: 0`
+  static const Layout left0 = Layout('left-0');
+
+  /// `right: 0`
+  static const Layout right0 = Layout('right-0');
+
+  /// `inset: 100%`
+  static const Layout insetFull = Layout('inset-full');
+
+  // --- Overflow ---
+  /// `overflow: auto`
+  static const Layout overflowAuto = Layout('overflow-auto');
+
+  /// `overflow: hidden`
+  static const Layout overflowHidden = Layout('overflow-hidden');
+
+  /// `overflow: visible`
+  static const Layout overflowVisible = Layout('overflow-visible');
+
+  /// `overflow: scroll`
+  static const Layout overflowScroll = Layout('overflow-scroll');
+
+  /// `overflow-x: auto`
+  static const Layout overflowXAuto = Layout('overflow-x-auto');
+
+  /// `overflow-y: auto`
+  static const Layout overflowYAuto = Layout('overflow-y-auto');
+
+  /// `overflow-x: hidden`
+  static const Layout overflowXHidden = Layout('overflow-x-hidden');
+
+  /// `overflow-y: hidden`
+  static const Layout overflowYHidden = Layout('overflow-y-hidden');
+
+  /// `overflow-x: visible`
+  static const Layout overflowXVisible = Layout('overflow-x-visible');
+
+  /// `overflow-y: visible`
+  static const Layout overflowYVisible = Layout('overflow-y-visible');
+
+  /// `overflow-x: scroll`
+  static const Layout overflowXScroll = Layout('overflow-x-scroll');
+
+  /// `overflow-y: scroll`
+  static const Layout overflowYScroll = Layout('overflow-y-scroll');
+
+  // --- Visibility ---
+  /// `visibility: visible`
+  static const Layout visible = Layout('visible');
+
+  /// `visibility: hidden` (element still takes up space)
+  static const Layout invisible = Layout('invisible');
+
+  // --- Object Fit & Position ---
+  /// `object-fit: contain`
+  static const Layout objectContain = Layout('object-contain');
+
+  /// `object-fit: cover`
+  static const Layout objectCover = Layout('object-cover');
+
+  /// `object-fit: fill`
+  static const Layout objectFill = Layout('object-fill');
+
+  /// `object-fit: none`
+  static const Layout objectNone = Layout('object-none');
+
+  /// `object-fit: scale-down`
+  static const Layout objectScaleDown = Layout('object-scale-down');
+
+  /// `object-position: bottom`
+  static const Layout objectBottom = Layout('object-bottom');
+
+  /// `object-position: center`
+  static const Layout objectCenter = Layout('object-center');
+
+  /// `object-position: left`
+  static const Layout objectLeft = Layout('object-left');
+
+  /// `object-position: left bottom`
+  static const Layout objectLeftBottom = Layout('object-left-bottom');
+
+  /// `object-position: left top`
+  static const Layout objectLeftTop = Layout('object-left-top');
+
+  /// `object-position: right`
+  static const Layout objectRight = Layout('object-right');
+
+  /// `object-position: right bottom`
+  static const Layout objectRightBottom = Layout('object-right-bottom');
+
+  /// `object-position: right top`
+  static const Layout objectRightTop = Layout('object-right-top');
+
+  /// `object-position: top`
+  static const Layout objectTop = Layout('object-top');
+
+  // --- Flexbox & Grid Container ---
+  /// `flex-direction: row`
   static const Layout flexRow = Layout('flex-row');
+
+  /// `flex-direction: row-reverse`
   static const Layout flexRowReverse = Layout('flex-row-reverse');
+
+  /// `flex-direction: column`
   static const Layout flexCol = Layout('flex-col');
+
+  /// `flex-direction: column-reverse`
   static const Layout flexColReverse = Layout('flex-col-reverse');
 
-  // --- Flex Wrap ---
+  /// `flex-wrap: nowrap`
   static const Layout flexNoWrap = Layout('flex-nowrap');
+
+  /// `flex-wrap: wrap`
   static const Layout flexWrap = Layout('flex-wrap');
+
+  /// `flex-wrap: wrap-reverse`
   static const Layout flexWrapReverse = Layout('flex-wrap-reverse');
 
-  // Base gap utilities - Control spacing in both directions
-  static Layout gap(double value) => Layout('gap-${_formatValue(value)}');
-  static Layout gapX(double value) => Layout('gap-x-${_formatValue(value)}');
-  static Layout gapY(double value) => Layout('gap-y-${_formatValue(value)}');
+  /// `grid-auto-flow: row`
+  static const Layout gridFlowRow = Layout('grid-flow-row');
+
+  /// `grid-auto-flow: column`
+  static const Layout gridFlowCol = Layout('grid-flow-col');
+
+  /// `grid-auto-flow: row dense`
+  static const Layout gridFlowRowDense = Layout('grid-flow-row-dense');
+
+  /// `grid-auto-flow: column dense`
+  static const Layout gridFlowColDense = Layout('grid-flow-col-dense');
 
   // Base gap utilities - Control spacing in both directions
   // These follow the standard 0.25rem (4px) scale pattern
@@ -97,8 +297,7 @@ class Layout extends CommonStyle<Layout> {
   static const Layout gap80 = Layout('gap-80'); // 20rem (320px)
   static const Layout gap96 = Layout('gap-96'); // 24rem (384px)
 
-  // Horizontal gap utilities - Control spacing between columns
-  // These follow the same scale but only affect horizontal spacing
+  // Horizontal gap utilities
   static const Layout gapX0 = Layout('gap-x-0');
   static const Layout gapX1 = Layout('gap-x-1');
   static const Layout gapX2 = Layout('gap-x-2');
@@ -160,15 +359,10 @@ class Layout extends CommonStyle<Layout> {
   // Order utilities for controlling the visual order of flex/grid items
   // Special order values that provide semantic meaning
   // --- Order ---
-  // Order utilities for controlling the visual order of flex/grid items
+  /// `order: -9999`
   static const Layout orderFirst = Layout('order-first');
   static const Layout orderLast = Layout('order-last');
   static const Layout orderNone = Layout('order-none');
-  static Layout order(int value) => Layout('order-$value');
-  static Layout orderNeg(int value) => Layout('-order-$value');
-  // ... (add more specific order values if desired, e.g., order1, order2) ...
-
-  // Positive order values for standard ordering
   static const Layout order1 = Layout('order-1');
   static const Layout order2 = Layout('order-2');
   static const Layout order3 = Layout('order-3');
@@ -196,15 +390,25 @@ class Layout extends CommonStyle<Layout> {
   static const Layout orderNeg11 = Layout('-order-11');
   static const Layout orderNeg12 = Layout('-order-12');
 
-  static String _formatValue(double value) {
-    if (value == value.truncate()) {
-      return value.truncate().toString();
-    }
-    return value.toString();
-  }
+  /// `float: none`
+  static const Layout floatNone = Layout('float-none');
 
-  @override
-  Layout create(List<PrefixModifier> modifiers) {
-    return Layout(cssClass, modifiers: modifiers);
-  }
+  /// `clear: left`
+  static const Layout clearLeft = Layout('clear-left');
+
+  /// `clear: right`
+  static const Layout clearRight = Layout('clear-right');
+
+  /// `clear: both`
+  static const Layout clearBoth = Layout('clear-both');
+
+  /// `clear: none`
+  static const Layout clearNone = Layout('clear-none');
+
+  // --- Box Sizing ---
+  /// `box-sizing: border-box`
+  static const Layout boxBorder = Layout('box-border');
+
+  /// `box-sizing: content-box`
+  static const Layout boxContent = Layout('box-content');
 }

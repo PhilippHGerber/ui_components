@@ -52,10 +52,12 @@ abstract class UiComponent extends StatelessComponent {
     this.onChange,
     Map<String, List<UiEventHandler>>? eventHandlers,
     super.key,
-  })  : _userProvidedAttributes = attributes,
-        eventHandlers = eventHandlers ?? const <String, List<UiEventHandler>>{},
-        assert(!(child != null && children != null),
-            'Either child or children must be provided, but not both.');
+  }) : _userProvidedAttributes = attributes,
+       eventHandlers = eventHandlers ?? const <String, List<UiEventHandler>>{},
+       assert(
+         !(child != null && children != null),
+         'Either child or children must be provided, but not both.',
+       );
 
   /// Creates a copy of this component with the given fields replaced with new values.
   ///
@@ -154,9 +156,11 @@ abstract class UiComponent extends StatelessComponent {
   String get combinedClasses {
     // Convert each modifier in the list to its string representation (which includes prefixes)
     final utilityClasses = style?.map((Styling m) => m.toString()).join(' ') ?? '';
-    return <String>[baseClass, utilityClasses, classes ?? '']
-        .where((String c) => c.isNotEmpty)
-        .join(' ');
+    return <String>[
+      baseClass,
+      utilityClasses,
+      classes ?? '',
+    ].where((String c) => c.isNotEmpty).join(' ');
   }
 
   /// Merges two CSS class strings, safely handling null or empty inputs.
@@ -220,8 +224,7 @@ abstract class UiComponent extends StatelessComponent {
           'mouseup' ||
           'mousemove' ||
           'mouseenter' ||
-          'mouseleave' =>
-            rawEvent as MouseEvent,
+          'mouseleave' => rawEvent as MouseEvent,
           'keydown' || 'keyup' || 'keypress' => rawEvent as KeyboardEvent,
           'focus' || 'blur' => rawEvent as Event,
           'submit' => rawEvent as Event,
@@ -288,16 +291,15 @@ abstract class UiComponent extends StatelessComponent {
   }
 
   @override
-  Iterable<Component> build(BuildContext context) sync* {
-    yield DomComponent(
+  Component build(BuildContext context) {
+    return Component.element(
       tag: tag,
       id: id,
       classes: combinedClasses,
       styles: css,
       attributes: componentAttributes,
       events: events,
-      child: child,
-      children: children,
+      children: children ?? [?child],
     );
   }
 }

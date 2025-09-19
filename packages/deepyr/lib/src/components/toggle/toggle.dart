@@ -1,5 +1,5 @@
 import 'package:jaspr/jaspr.dart'
-    show BuildContext, Component, DomComponent, EventCallback, Key, Styles, ValueChanged, kIsWeb;
+    show BuildContext, Component, EventCallback, Key, Styles, ValueChanged, kIsWeb;
 import 'package:universal_web/web.dart' show Event, HTMLInputElement;
 
 import '../../base/style_type.dart';
@@ -26,8 +26,8 @@ import 'toggle_style.dart';
 ///
 /// class _MySettingsState extends State<MySettings> {
 ///   @override
-///   Iterable<Component> build(BuildContext context) sync* {
-///     yield Toggle(
+///   Component build(BuildContext context) {
+///     return Toggle(
 ///       isChecked: _notificationsEnabled,
 ///       onToggle: (newValue) {
 ///         setState(() => _notificationsEnabled = newValue);
@@ -120,7 +120,7 @@ class Toggle extends UiComponent {
   }
 
   @override
-  Iterable<Component> build(BuildContext context) sync* {
+  Component build(BuildContext context) {
     // Start with the standard events from the base class.
     final eventMap = Map<String, EventCallback>.from(events);
 
@@ -136,7 +136,7 @@ class Toggle extends UiComponent {
       };
     }
 
-    yield DomComponent(
+    return Component.element(
       tag: tag,
       id: id,
       classes: combinedClasses,

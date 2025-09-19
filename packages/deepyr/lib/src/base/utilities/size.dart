@@ -5,7 +5,13 @@ import '../ui_prefix_modifier.dart';
 
 /// Utilities for setting the width of an element.
 class Size extends CommonStyle<Size> {
-  const Size(super.cssClass, {super.modifiers}) : super(type: StyleType.sizing);
+  const Size(super.cssClass, {super.modifiers})
+    : super(type: StyleType.sizing); // Smallest viewport width
+
+  /// Creates an aspect ratio utility. `aspect-[{value}]`
+  /// Example: `Size.aspectRatio('video')` -> `aspect-video`
+  /// Example: `Size.aspectRatio('16/9')` -> `aspect-[16/9]`
+  factory Size.aspectRatio(String value) => Size('aspect-[$value]');
 
   // Container-based widths
   // Examples of responsive container layouts
@@ -54,6 +60,7 @@ class Size extends CommonStyle<Size> {
   static const Size w32 = Size('w-32'); // 128px (8rem)
   static const Size w40 = Size('w-40'); // 160px (10rem)
   static const Size w48 = Size('w-48'); // 192px (12rem)
+  static const Size w52 = Size('w-52'); //
   static const Size w56 = Size('w-56'); // 224px (14rem)
   static const Size w64 = Size('w-64'); // 256px (16rem)
   static const Size w72 = Size('w-72'); // 288px (18rem)
@@ -418,7 +425,11 @@ class Size extends CommonStyle<Size> {
   // or creating height constraints based on viewport width
   static const Size maxHDvw = Size('max-h-dvw'); // Dynamic viewport width
   static const Size maxHLvw = Size('max-h-lvw'); // Largest viewport width
-  static const Size maxHSvw = Size('max-h-svw'); // Smallest viewport width
+  static const Size maxHSvw = Size('max-h-svw');
+
+  // You could also add common presets if desired:
+  static const Size aspectVideo = Size('aspect-video'); // 16/9
+  static const Size aspectSquare = Size('aspect-square'); // 1/1
 
   static String _formatValue(double value) {
     if (value == value.truncate()) {

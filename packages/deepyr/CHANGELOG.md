@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.0.5
+
+### Added
+
+- **`Join`** - A smart container to seamlessly group related components like buttons or inputs.
+- **`Tooltip`** - A pop-up that displays information on hover, supporting both simple text and rich content.
+- **`Indicator`** - A container to place a badge or item on the corner of another element.
+- **`Modal`** - A dialog/overlay component for displaying important messages or interactive content.
+- **`Tabs`** - A component for creating tabbed content views, allowing users to switch between different sections.
+- **`Dropdown`** - A key interactive component for creating context menus and action lists, refactored for a more declarative and type-safe API.
+
 ## 0.0.4
 
 ### Added

@@ -3,16 +3,19 @@ description: UI Components Jaspr libraries.
 publish_to: none
 
 environment:
-  sdk: ">=3.6.0 <4.0.0"
+  sdk: ">=3.8.0 <4.0.0"
 
 workspace:
   - packages/deepyr
+  - packages/elevyr
+  - examples/deepyr_example
+  - examples/elevyr_example
 
 dependencies:
-  jaspr: ^0.20.0
+  jaspr: ^0.21.1
 
 # Spezifiziere lint und test in den dev_dependencies damit diese sich alle Projekte teilen können.
 dev_dependencies:
-  jaspr_builder: ^0.20.0
+  jaspr_builder: ^0.21.1
   test: ^1.26.0
-  very_good_analysis: ^9.0.0
+  very_good_analysis: ^10.0.0

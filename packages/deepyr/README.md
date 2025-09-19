@@ -10,6 +10,10 @@ A type-safe Dart implementation of DaisyUI components for Jaspr, providing a flu
 
 This package currently serves as a proof-of-concept for integrating DaisyUI with Jaspr using a type-safe Dart API.
 
+## Documentation and Examples
+
+https://deepyr-doc.web.app/
+
 ## **Design Principles**
 
 - 🎯 **Type Safety** - Catch styling errors at compile time
@@ -26,7 +30,7 @@ This package currently serves as a proof-of-concept for integrating DaisyUI with
 
     ```yaml
     dependencies:
-      deepyr: ^0.0.4
+      deepyr: ^0.1.0
     ```
 
 2. **Setup Tailwind CSS**
@@ -78,13 +82,13 @@ Essential building blocks - No dependencies required
 
 Essential form inputs and controls
 
-- 🔲 **Checkbox** - Boolean selection with custom styling
-- 🔲 **Radio** - Single choice selection from multiple options
-- 🔲 **Toggle** - Modern switch-style boolean input
-- 🔲 **Textarea** - Multi-line text input with resize options
-- 🔲 **Select** - Dropdown selection with custom styling
-- 🔲 **Progress** - Task completion and loading progress bars
-- 🔲 **Link** - Enhanced hyperlinks with hover states
+- ✅ **Checkbox** - Boolean selection with custom styling
+- ✅ **Radio** - Single choice selection from multiple options
+- ✅ **Toggle** - Modern switch-style boolean input
+- ✅ **Textarea** - Multi-line text input with resize options
+- ✅ **Select** - Dropdown selection with custom styling
+- ✅ **Progress** - Task completion and loading progress bars
+- ✅ **Link** - Enhanced hyperlinks with hover states
 
 ---
 
@@ -92,12 +96,12 @@ Essential form inputs and controls
 
 Page structure and user navigation
 
-- 🔲 **Navbar** - Header navigation bars
-- 🔲 **Footer** - Page footers with links and branding
-- 🔲 **Breadcrumbs** - Navigation hierarchy display
-- 🔲 **Hero** - Landing page headers and call-to-action sections
-- 🔲 **Skeleton** - Loading state placeholders
-- 🔲 **Avatar** - User profile images and placeholders
+- ✅ **Navbar** - Header navigation bars
+- ✅ **Footer** - Page footers with links and branding
+- ✅ **Breadcrumbs** - Navigation hierarchy display
+- ✅ **Hero** - Landing page headers and call-to-action sections
+- ✅ **Skeleton** - Loading state placeholders
+- ✅ **Avatar** - User profile images and placeholders
 
 ---
 
@@ -109,7 +113,7 @@ Presenting information and data
 - 🔲 **Stats** - Metrics and statistics display
 - 🔲 **List** - Structured content organization
 - 🔲 **Timeline** - Chronological data visualization
-- 🔲 **Kbd** - Keyboard shortcut display
+- ✅ **Kbd** - Keyboard shortcut display
 - 🔲 **Mask** - Image and content shape transformations
 
 ---
@@ -121,7 +125,7 @@ Enhanced user notifications and status
 - 🔲 **Toast** - Floating notification messages
 - 🔲 **Radial Progress** - Circular progress indicators
 - 🔲 **Status** - Small online/offline indicators
-- 🔲 **Indicator** - Corner notification badges
+- ✅ **Indicator** - Corner notification badges
 - 🔲 **Steps** - Multi-step process visualization
 - 🔲 **Countdown** - Timer and countdown displays
 
@@ -131,12 +135,12 @@ Enhanced user notifications and status
 
 Component organization and grouping
 
-- 🔲 **Join** - Group related components together
+- ✅ **Join** - Group related components together
 - 🔲 **Stack** - Layer elements on top of each other
-- 🔲 **Collapse** - Expandable content sections
-- 🔲 **Swap** - Toggle between two content states
-- 🔲 **Fieldset** - Form section grouping
-- 🔲 **Label** - Enhanced form field labeling
+- ✅ **Collapse** - Expandable content sections
+- ✅ **Swap** - Toggle between two content states
+- ✅ **Fieldset** - Form section grouping
+- ✅ **Label** - Enhanced form field labeling
 
 ---
 
@@ -144,11 +148,11 @@ Component organization and grouping
 
 Complex user interactions
 
-- 🔲 **Modal** - Dialog boxes and overlays
-- 🔲 **Dropdown** - Context menus and action lists
+- ✅ **Modal** - Dialog boxes and overlays
+- ✅ **Dropdown** - Context menus and action lists
 - 🔲 **Drawer** - Sliding side navigation
-- 🔲 **Menu** - Navigation and context menus
-- 🔲 **Tabs** - Tabbed content interfaces
+- ✅ **Menu** - Navigation and context menus
+- ✅ **Tabs** - Tabbed content interfaces
 - 🔲 **Carousel** - Content sliders and galleries
 
 ---
@@ -157,14 +161,14 @@ Complex user interactions
 
 Specialized inputs and complex patterns
 
-- 🔲 **File Input** - File upload interfaces
+- ✅ **File Input** - File upload interfaces
 - 🔲 **Range** - Slider value selection
 - 🔲 **Rating** - Star ratings and feedback
 - 🔲 **Filter** - Content filtering controls
-- 🔲 **Pagination** - Page navigation controls
+- ✅ **Pagination** - Page navigation controls
 - 🔲 **Theme Controller** - Dynamic theme switching
-- 🔲 **Validator** - Form validation with visual feedback
-- 🔲 **Diff** - Side-by-side content comparison
+- ✅ **Validator** - Form validation with visual feedback
+- ✅ **Diff** - Side-by-side content comparison
 
 ---
 
@@ -178,5 +182,3 @@ Presentation and demonstration components
 - 🔲 **Mockup Code** - Code block presentation
 - 🔲 **Chat** - Messaging interface components
 - 🔲 **Calendar** - Date selection integration
-
----

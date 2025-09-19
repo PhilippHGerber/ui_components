@@ -312,7 +312,7 @@ class CardHelper {
     }
 
     final bodyChildren = <Component>[
-      CardTitle([Text(titleText)], id: titleId),
+      CardTitle([Component.text(titleText)], id: titleId),
       ...content,
     ];
     if (actions != null && actions.isNotEmpty) {

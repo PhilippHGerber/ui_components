@@ -41,7 +41,7 @@ class Icon extends UiComponent {
     super.key,
   }) : super(
           // The icon name is the direct text child of the span
-          [Text(name)],
+          [Component.text(name)],
           style: style,
         );
 

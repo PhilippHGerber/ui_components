@@ -186,7 +186,7 @@ class BadgeHelper {
     Key? key,
   }) {
     return Badge(
-      <Component>[icon, Text(text)],
+      <Component>[icon, Component.text(text)],
       style: styles,
       classes: classes,
       ariaLabel: ariaLabel,
@@ -203,7 +203,7 @@ class BadgeHelper {
     Key? key,
   }) {
     return Badge(
-      <Component>[Text(count)],
+      <Component>[Component.text(count)],
       style: styles,
       classes: classes,
       ariaLabel: ariaLabel ?? 'Notification count: $count',

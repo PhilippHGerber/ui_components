@@ -5,23 +5,23 @@ import 'package:jaspr/server.dart';
 import 'jaspr_options.dart';
 
 void main() {
-  Jaspr.initializeApp(
-    options: defaultJasprOptions,
-  );
+  Jaspr.initializeApp(options: defaultJasprOptions);
 
-  runApp(Document(
-    title: 'Deepyr Example',
-    head: <Component>[link(href: 'styles.css', rel: 'stylesheet')],
-    body: const Example(),
-  ));
+  runApp(
+    Document(
+      title: 'Deepyr Example',
+      head: <Component>[link(href: 'styles.css', rel: 'stylesheet')],
+      body: const Example(),
+    ),
+  );
 }
 
 class Example extends StatelessComponent {
   const Example({super.key});
 
   @override
-  Iterable<Component> build(BuildContext context) sync* {
-    yield div([
+  Component build(BuildContext context) {
+    return div([
       Button([text('Neutral')], style: [Button.neutral]),
       Button([text('Primary')], style: [Button.primary]),
       Button([text('Secondary')], style: [Button.secondary]),

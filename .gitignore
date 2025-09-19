@@ -115,3 +115,4 @@ jspm_packages/
 # Built Visual Studio Code Extensions
 *.vsix
 
+**/.firebase/*.cache

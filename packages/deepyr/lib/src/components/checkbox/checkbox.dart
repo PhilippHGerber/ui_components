@@ -1,5 +1,5 @@
 import 'package:jaspr/jaspr.dart'
-    show BuildContext, Component, DomComponent, EventCallback, Key, Styles, ValueChanged, kIsWeb;
+    show BuildContext, Component, EventCallback, Key, Styles, ValueChanged, kIsWeb;
 import 'package:universal_web/web.dart' show Event, HTMLInputElement;
 
 import '../../base/style_type.dart';
@@ -27,8 +27,8 @@ import 'checkbox_style.dart';
 ///
 /// class _MyFormState extends State<MyForm> {
 ///   @override
-///   Iterable<Component> build(BuildContext context) sync* {
-///     yield Checkbox(
+///   Component build(BuildContext context) {
+///     return Checkbox(
 ///       isChecked: _agreedToTerms,
 ///       onToggle: (newValue) {
 ///         setState(() => _agreedToTerms = newValue);
@@ -115,7 +115,7 @@ class Checkbox extends UiComponent {
   /// This override creates a specific event handler for the checkbox's boolean `checked` property,
   /// ensuring it only runs on the client and uses safe type casting.
   @override
-  Iterable<Component> build(BuildContext context) sync* {
+  Component build(BuildContext context) {
     // Start with the standard events from the base class.
     final eventMap = Map<String, EventCallback>.from(events);
 
@@ -131,7 +131,7 @@ class Checkbox extends UiComponent {
       };
     }
 
-    yield DomComponent(
+    return Component.element(
       tag: tag,
       id: id,
       classes: combinedClasses,

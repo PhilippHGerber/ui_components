@@ -1,5 +1,5 @@
 import 'package:jaspr/jaspr.dart'
-    show BuildContext, Component, DomComponent, EventCallback, Key, Styles, ValueChanged, kIsWeb;
+    show BuildContext, Component, EventCallback, Key, Styles, ValueChanged, kIsWeb;
 import 'package:universal_web/web.dart' show Event, HTMLInputElement;
 
 import '../../base/style_type.dart';
@@ -27,9 +27,9 @@ import 'radio_style.dart';
 ///   Flavor _selectedFlavor = Flavor.vanilla;
 ///
 ///   @override
-///   Iterable<Component> build(BuildContext context) sync* {
+///   Component build(BuildContext context) {
 ///     for (final flavor in Flavor.values) {
-///       yield Radio<Flavor>(
+///       return Radio<Flavor>(
 ///         value: flavor,
 ///         groupValue: _selectedFlavor,
 ///         name: 'flavor-group',
@@ -137,7 +137,7 @@ class Radio<T> extends UiComponent {
   }
 
   @override
-  Iterable<Component> build(BuildContext context) sync* {
+  Component build(BuildContext context) {
     final eventMap = Map<String, EventCallback>.from(events);
 
     // The 'change' event fires when a radio button is selected.
@@ -153,7 +153,7 @@ class Radio<T> extends UiComponent {
       }
     };
 
-    yield DomComponent(
+    return Component.element(
       tag: tag,
       id: id,
       classes: combinedClasses,
