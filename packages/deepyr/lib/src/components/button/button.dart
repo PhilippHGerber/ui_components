@@ -1,4 +1,4 @@
-import 'package:jaspr/jaspr.dart' show Key, Styles;
+import 'package:jaspr/jaspr.dart';
 
 import '../../base/style_type.dart';
 import '../../base/ui_component.dart';
@@ -48,6 +48,7 @@ class Button extends UiComponent {
     super.tag = 'button',
     this.htmlType,
     this.role,
+    this.isNativeSubmit = false,
     List<ButtonStyling>? style,
     super.id,
     super.classes,
@@ -64,6 +65,11 @@ class Button extends UiComponent {
 
   /// The ARIA role for the component.
   final String? role;
+
+  /// If true, this button will render as a primitive element to allow native
+  /// browser form submission behavior, bypassing Jaspr's `preventDefault`.
+  /// This is essential for closing `<dialog>` elements with `<form method="dialog">`.
+  final bool isNativeSubmit;
 
   @override
   String get baseClass => 'btn';
@@ -94,7 +100,8 @@ class Button extends UiComponent {
     //    - If `ButtonStyleModifier.disabled` is present, set HTML 'disabled' attribute
     //      and ARIA attributes for class-based disabling.
     final isDisabledByAttribute = userProvidedAttributes.containsKey('disabled');
-    final isDisabledByStyle = style?.any(
+    final isDisabledByStyle =
+        style?.any(
           (styling) => styling is ButtonStyling && styling.cssClass == Button.disabled.cssClass,
         ) ??
         false;
@@ -121,12 +128,14 @@ class Button extends UiComponent {
     Styles? css,
     Map<String, String>? attributes,
     Key? key,
+    bool? isNativeSubmit,
   }) {
     return Button(
-      children, // or this.child
+      children,
       tag: tag,
       htmlType: htmlType,
       role: role,
+      isNativeSubmit: isNativeSubmit ?? this.isNativeSubmit,
       style: style as List<ButtonStyling>?,
       onClick: onClick,
       id: id ?? this.id,
@@ -137,6 +146,31 @@ class Button extends UiComponent {
       child: child,
     );
   }
+
+  @override
+  Component build(BuildContext context) {
+    // If this is a native submit button, render a primitive element
+    // and completely bypass the standard UiComponent event wiring.
+    if (isNativeSubmit) {
+      return Component.element(
+        tag: tag,
+        id: id,
+        classes: combinedClasses,
+        styles: this.css,
+        // Ensure the type is correctly set to 'submit' for dialog closing.
+        attributes: {
+          ...componentAttributes,
+          'type': (htmlType ?? ButtonHtmlType.submit).value,
+        },
+        // CRITICAL: Do NOT pass the `events` map.
+        children: children ?? [?child],
+      );
+    }
+
+    // For all other cases, use the default UiComponent build behavior.
+    return super.build(context);
+  }
+
   // --- Static Button Modifiers ---
 
   /// Neutral button style. `btn-neutral`
