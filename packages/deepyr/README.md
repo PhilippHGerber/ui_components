@@ -10,9 +10,11 @@ A type-safe Dart implementation of DaisyUI components for Jaspr, providing a flu
 
 This package currently serves as a proof-of-concept for integrating DaisyUI with Jaspr using a type-safe Dart API.
 
-## Documentation and Examples
+## 🚀 Live Demo & Documentation
 
-https://deepyr-doc.web.app/
+Explore all available components and see them in action on the official documentation site:
+
+**[https://deepyr-doc.web.app/](https://deepyr-doc.web.app/)**
 
 ## **Design Principles**
 
@@ -30,7 +32,7 @@ https://deepyr-doc.web.app/
 
     ```yaml
     dependencies:
-      deepyr: ^0.1.0
+      deepyr: ^0.1.1
     ```
 
 2. **Setup Tailwind CSS**

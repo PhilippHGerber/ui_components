@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.1.1
+
+### Fixed
+
+- **`Modal` Closing on Safari:** Fixed a critical cross-browser issue where `Modal` components using the native `<dialog>` tag could not be closed by a `Button` inside a `<form method="dialog">`. This was most noticeable on Safari. The issue was caused by Jaspr's default event handling (`preventDefault()`) interfering with the native browser behavior required to close the dialog.
+
+### Added
+
+- **`Button.isNativeSubmit` Property:** To solve the modal issue, a new `isNativeSubmit` boolean property was added to the `Button` component. When set to `true`, the `Button` renders as a primitive element without Jaspr's event listeners, allowing its native form submission behavior to proceed. This is now the recommended way to create close buttons for dialog-based modals.
+
 ## 0.1.0
 
 ### Added
