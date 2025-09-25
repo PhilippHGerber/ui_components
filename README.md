@@ -11,11 +11,7 @@ Each package is designed to be modular and reusable in your Jaspr web projects.
 ```bash
 ui-components/
 ├── packages/
-│   ├── deepyr/
-│   └── elevyr/
-├── examples/
-│   ├── deepyr_example/
-│   └── elevyr_example/
+│   └── deepyr/
 └── README.md
 ```
 
@@ -26,22 +22,9 @@ ui-components/
 | Package  | Description                                  |
 | -------- | -------------------------------------------- |
 | `deepyr` | Shared core utilities and base functionality |
-| `elevyr` | Reusable UI components for Jaspr             |
 
 Deepyr components are one-to-one realisation of the DaisyUI components with all
 the advantages of Dart.
-
-Extended components for easier handling and with practical combinations will be implemented
-later in the Elevyr package
-
----
-
-## Examples
-
-| Example          | Description             |
-| ---------------- | ----------------------- |
-| `deepyr_example` | Example usage of deepyr |
-| `elevyr_example` | Example usage of elevyr |
 
 ---
 
@@ -75,13 +58,6 @@ Install Jaspr CLI:
 
 ```bash
 dart pub global activate jaspr_cli
-```
-
-Install Tailwind CSS
-
-```bash
-# see https://tailwindcss.com/blog/standalone-cli
-
 ```
 
 ---
