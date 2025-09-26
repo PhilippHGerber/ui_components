@@ -9,10 +9,10 @@ workspace:
   - packages/deepyr
 
 dependencies:
-  jaspr: ^0.21.1
+  jaspr: ^0.21.3
 
 # Spezifiziere lint und test in den dev_dependencies damit diese sich alle Projekte teilen können.
 dev_dependencies:
-  jaspr_builder: ^0.21.1
-  test: ^1.26.0
+  jaspr_builder: ^0.21.3
+  test: ^1.26.3
   very_good_analysis: ^10.0.0
