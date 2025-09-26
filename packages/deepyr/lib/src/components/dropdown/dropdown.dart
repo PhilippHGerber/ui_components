@@ -3,6 +3,7 @@ import 'package:jaspr/jaspr.dart';
 import '../../base/style_type.dart';
 import '../../base/ui_component.dart';
 import '../../base/ui_component_attributes.dart';
+import '../button/button.dart' show Button;
 import 'dropdown_content_style.dart';
 import 'dropdown_style.dart';
 
@@ -93,19 +94,19 @@ class Dropdown extends UiComponent {
   Component build(BuildContext context) {
     final List<Component> effectiveChildren;
 
+    // --- Method 1: <details> and <summary> ---
+    // This method is highly accessible and works consistently across browsers.
+    // We intelligently transform the provided `trigger` into a `<summary>` element,
+    // preserving all its styling and attributes for a seamless developer experience.
     if (method == DropdownMethod.details) {
-      // For the `details` method, we intelligently construct a <summary> element
-      // that inherits the visual properties of the provided trigger.
       Component summaryTrigger;
       if (trigger is UiComponent) {
-        // If the trigger is a deepyr component, we can extract its classes,
-        // children, and other properties to create a perfectly styled summary.
+        // If the trigger is a deepyr component, we can perfectly replicate its
+        // appearance as a <summary> element by inheriting its properties.
         final triggerComponent = trigger as UiComponent;
         summaryTrigger = Component.element(
           tag: 'summary',
-          // Inherit all visual classes from the trigger button.
           classes: triggerComponent.combinedClasses,
-          // Inherit other DOM properties.
           id: triggerComponent.id,
           styles: triggerComponent.css,
           attributes: triggerComponent.componentAttributes,
@@ -113,15 +114,54 @@ class Dropdown extends UiComponent {
           children: triggerComponent.children ?? [?triggerComponent.child],
         );
       } else {
-        // If the trigger is a primitive (like `text()`), wrap it in a basic summary.
+        // For primitive components (like text()), wrap them in a basic summary.
         summaryTrigger = summary([trigger]);
       }
       effectiveChildren = [summaryTrigger, content];
-    } else {
-      // For the `focus` method, the trigger and content are direct siblings.
-      effectiveChildren = [trigger, content];
+    }
+    // --- Method 2: CSS :focus ---
+    // This method is used for hover effects and animations. It requires a
+    // focusable trigger to function correctly.
+    else {
+      var effectiveTrigger = trigger;
+
+      // ** CRITICAL SAFARI WORKAROUND **
+      // Safari has a long-standing CSS bug where a native <button> element does not
+      // correctly trigger :focus-within selectors on its parent, which is what
+      // DaisyUI uses for positioning the dropdown content.
+      //
+      // To ensure cross-browser compatibility, we detect if the trigger is a
+      // deepyr `Button` that would render a `<button>` tag. If so, we transform
+      // it into an accessible, focusable `<div>` that behaves identically but
+      // avoids the Safari bug.
+      if (trigger is Button && (trigger as Button).tag == 'button') {
+        final button = trigger as Button;
+        final userAttributes = button.userProvidedAttributes;
+
+        effectiveTrigger = Component.element(
+          tag: 'div',
+          id: button.id,
+          classes: button.combinedClasses,
+          styles: button.css,
+          events: button.events,
+          // Preserve user attributes, only adding defaults if not provided.
+          // This allows developers to override the role (e.g., to 'menuitem')
+          // or tabindex if they have a specific accessibility requirement.
+          attributes: {
+            ...userAttributes,
+            'tabindex': userAttributes['tabindex'] ?? '0',
+            'role': userAttributes['role'] ?? 'button',
+          },
+          children: button.children ?? [?button.child],
+        );
+      }
+      // If the trigger is not a native <button>-based deepyr Button (e.g., it's
+      // already a styled Container or an anchor tag), it is rendered as-is.
+
+      effectiveChildren = [effectiveTrigger, content];
     }
 
+    // Render the final dropdown container with the appropriate children.
     return Component.element(
       tag: tag,
       id: id,
