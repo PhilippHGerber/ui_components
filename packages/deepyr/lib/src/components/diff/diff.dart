@@ -1,102 +1,206 @@
-import 'package:jaspr/jaspr.dart' show Key, Styles;
+import 'package:jaspr/jaspr.dart';
+import 'package:universal_web/js_interop.dart';
+import 'package:universal_web/web.dart' show Event, HTMLElement, HTMLInputElement, document;
 
-import '../../base/styling.dart' show Styling;
 import '../../base/ui_component.dart';
 import '../../base/ui_component_attributes.dart';
+import '../../elements/container.dart';
 import 'diff_style.dart';
 
-/// A component for visually comparing two pieces of content ("before" and "after")
-/// side-by-side, typically using a draggable resizer.
+// ############################################################################
+// # 1. The Internal, Client-Side State Controller
+// ############################################################################
+
+/// An internal, client-side component responsible for making the `Diff` interactive.
 ///
-/// The `modifiers` list accepts instances of [DiffStyling] (the interface),
-/// which includes specific diff styles like [Diff.roundedField]
-/// and general utility classes (e.g., `Sizing.aspectRatio`).
-class Diff extends UiComponent {
-  /// Creates a Diff component.
-  ///
-  /// - [item1]: The [DiffItem1] component representing the "before" state.
-  /// - [item2]: The [DiffItem2] component representing the "after" state.
-  /// - [tag]: The HTML tag for the root element, defaults to 'div'. Can be set to 'figure'.
-  /// - [focusable]: If true, sets `tabindex="0"` on the main diff container, making it focusable.
-  /// - [style]: A list of [DiffStyling] (the interface) instances.
-  /// - Other parameters are inherited from [UiComponent].
-  Diff({
-    required this.item1,
-    required this.item2,
-    super.tag = 'div',
-    this.focusable = false,
-    List<DiffStyling>? style,
-    super.id,
-    super.classes,
-    super.css,
-    super.attributes,
-    super.key,
-  }) : super([item1, item2, const DiffResizer()], style: style);
+/// **Note for developers:** This component is an internal implementation detail.
+/// You should always use the public `Diff` component in your application.
+///
+/// This component's name must be public (no underscore) so that Jaspr's build
+/// system can reference it when generating client-side hydration code.
+@client
+class DiffController extends StatefulComponent {
+  const DiffController({
+    required this.containerId,
+    required this.initialValue,
+  });
 
-  /// The "before" item in the comparison.
-  final DiffItem1 item1;
+  /// The unique ID of the parent `Diff` container, used to find the DOM elements.
+  final String containerId;
 
-  /// The "after" item in the comparison.
-  final DiffItem2 item2;
-
-  /// If true, makes the main diff container focusable using `tabindex="0"`.
-  final bool focusable;
+  /// The initial value of the slider.
+  final double initialValue;
 
   @override
-  String get baseClass => 'diff';
+  State<DiffController> createState() => _DiffControllerState();
+}
 
+/// The state for the [DiffController], which handles all browser-side logic.
+/// This class can remain private as it's only used within this library file.
+class _DiffControllerState extends State<DiffController> {
   @override
-  void configureAttributes(UiComponentAttributes attributes) {
-    super.configureAttributes(attributes);
-    if (focusable) {
-      attributes.add('tabindex', '0');
+  void initState() {
+    super.initState();
+
+    if (kIsWeb) {
+      Future.microtask(() {
+        final container = document.getElementById(component.containerId) as HTMLElement?;
+        if (container == null) {
+          print(
+            "Warning: Diff component container with ID '${component.containerId}' not found in the DOM.",
+          );
+          return;
+        }
+
+        final slider = container.querySelector('input[type=range]') as HTMLInputElement?;
+
+        if (slider != null) {
+          container.style.setProperty('--p', '${component.initialValue}%');
+
+          final eventListener = (Event event) {
+            container.style.setProperty('--p', '${slider.value}%');
+          }.toJS;
+
+          slider.addEventListener('input', eventListener);
+        }
+      });
     }
-    // ARIA attributes for the diff component itself might relate to it being a composite widget,
-    // but this depends heavily on JavaScript-driven interactivity for the resizer.
-    // For a CSS-only version, `role="group"` with a label might be suitable.
-    // attributes.addRole('group');
-    // attributes.addAria('label', 'Image comparison tool'); // User should provide this if needed
   }
 
+  /// This component renders no visible output itself; its purpose is purely
+  /// to attach the interactive logic to the existing DOM structure.
   @override
-  Diff copyWith({
-    String? id,
-    String? classes,
-    Styles? css,
-    Map<String, String>? attributes,
-    Key? key,
-  }) {
-    return Diff(
-      item1: item1,
-      item2: item2,
+  Component build(BuildContext context) {
+    return const Component.fragment([]);
+  }
+}
+
+// ############################################################################
+// # 2. The Public-Facing, Server-Rendered Component
+// ############################################################################
+
+/// A component for visually comparing two pieces of content ("before" and "after")
+/// side-by-side using a draggable resizer.
+///
+/// This component is a "smart container" that expects a [DiffItem1] and a
+/// [DiffItem2] as its direct children. It renders the complete visual structure
+/// on the server and then embeds the client-side `DiffController`
+/// to handle the interactivity in the browser.
+///
+/// Correct Usage:
+/// ```dart
+/// Diff(
+///   [
+///     DiffItem1([ /* Your "before" content here */ ]),
+///     DiffItem2([ /* Your "after" content here */ ]),
+///   ],
+///   ariaLabel: 'Before and after code comparison',
+/// )
+/// ```
+class Diff extends StatelessComponent {
+  /// Creates an interactive Diff component.
+  ///
+  /// - [children]: A list that **must** contain one [DiffItem1] and one [DiffItem2].
+  /// - [tag]: The HTML tag for the root element, defaults to 'div'.
+  /// - [initialValue]: The initial position of the slider, from 0 to 100. Defaults to 50.
+  /// - [style]: A list of [DiffStyling] instances to apply to the main container.
+  /// - [ariaLabel]: An accessible name for the comparison group. Recommended for accessibility.
+  /// - Other parameters like `id`, `classes`, `css`, and `attributes` are
+  ///   applied to the root element.
+  const Diff(
+    this.children, {
+    this.tag = 'div',
+    this.initialValue = 50.0,
+    this.style,
+    this.id,
+    this.classes,
+    this.css,
+    this.attributes,
+    this.ariaLabel,
+    super.key,
+  });
+
+  final List<Component> children;
+  final String tag;
+  final double initialValue;
+  final List<DiffStyling>? style;
+  final String? id;
+  final String? classes;
+  final Styles? css;
+  final Map<String, String>? attributes;
+  final String? ariaLabel;
+
+  /// A constant string of utility classes for the invisible range slider.
+  static const _sliderClasses =
+      'absolute top-0 left-0 h-full w-full appearance-none bg-transparent opacity-0 [&::-webkit-slider-thumb]:pointer-events-auto [&::-moz-range-thumb]:pointer-events-auto [&::-ms-thumb]:pointer-events-auto';
+
+  @override
+  Component build(BuildContext context) {
+    final item1 = children.whereType<DiffItem1>().firstOrNull;
+    final item2 = children.whereType<DiffItem2>().firstOrNull;
+
+    assert(
+      item1 != null && item2 != null,
+      'A Diff component must have exactly one DiffItem1 and one DiffItem2 as direct children.',
+    );
+
+    final containerId = id ?? 'deepyr-diff-${key.hashCode}';
+
+    final userProvidedAttributes = attributes ?? {};
+    final builder = UiComponentAttributes(userProvidedAttributes);
+
+    builder.add('role', userProvidedAttributes['role'] ?? 'group');
+    if (ariaLabel != null) {
+      builder.addAria('label', ariaLabel!);
+    }
+
+    final utilityClasses = style?.map((s) => s.toString()).join(' ') ?? '';
+    final combinedClasses = [
+      'diff',
+      utilityClasses,
+      classes ?? '',
+    ].where((c) => c.isNotEmpty).join(' ');
+
+    return Container(
       tag: tag,
-      focusable: focusable,
-      style: style as List<DiffStyling>?,
-      id: id ?? this.id,
-      classes: mergeClasses(this.classes, classes),
-      css: css ?? this.css,
-      attributes: attributes ?? userProvidedAttributes,
-      key: key ?? this.key,
+      id: containerId,
+      classes: combinedClasses,
+      css: css,
+      attributes: builder.build(),
+      [
+        item1!,
+        item2!,
+        const DiffResizer(),
+        input(
+          type: InputType.range,
+          value: initialValue.clamp(0.0, 100.0).toString(),
+          classes: _sliderClasses,
+          attributes: {
+            'aria-label': 'Comparison slider',
+            'min': '0',
+            'max': '100',
+          },
+        ),
+        // Embed the public, client-side controller.
+        DiffController(
+          containerId: containerId,
+          initialValue: initialValue,
+        ),
+      ],
     );
   }
 }
 
 /// Represents the first item (typically "before" or "old") in a [Diff] comparison.
-/// It renders as an HTML `<div>` with the 'diff-item-1' class.
 class DiffItem1 extends UiComponent {
   /// Creates a DiffItem1 component.
   ///
   /// - [children] or [child]: The content of this diff item.
   /// - [tag]: The HTML tag, defaults to 'div'.
-  /// - [role]: Optional ARIA role for the item (e.g., "img" if it contains an image).
-  /// - [focusable]: If true, sets `tabindex="0"` on this item, making it focusable.
-  /// - [modifiers]: General [Styling] instances for styling.
   /// - Other parameters from [UiComponent].
   const DiffItem1(
     super.children, {
     super.tag = 'div',
-    this.role,
-    this.focusable = false,
     super.style,
     super.id,
     super.classes,
@@ -104,24 +208,10 @@ class DiffItem1 extends UiComponent {
     super.attributes,
     super.child,
     super.key,
-  });
-
-  final String? role;
-  final bool focusable;
+  }) : super();
 
   @override
   String get baseClass => 'diff-item-1';
-
-  @override
-  void configureAttributes(UiComponentAttributes attributes) {
-    super.configureAttributes(attributes);
-    if (role != null) {
-      attributes.addRole(role!);
-    }
-    if (focusable) {
-      attributes.add('tabindex', '0');
-    }
-  }
 
   @override
   DiffItem1 copyWith({
@@ -134,8 +224,6 @@ class DiffItem1 extends UiComponent {
     return DiffItem1(
       children,
       tag: tag,
-      role: role,
-      focusable: focusable,
       style: style,
       id: id ?? this.id,
       classes: mergeClasses(this.classes, classes),
@@ -148,19 +236,15 @@ class DiffItem1 extends UiComponent {
 }
 
 /// Represents the second item (typically "after" or "new") in a [Diff] comparison.
-/// It renders as an HTML `<div>` with the 'diff-item-2' class.
 class DiffItem2 extends UiComponent {
   /// Creates a DiffItem2 component.
   ///
   /// - [children] or [child]: The content of this diff item.
   /// - [tag]: The HTML tag, defaults to 'div'.
-  /// - [role]: Optional ARIA role for the item (e.g., "img" if it contains an image).
-  /// - [modifiers]: General [Styling] instances for styling.
   /// - Other parameters from [UiComponent].
   const DiffItem2(
     super.children, {
     super.tag = 'div',
-    this.role,
     super.style,
     super.id,
     super.classes,
@@ -168,20 +252,10 @@ class DiffItem2 extends UiComponent {
     super.attributes,
     super.child,
     super.key,
-  });
-
-  final String? role;
+  }) : super();
 
   @override
   String get baseClass => 'diff-item-2';
-
-  @override
-  void configureAttributes(UiComponentAttributes attributes) {
-    super.configureAttributes(attributes);
-    if (role != null) {
-      attributes.addRole(role!);
-    }
-  }
 
   @override
   DiffItem2 copyWith({
@@ -194,7 +268,6 @@ class DiffItem2 extends UiComponent {
     return DiffItem2(
       children,
       tag: tag,
-      role: role,
       style: style,
       id: id ?? this.id,
       classes: mergeClasses(this.classes, classes),
@@ -207,7 +280,6 @@ class DiffItem2 extends UiComponent {
 }
 
 /// Represents the draggable resizer control within a [Diff] component.
-/// It renders as an HTML `<div>` with the 'diff-resizer' class.
 class DiffResizer extends UiComponent {
   /// Creates a DiffResizer component.
   /// This component typically does not have children.
@@ -223,18 +295,6 @@ class DiffResizer extends UiComponent {
 
   @override
   String get baseClass => 'diff-resizer';
-
-  @override
-  void configureAttributes(UiComponentAttributes attributes) {
-    super.configureAttributes(attributes);
-    // For accessibility, if the resizer is made keyboard operable (usually via JS):
-    // attributes.addRole('slider'); // Or 'separator' with more ARIA
-    // attributes.addAria('orientation', 'vertical'); // Or 'horizontal'
-    // attributes.addAria('valuenow', '50'); // Example, would need state
-    // attributes.addAria('valuemin', '0');
-    // attributes.addAria('valuemax', '100');
-    // attributes.add('tabindex', '0'); // Make it focusable
-  }
 
   @override
   DiffResizer copyWith({
