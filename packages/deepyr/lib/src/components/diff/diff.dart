@@ -1,203 +1,135 @@
 import 'package:jaspr/jaspr.dart';
-import 'package:universal_web/js_interop.dart';
-import 'package:universal_web/web.dart' show Event, HTMLElement, HTMLInputElement, document;
 
 import '../../base/ui_component.dart';
 import '../../base/ui_component_attributes.dart';
-import '../../elements/container.dart';
 import 'diff_style.dart';
 
-// ############################################################################
-// # 1. The Internal, Client-Side State Controller
-// ############################################################################
-
-/// An internal, client-side component responsible for making the `Diff` interactive.
-///
-/// **Note for developers:** This component is an internal implementation detail.
-/// You should always use the public `Diff` component in your application.
-///
-/// This component's name must be public (no underscore) so that Jaspr's build
-/// system can reference it when generating client-side hydration code.
-@client
-class DiffController extends StatefulComponent {
-  const DiffController({
-    required this.containerId,
-    required this.initialValue,
-  });
-
-  /// The unique ID of the parent `Diff` container, used to find the DOM elements.
-  final String containerId;
-
-  /// The initial value of the slider.
-  final double initialValue;
-
-  @override
-  State<DiffController> createState() => _DiffControllerState();
-}
-
-/// The state for the [DiffController], which handles all browser-side logic.
-/// This class can remain private as it's only used within this library file.
-class _DiffControllerState extends State<DiffController> {
-  @override
-  void initState() {
-    super.initState();
-
-    if (kIsWeb) {
-      Future.microtask(() {
-        final container = document.getElementById(component.containerId) as HTMLElement?;
-        if (container == null) {
-          print(
-            "Warning: Diff component container with ID '${component.containerId}' not found in the DOM.",
-          );
-          return;
-        }
-
-        final slider = container.querySelector('input[type=range]') as HTMLInputElement?;
-
-        if (slider != null) {
-          container.style.setProperty('--p', '${component.initialValue}%');
-
-          final eventListener = (Event event) {
-            container.style.setProperty('--p', '${slider.value}%');
-          }.toJS;
-
-          slider.addEventListener('input', eventListener);
-        }
-      });
-    }
-  }
-
-  /// This component renders no visible output itself; its purpose is purely
-  /// to attach the interactive logic to the existing DOM structure.
-  @override
-  Component build(BuildContext context) {
-    return const Component.fragment([]);
-  }
-}
-
-// ############################################################################
-// # 2. The Public-Facing, Server-Rendered Component
-// ############################################################################
-
 /// A component for visually comparing two pieces of content ("before" and "after")
-/// side-by-side using a draggable resizer.
+/// side-by-side.
 ///
-/// This component is a "smart container" that expects a [DiffItem1] and a
-/// [DiffItem2] as its direct children. It renders the complete visual structure
-/// on the server and then embeds the client-side `DiffController`
-/// to handle the interactivity in the browser.
+/// This component is a "smart container" that expects exactly one [DiffItem1]
+/// and one [DiffItem2] as its direct children. It renders a complete visual
+/// structure that is interactive out of the box using pure CSS.
 ///
-/// Correct Usage:
+/// ### Interaction Model:
+/// - **On Desktop:** A draggable vertical resizer allows for smooth comparison.
+/// - **On Mobile (iOS/Touch):** Since CSS `resize` is not supported, users can
+///   **tap** on either the left or right side to expand it, providing a robust
+///   touch-friendly fallback.
+///
+/// This implementation is a stateless, declarative component that relies entirely
+/// on CSS for its interactivity, ensuring maximum performance and cross-browser
+/// compatibility without any client-side JavaScript.
+///
+/// ### Correct Usage:
 /// ```dart
 /// Diff(
 ///   [
-///     DiffItem1([ /* Your "before" content here */ ]),
-///     DiffItem2([ /* Your "after" content here */ ]),
+///     DiffItem1([
+///       // Your "before" content, e.g., an image or text block.
+///       img(src: 'before.jpg', alt: 'Before'),
+///     ]),
+///     DiffItem2([
+///       // Your "after" content.
+///       img(src: 'after.jpg', alt: 'After'),
+///     ]),
 ///   ],
-///   ariaLabel: 'Before and after code comparison',
+///   ariaLabel: 'Before and after comparison of the new logo',
 /// )
 /// ```
-class Diff extends StatelessComponent {
+class Diff extends UiComponent {
   /// Creates an interactive Diff component.
   ///
   /// - [children]: A list that **must** contain one [DiffItem1] and one [DiffItem2].
   /// - [tag]: The HTML tag for the root element, defaults to 'div'.
-  /// - [initialValue]: The initial position of the slider, from 0 to 100. Defaults to 50.
   /// - [style]: A list of [DiffStyling] instances to apply to the main container.
   /// - [ariaLabel]: An accessible name for the comparison group. Recommended for accessibility.
-  /// - Other parameters like `id`, `classes`, `css`, and `attributes` are
-  ///   applied to the root element.
+  /// - Other parameters like `id`, `classes`, and `css` are applied to the root element.
   const Diff(
-    this.children, {
-    this.tag = 'div',
-    this.initialValue = 50.0,
-    this.style,
-    this.id,
-    this.classes,
-    this.css,
-    this.attributes,
+    super.children, {
+    super.tag = 'div',
+    List<DiffStyling>? style,
+    super.id,
+    super.classes,
+    super.css,
+    super.attributes,
     this.ariaLabel,
     super.key,
-  });
+  }) : super(style: style);
 
-  final List<Component> children;
-  final String tag;
-  final double initialValue;
-  final List<DiffStyling>? style;
-  final String? id;
-  final String? classes;
-  final Styles? css;
-  final Map<String, String>? attributes;
+  /// An accessible name for the comparison region, highly recommended for screen readers.
   final String? ariaLabel;
 
-  /// A constant string of utility classes for the invisible range slider.
-  static const _sliderClasses =
-      'absolute top-0 left-0 h-full w-full appearance-none bg-transparent opacity-0 [&::-webkit-slider-thumb]:pointer-events-auto [&::-moz-range-thumb]:pointer-events-auto [&::-ms-thumb]:pointer-events-auto';
+  @override
+  String get baseClass => 'diff';
+
+  @override
+  void configureAttributes(UiComponentAttributes attributes) {
+    super.configureAttributes(attributes);
+    // Use the 'group' role to semantically group the related items for accessibility.
+    attributes.addRole(userProvidedAttributes['role'] ?? 'group');
+    if (ariaLabel != null) {
+      attributes.addAria('label', ariaLabel!);
+    }
+  }
+
+  @override
+  Diff copyWith({
+    String? id,
+    String? classes,
+    Styles? css,
+    Map<String, String>? attributes,
+    Key? key,
+  }) {
+    return Diff(
+      children,
+      tag: tag,
+      style: style as List<DiffStyling>?,
+      id: id ?? this.id,
+      classes: mergeClasses(this.classes, classes),
+      css: css ?? this.css,
+      attributes: attributes ?? userProvidedAttributes,
+      ariaLabel: ariaLabel,
+      key: key ?? this.key,
+    );
+  }
 
   @override
   Component build(BuildContext context) {
-    final item1 = children.whereType<DiffItem1>().firstOrNull;
-    final item2 = children.whereType<DiffItem2>().firstOrNull;
+    final item1 = children?.whereType<DiffItem1>().firstOrNull;
+    final item2 = children?.whereType<DiffItem2>().firstOrNull;
 
     assert(
       item1 != null && item2 != null,
       'A Diff component must have exactly one DiffItem1 and one DiffItem2 as direct children.',
     );
 
-    final containerId = id ?? 'deepyr-diff-${key.hashCode}';
-
-    final userProvidedAttributes = attributes ?? {};
-    final builder = UiComponentAttributes(userProvidedAttributes);
-
-    builder.add('role', userProvidedAttributes['role'] ?? 'group');
-    if (ariaLabel != null) {
-      builder.addAria('label', ariaLabel!);
-    }
-
-    final utilityClasses = style?.map((s) => s.toString()).join(' ') ?? '';
-    final combinedClasses = [
-      'diff',
-      utilityClasses,
-      classes ?? '',
-    ].where((c) => c.isNotEmpty).join(' ');
-
-    return Container(
+    // The component now renders a simple, declarative structure. The interactivity
+    // is handled entirely by DaisyUI's CSS.
+    return Component.element(
       tag: tag,
-      id: containerId,
+      id: id,
       classes: combinedClasses,
-      css: css,
-      attributes: builder.build(),
-      [
+      styles: this.css,
+      attributes: componentAttributes,
+      children: [
         item1!,
         item2!,
         const DiffResizer(),
-        input(
-          type: InputType.range,
-          value: initialValue.clamp(0.0, 100.0).toString(),
-          classes: _sliderClasses,
-          attributes: {
-            'aria-label': 'Comparison slider',
-            'min': '0',
-            'max': '100',
-          },
-        ),
-        // Embed the public, client-side controller.
-        DiffController(
-          containerId: containerId,
-          initialValue: initialValue,
-        ),
       ],
     );
   }
 }
 
-/// Represents the first item (typically "before" or "old") in a [Diff] comparison.
+/// Represents the first item (typically "before" or "left") in a [Diff] comparison.
+///
+/// This component is designed to be a direct child of [Diff]. It automatically
+/// includes `tabindex="0"` to make it focusable, which enables the tap-to-expand
+/// interaction on touch devices like iOS.
 class DiffItem1 extends UiComponent {
   /// Creates a DiffItem1 component.
   ///
-  /// - [children] or [child]: The content of this diff item.
-  /// - [tag]: The HTML tag, defaults to 'div'.
-  /// - Other parameters from [UiComponent].
+  /// - [children]: The content of this diff item (e.g., an `img` or `Container`).
   const DiffItem1(
     super.children, {
     super.tag = 'div',
@@ -212,6 +144,16 @@ class DiffItem1 extends UiComponent {
 
   @override
   String get baseClass => 'diff-item-1';
+
+  @override
+  void configureAttributes(UiComponentAttributes attributes) {
+    super.configureAttributes(attributes);
+    // Add tabindex="0" to make this div focusable. This is the key to enabling
+    // the tap-to-expand interaction on iOS and other touch devices.
+    if (!userProvidedAttributes.containsKey('tabindex')) {
+      attributes.add('tabindex', '0');
+    }
+  }
 
   @override
   DiffItem1 copyWith({
@@ -235,13 +177,15 @@ class DiffItem1 extends UiComponent {
   }
 }
 
-/// Represents the second item (typically "after" or "new") in a [Diff] comparison.
+/// Represents the second item (typically "after" or "right") in a [Diff] comparison.
+///
+/// This component is designed to be a direct child of [Diff]. It automatically
+/// includes `tabindex="0"` to make it focusable, which enables the tap-to-expand
+/// interaction on touch devices like iOS.
 class DiffItem2 extends UiComponent {
   /// Creates a DiffItem2 component.
   ///
-  /// - [children] or [child]: The content of this diff item.
-  /// - [tag]: The HTML tag, defaults to 'div'.
-  /// - Other parameters from [UiComponent].
+  /// - [children]: The content of this diff item (e.g., an `img` or `Container`).
   const DiffItem2(
     super.children, {
     super.tag = 'div',
@@ -256,6 +200,16 @@ class DiffItem2 extends UiComponent {
 
   @override
   String get baseClass => 'diff-item-2';
+
+  @override
+  void configureAttributes(UiComponentAttributes attributes) {
+    super.configureAttributes(attributes);
+    // Add tabindex="0" to make this div focusable. This is the key to enabling
+    // the tap-to-expand interaction on iOS and other touch devices.
+    if (!userProvidedAttributes.containsKey('tabindex')) {
+      attributes.add('tabindex', '0');
+    }
+  }
 
   @override
   DiffItem2 copyWith({
@@ -279,10 +233,12 @@ class DiffItem2 extends UiComponent {
   }
 }
 
-/// Represents the draggable resizer control within a [Diff] component.
+/// Represents the draggable resizer handle within a [Diff] component.
+///
+/// This is a purely visual element controlled by CSS `resize` on desktop browsers.
+/// It has no interactive logic of its own.
 class DiffResizer extends UiComponent {
-  /// Creates a DiffResizer component.
-  /// This component typically does not have children.
+  /// Creates a DiffResizer component. This component typically does not have children.
   const DiffResizer({
     super.tag = 'div',
     super.style,
