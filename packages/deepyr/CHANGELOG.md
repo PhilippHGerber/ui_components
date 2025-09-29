@@ -1,5 +1,12 @@
 # Changelog
 
+## Next release
+
+### Added
+
+* **New Component**: Implemented the `Mask` component with a full set of shape modifiers.
+* **New Component**: Implemented the `Table` component to be a 1:1 match with all official DaisyUI examples.
+
 ## 0.1.2
 
 ### Fixed

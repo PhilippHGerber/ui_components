@@ -111,12 +111,12 @@ Page structure and user navigation
 
 Presenting information and data
 
-- 🔲 **Table** - Structured data presentation
+- ✅ **Table** - Structured data presentation
 - 🔲 **Stats** - Metrics and statistics display
 - 🔲 **List** - Structured content organization
 - 🔲 **Timeline** - Chronological data visualization
 - ✅ **Kbd** - Keyboard shortcut display
-- 🔲 **Mask** - Image and content shape transformations
+- ✅ **Mask** - Image and content shape transformations
 
 ---
 
@@ -152,7 +152,7 @@ Complex user interactions
 
 - ✅ **Modal** - Dialog boxes and overlays
 - ✅ **Dropdown** - Context menus and action lists
-- 🔲 **Drawer** - Sliding side navigation
+- ✅ **Drawer** - Sliding side navigation
 - ✅ **Menu** - Navigation and context menus
 - ✅ **Tabs** - Tabbed content interfaces
 - 🔲 **Carousel** - Content sliders and galleries

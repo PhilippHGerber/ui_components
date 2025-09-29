@@ -106,6 +106,9 @@ export 'src/components/link/link_style.dart' show LinkStyling;
 // Loading
 export 'src/components/loading/loading.dart';
 export 'src/components/loading/loading_style.dart' show LoadingStyling;
+// Mask
+export 'src/components/mask/mask.dart';
+export 'src/components/mask/mask_style.dart' show MaskStyling;
 // Menu
 export 'src/components/menu/menu.dart';
 export 'src/components/menu/menu_item_style.dart' show MenuItemStyling;
@@ -134,8 +137,11 @@ export 'src/components/skeleton/skeleton_style.dart' show SkeletonStyling;
 // Swap
 export 'src/components/swap/swap.dart';
 export 'src/components/swap/swap_style.dart' show SwapStyling;
-export 'src/components/tabs/tab_style.dart' show TabStyling;
+// Table
+export 'src/components/table/table.dart';
+export 'src/components/table/table_style.dart' show TableStyling;
 // Tabs
+export 'src/components/tabs/tab_style.dart' show TabStyling;
 export 'src/components/tabs/tabs.dart';
 export 'src/components/tabs/tabs_style.dart' show TabsStyling;
 // Textarea
