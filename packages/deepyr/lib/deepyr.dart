@@ -134,6 +134,17 @@ export 'src/components/select/select_style.dart' show SelectStyling;
 // Skeleton
 export 'src/components/skeleton/skeleton.dart';
 export 'src/components/skeleton/skeleton_style.dart' show SkeletonStyling;
+// Stats
+export 'src/components/stats/stats.dart';
+export 'src/components/stats/stats_style.dart'
+    show
+        StatActionsStyling,
+        StatDescStyling,
+        StatFigureStyling,
+        StatStyling,
+        StatTitleStyling,
+        StatValueStyling,
+        StatsStyling;
 // Swap
 export 'src/components/swap/swap.dart';
 export 'src/components/swap/swap_style.dart' show SwapStyling;
