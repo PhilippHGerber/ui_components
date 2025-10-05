@@ -32,7 +32,7 @@ Explore all available components and see them in action on the official document
 
     ```yaml
     dependencies:
-      deepyr: ^0.1.2
+      deepyr: ^0.1.3
     ```
 
 2. **Setup Tailwind CSS**
@@ -66,121 +66,98 @@ class MyComponent extends StatelessComponent {
 
 ## Deepyr Component Roadmap
 
-### **Phase 1: Core Foundation**
-
-Essential building blocks - No dependencies required
+### **Actions**
 
 - ✅ **Button**
-- ✅ **Input**
+- ✅ **Dropdown**
+- 🔲 **FAB / Speed Dial**
+- ✅ **Modal**
+- ✅ **Swap**
+- ✅ **Theme Controller**
+
+---
+
+### **Data display**
+
+- ✅ **Accordion**
+- ✅ **Avatar**
 - ✅ **Badge**
-- ✅ **Loading**
-- ✅ **Alert**
 - ✅ **Card**
+- 🔲 **Carousel**
+- 🔲 **Chat bubble**
+- ✅ **Collapse**
+- ✅ **Countdown**
+- ✅ **Diff**
+- 🔲 **Hover Gallery**
+- ✅ **Kbd**
+- ✅ **List**
+- ✅ **Stat**
+- ✅ **Status**
+- ✅ **Table**
+- 🔲 **Timeline**
+
+---
+
+### **Navigation**
+
+- ✅ **Breadcrumbs**
+- 🔲 **Dock**
+- ✅ **Link**
+- ✅ **Menu**
+- ✅ **Navbar**
+- ✅ **Pagination**
+- 🔲 **Steps**
+- ✅ **Tab**
+
+---
+
+### **Feedback**
+
+- ✅ **Alert**
+- ✅ **Loading**
+- ✅ **Progress**
+- ✅ **Radial progress**
+- ✅ **Skeleton**
+- 🔲 **Toast**
+- ✅ **Tooltip**
+
+---
+
+### **Data input**
+
+- 🔲 **Calendar**
+- ✅ **Checkbox**
+- ✅ **Fieldset**
+- ✅ **File Input**
+- 🔲 **Filter**
+- ✅ **Label**
+- ✅ **Radio**
+- ✅ **Range**
+- 🔲 **Rating**
+- ✅ **Select**
+- ✅ **Input field (Text Input)**
+- ✅ **Textarea**
+- ✅ **Toggle**
+- ✅ **Validator**
+
+---
+
+### **Layout**
+
 - ✅ **Divider**
+- ✅ **Drawer**
+- ✅ **Footer**
+- ✅ **Hero**
+- ✅ **Indicator**
+- ✅ **Join (group items)**
+- ✅ **Mask**
+- 🔲 **Stack**
 
 ---
 
-### **Phase 2: Form Components**
+### **Mockup**
 
-Essential form inputs and controls
-
-- ✅ **Checkbox** - Boolean selection with custom styling
-- ✅ **Radio** - Single choice selection from multiple options
-- ✅ **Toggle** - Modern switch-style boolean input
-- ✅ **Textarea** - Multi-line text input with resize options
-- ✅ **Select** - Dropdown selection with custom styling
-- ✅ **Progress** - Task completion and loading progress bars
-- ✅ **Link** - Enhanced hyperlinks with hover states
-
----
-
-### **Phase 3: Layout & Navigation**
-
-Page structure and user navigation
-
-- ✅ **Navbar** - Header navigation bars
-- ✅ **Footer** - Page footers with links and branding
-- ✅ **Breadcrumbs** - Navigation hierarchy display
-- ✅ **Hero** - Landing page headers and call-to-action sections
-- ✅ **Skeleton** - Loading state placeholders
-- ✅ **Avatar** - User profile images and placeholders
-
----
-
-### **Phase 4: Data Display**
-
-Presenting information and data
-
-- ✅ **Table** - Structured data presentation
-- ✅ **Stats** - Metrics and statistics display
-- ✅ **List** - Structured content organization
-- 🔲 **Timeline** - Chronological data visualization
-- ✅ **Kbd** - Keyboard shortcut display
-- ✅ **Mask** - Image and content shape transformations
-
----
-
-### **Phase 5: Advanced Feedback**
-
-Enhanced user notifications and status
-
-- 🔲 **Toast** - Floating notification messages
-- 🔲 **Radial Progress** - Circular progress indicators
-- 🔲 **Status** - Small online/offline indicators
-- ✅ **Indicator** - Corner notification badges
-- 🔲 **Steps** - Multi-step process visualization
-- 🔲 **Countdown** - Timer and countdown displays
-
----
-
-### **Phase 6: Container Components**
-
-Component organization and grouping
-
-- ✅ **Join** - Group related components together
-- 🔲 **Stack** - Layer elements on top of each other
-- ✅ **Collapse** - Expandable content sections
-- ✅ **Swap** - Toggle between two content states
-- ✅ **Fieldset** - Form section grouping
-- ✅ **Label** - Enhanced form field labeling
-
----
-
-### **Phase 7: Interactive Components**
-
-Complex user interactions
-
-- ✅ **Modal** - Dialog boxes and overlays
-- ✅ **Dropdown** - Context menus and action lists
-- ✅ **Drawer** - Sliding side navigation
-- ✅ **Menu** - Navigation and context menus
-- ✅ **Tabs** - Tabbed content interfaces
-- 🔲 **Carousel** - Content sliders and galleries
-
----
-
-### **Phase 8: Advanced Components**
-
-Specialized inputs and complex patterns
-
-- ✅ **File Input** - File upload interfaces
-- 🔲 **Range** - Slider value selection
-- 🔲 **Rating** - Star ratings and feedback
-- 🔲 **Filter** - Content filtering controls
-- ✅ **Pagination** - Page navigation controls
-- 🔲 **Theme Controller** - Dynamic theme switching
-- ✅ **Validator** - Form validation with visual feedback
-- ✅ **Diff** - Side-by-side content comparison
-
----
-
-### **Phase 9: Display & Demo**
-
-Presentation and demonstration components
-
-- 🔲 **Mockup Browser** - Browser window frames
-- 🔲 **Mockup Phone** - Mobile device frames
-- 🔲 **Mockup Window** - Desktop window frames
-- 🔲 **Mockup Code** - Code block presentation
-- 🔲 **Chat** - Messaging interface components
-- 🔲 **Calendar** - Date selection integration
+- 🔲 **Browser**
+- 🔲 **Code**
+- 🔲 **Phone**
+- 🔲 **Window**
