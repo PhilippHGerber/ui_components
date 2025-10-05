@@ -1,11 +1,16 @@
 # Changelog
 
-## Next release
+## 0.1.3
 
 ### Added
 
-* **New Component**: Implemented the `Mask` component with a full set of shape modifiers.
-* **New Component**: Implemented the `Table` component to be a 1:1 match with all official DaisyUI examples.
+* **New Component**: `Status` component for displaying small status indicators.
+* **New Component**: `Countdown` component for displaying animated numerical transitions.
+* **New Component**: `RadialProgress` component to show progress in a circular style.
+* **New Component**: `Stat` and `Stats` components for displaying statistical data.
+* **New Component**: `List`, `ListRow`, and `ListCol` components for creating structured lists.
+* **New Component**: `Mask` component with a full set of shape modifiers.
+* **New Component**: `Table` component to be a 1:1 match with all official DaisyUI examples.
 
 ## 0.1.2
 
