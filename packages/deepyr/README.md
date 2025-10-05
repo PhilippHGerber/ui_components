@@ -113,7 +113,7 @@ Presenting information and data
 
 - ✅ **Table** - Structured data presentation
 - ✅ **Stats** - Metrics and statistics display
-- 🔲 **List** - Structured content organization
+- ✅ **List** - Structured content organization
 - 🔲 **Timeline** - Chronological data visualization
 - ✅ **Kbd** - Keyboard shortcut display
 - ✅ **Mask** - Image and content shape transformations
