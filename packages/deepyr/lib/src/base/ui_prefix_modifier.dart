@@ -4,11 +4,30 @@
 
 import 'base_style.dart';
 
+/// An enum representing the semantic category of a [PrefixModifier].
+///
+/// This is used internally to differentiate between various types of CSS prefixes,
+/// such as min-width breakpoints (`md:`), max-width breakpoints (`max-md:`),
+/// pseudo-classes (`hover:`), and others.
 enum PrefixModifierType {
+  /// A standard `min-width` breakpoint (e.g., `md:`), for styles that apply
+  /// from a certain screen size and up.
   breakpoint,
+
+  /// A `max-width` breakpoint (e.g., `max-md:`), for styles that apply only
+  /// *up to* a certain screen size.
+  maxWidthBreakpoint,
+
+  /// A pseudo-class or pseudo-element (e.g., `hover:`, `focus:`, `::before`).
   pseudoClass,
+
+  /// A color scheme variant, primarily for dark mode (e.g., `dark:`).
   darkMode,
+
+  /// A feature or preference-based media query variant (e.g., `motion-reduce:`).
   variant,
+
+  /// A device orientation variant (e.g., `portrait:`, `landscape:`).
   orientation,
 }
 
@@ -173,6 +192,8 @@ enum Media implements PrefixModifier {
   /// print
   print('print', PrefixModifierType.variant);
 
+  const Media(this._prefix, this.type);
+
   // TODO @supports
   // https://tailwindcss.com/docs/hover-focus-and-other-states#supports
 
@@ -187,6 +208,4 @@ enum Media implements PrefixModifier {
 
   @override
   String get prefix => '$_prefix:';
-
-  const Media(this._prefix, this.type);
 }

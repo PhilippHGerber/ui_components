@@ -1,5 +1,13 @@
 # Changelog
 
+## Next release
+
+### Added
+
+* **Responsive API Enhancement:** The core styling API has been extended to support `max-width` breakpoints. All styling components now have a `.below(Breakpoint)` method, enabling styles that apply only *up to* a certain screen size (e.g., `Timeline.compact.below(Breakpoint.md)`). This also allows for creating ranged styles by chaining methods (e.g., `MyStyle.at(Breakpoint.sm).below(Breakpoint.lg)`).
+
+
+
 ## 0.1.3
 
 ### Added

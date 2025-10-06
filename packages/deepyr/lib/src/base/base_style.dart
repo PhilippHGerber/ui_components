@@ -12,8 +12,7 @@ import 'ui_prefix_modifier.dart';
 /// Type parameter:
 ///   `T`: The concrete type of the utility class itself, enabling fluent chaining
 ///        methods like `on()` and `at()` to return the correct specific type.
-abstract class BaseStyle<T extends BaseStyle<T>>
-    implements Styling, Comparable<T> {
+abstract class BaseStyle<T extends BaseStyle<T>> implements Styling, Comparable<T> {
   /// Constructs a [BaseStyle].
   ///
   /// [cssClass]: The core CSS class string (e.g., "text-center").
@@ -39,29 +38,59 @@ abstract class BaseStyle<T extends BaseStyle<T>>
 
   /// Applies a list of [PrefixModifier]s to this utility class.
   ///
+  /// This is used for applying state-based modifiers like `hover` or `focus`.
   /// Returns a new instance of `T` with the combined prefixes.
   /// If this utility already has prefixes, the new ones are appended.
+  ///
+  /// Example:
+  /// ```dart
+  /// // Applies hover and focus states
+  /// BgUtil.primary.on([Is.hover, Is.focus])
+  /// ```
   T on(List<PrefixModifier> prefixModifiers) {
     // Ensure existing modifiers are preserved and new ones are added.
     // Handle null or empty existing modifiers.
-    final existingModifiers = this.modifiers ?? [];
+    final existingModifiers = modifiers ?? [];
     return create([...existingModifiers, ...prefixModifiers]);
   }
 
-  /// Applies a single responsive breakpoint [PrefixModifier] to this utility class.
+  /// Applies a single `min-width` responsive breakpoint [PrefixModifier].
+  ///
+  /// This is used for mobile-first styles that should apply from a certain
+  /// screen size and up. For example, `Button.lg.at(Breakpoint.md)` results in
+  /// a `md:btn-lg` class.
   ///
   /// If the provided [breakpoint] is not of type [PrefixModifierType.breakpoint],
-  /// `this` instance is returned unchanged. Otherwise, a new instance of `T`
-  /// with the breakpoint prefix applied is returned.
+  /// `this` instance is returned unchanged.
   T at(PrefixModifier breakpoint) {
     if (breakpoint.type == PrefixModifierType.breakpoint) {
-      final existingModifiers = this.modifiers ?? [];
+      final existingModifiers = modifiers ?? [];
       return create([...existingModifiers, breakpoint]);
     }
     // It might be more robust to throw an error or log a warning if a non-breakpoint
     // modifier is passed to `at()`, but returning `this` is also an option.
     // For now, let's assume `at` is strictly for breakpoints.
     return this as T;
+  }
+
+  /// Applies a `max-width` responsive breakpoint [PrefixModifier].
+  ///
+  /// This is used for styles that should apply only *up to* a certain screen size.
+  /// For example, `Timeline.compact.below(Breakpoint.md)` results in a `max-md:timeline-compact`
+  /// class, which applies the compact style only on screens smaller than the `md` breakpoint.
+  ///
+  /// This method can be chained with `.at()` to create ranged styles:
+  /// `MyStyle.at(Breakpoint.sm).below(Breakpoint.lg)` results in `sm:max-lg:my-style`.
+  ///
+  /// [breakpoint]: The upper bound for the style to be applied.
+  T below(Breakpoint breakpoint) {
+    // The Breakpoint enum's prefix getter adds a trailing colon, which we must remove before prepending 'max-'.
+    final breakpointValue = breakpoint.prefix.replaceAll(':', '');
+    final maxPrefix = 'max-$breakpointValue';
+    final modifier = PrefixModifier(maxPrefix, PrefixModifierType.maxWidthBreakpoint);
+
+    final existingModifiers = modifiers ?? [];
+    return create([...existingModifiers, modifier]);
   }
 
   /// Returns the string representation of this utility class, including all applied prefixes.
@@ -111,8 +140,7 @@ abstract class BaseStyle<T extends BaseStyle<T>>
   //
   // Example hot path: Button with 5+ breakpoint modifiers = 25+ comparisons per render
   /// Helper method to compare lists of [PrefixModifier]s.
-  int _compareModifiers(
-      List<PrefixModifier>? list1, List<PrefixModifier>? list2) {
+  int _compareModifiers(List<PrefixModifier>? list1, List<PrefixModifier>? list2) {
     final l1 = list1 ?? [];
     final l2 = list2 ?? [];
 
@@ -124,7 +152,6 @@ abstract class BaseStyle<T extends BaseStyle<T>>
       final comparison = l1[i].prefix.compareTo(l2[i].prefix);
       if (comparison != 0) return comparison;
     }
-    return l1.length
-        .compareTo(l2.length); // Shorter list comes first if prefixes match
+    return l1.length.compareTo(l2.length);
   }
 }
