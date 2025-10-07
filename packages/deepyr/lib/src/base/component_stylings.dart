@@ -125,6 +125,8 @@ mixin AllComponentStylings
         TabsStyling,
         TabStyling,
         TextareaStyling,
+        TimelineStyling,
+        TimelineContentStyling,
         ThemeControllerStyling,
         ToggleStyling,
         TooltipStyling,

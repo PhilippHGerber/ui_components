@@ -40,10 +40,10 @@ class Icon extends UiComponent {
     super.attributes,
     super.key,
   }) : super(
-          // The icon name is the direct text child of the span
-          [Component.text(name)],
-          style: style,
-        );
+         // The icon name is the direct text child of the span
+         [Component.text(name)],
+         style: style,
+       );
 
   /// The name or identifier of the icon (e.g., "search", "settings").
   final String name;
@@ -56,7 +56,7 @@ class Icon extends UiComponent {
   final bool? ariaHidden;
 
   @override
-  String get baseClass => 'material-symbols-rounded'; // Base class for Material Symbols
+  String get baseClass => 'm-symbols'; // Base class for Material Symbols
 
   @override
   void configureAttributes(UiComponentAttributes attributes) {
@@ -98,6 +98,26 @@ class Icon extends UiComponent {
       key: key ?? this.key,
     );
   }
+
+//   @override
+//   Component build(BuildContext context) {
+//     // Combine user-provided CSS with our default reset.
+//     final combinedCss = Styles.combine([
+//       const Styles(raw: {'font-size': 'inherit'}), // Our default reset
+//       ?this.css,
+//     ]);
+//
+//     return Component.element(
+//       tag: tag,
+//       id: id,
+//       classes: combinedClasses,
+//       // Use the combined styles.
+//       styles: combinedCss,
+//       attributes: componentAttributes,
+//       events: this.events,
+//       children: children ?? [?child],
+//     );
+//   }
 
   // --- Static Icon Modifiers (Type: IconModifier interface, Instantiating: IconStyleModifier) ---
   // These would correspond to specific Material Symbols CSS styling classes or font variation settings

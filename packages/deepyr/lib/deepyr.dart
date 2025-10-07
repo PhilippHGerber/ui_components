@@ -175,6 +175,10 @@ export 'src/components/theme_controller/theme_controller.dart';
 export 'src/components/theme_controller/theme_controller_style_modifier.dart'
     show ThemeControllerStyling;
 export 'src/components/theme_controller/theme_service.dart';
+// Timeline
+export 'src/components/timeline/timeline.dart';
+export 'src/components/timeline/timeline_style.dart' show TimelineContentStyling, TimelineStyling;
+// Toast
 // Toggle
 export 'src/components/toggle/toggle.dart';
 export 'src/components/toggle/toggle_style.dart' show ToggleStyling;
