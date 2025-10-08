@@ -85,6 +85,9 @@ export 'src/components/form_label/form_label_style.dart' show FormLabelStyling;
 // Hero
 export 'src/components/hero/hero.dart';
 export 'src/components/hero/hero_style.dart' show HeroStyling;
+// HoverGallery
+export 'src/components/hover_gallery/hover_gallery.dart';
+export 'src/components/hover_gallery/hover_gallery_style.dart' show HoverGalleryStyling;
 // Icon
 export 'src/components/icon/icon.dart';
 export 'src/components/icon/icon_style.dart' show IconStyling;

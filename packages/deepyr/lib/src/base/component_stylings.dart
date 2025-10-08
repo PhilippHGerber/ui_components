@@ -88,6 +88,7 @@ mixin AllComponentStylings
         FooterStyling,
         FormLabelStyling,
         HeroStyling,
+        HoverGalleryStyling,
         IconStyling,
         IndicatorStyling,
         IndicatorItemStyling,
