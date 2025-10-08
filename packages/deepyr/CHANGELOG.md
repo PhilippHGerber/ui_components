@@ -1,10 +1,19 @@
 # Changelog
 
+## Next release
+
+## 0.1.5
+
+### Added
+
+* **New Component**: `HoverGallery` component for creating a pure CSS image gallery that reveals different images on horizontal hover. [Preview](https://deepyr-doc.web.app/components/hover-gallery)
+
 ## 0.1.4
 
 ### Added
 
-* **New Component**: `Timeline` component for displaying a list of events in chronological order.
+* **New Component**: `Timeline` component for displaying a list of events in chronological order. [Preview](https://deepyr-doc.web.app/components/timeline)
+
 * **Responsive API Enhancement:** The core styling API has been extended to support `max-width` breakpoints. All styling components now have a `.below(Breakpoint)` method, enabling styles that apply only *up to* a certain screen size (e.g., `Timeline.compact.below(Breakpoint.md)`). This also allows for creating ranged styles by chaining methods (e.g., `MyStyle.at(Breakpoint.sm).below(Breakpoint.lg)`).
 
 ## 0.1.3
