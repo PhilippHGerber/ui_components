@@ -1,6 +1,10 @@
 # Changelog
 
-## Next release
+## 0.1.6
+
+### Added
+
+* **New Component**: `Chat` component family for displaying conversations, including `Chat`, `ChatBubble`, `ChatImage`, `ChatHeader`, and `ChatFooter`. [Preview](https://deepyr-doc.web.app/components/chat)
 
 ## 0.1.5
 
