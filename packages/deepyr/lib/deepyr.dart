@@ -46,6 +46,10 @@ export 'src/components/button/button_style.dart' show ButtonStyling;
 // Card
 export 'src/components/card/card.dart';
 export 'src/components/card/card_style.dart' show CardStyling;
+// Chat
+export 'src/components/chat/chat.dart';
+export 'src/components/chat/chat_style.dart'
+    show ChatBubbleStyling, ChatFooterStyling, ChatHeaderStyling, ChatImageStyling, ChatStyling;
 // Checkbox
 export 'src/components/checkbox/checkbox.dart';
 export 'src/components/checkbox/checkbox_style.dart' show CheckboxStyling;
