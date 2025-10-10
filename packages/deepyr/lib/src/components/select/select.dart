@@ -31,7 +31,10 @@ class Select extends UiComponent {
     super.key,
   }) : super(style: style);
 
+  /// The name of the select element, used for form submission.
   final String? name;
+
+  /// If true, the select dropdown will be disabled and non-interactive.
   final bool disabled;
 
   @override

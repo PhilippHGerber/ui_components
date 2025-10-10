@@ -44,17 +44,40 @@ class Input extends UiComponent {
     this.title,
   }) : super(null, style: style); // Input elements have no children.
 
+  /// The HTML `type` attribute for the input element (e.g., 'text', 'password', 'email').
   final String type;
+
+  /// The placeholder text displayed when the input is empty.
   final String? placeholder;
+
+  /// The initial value of the input field.
   final String? value;
+
+  /// The name of the input, used for form submission.
   final String? name;
+
+  /// If true, the input will be disabled and non-interactive.
   final bool disabled;
+
+  /// If true, the input is required for form submission.
   final bool required;
+
+  /// A regular expression that the input's value must match.
   final String? pattern;
+
+  /// The minimum number of characters required in the input.
   final int? minLength;
+
+  /// The maximum number of characters allowed in the input.
   final int? maxLength;
+
+  /// The minimum numeric value for number-based inputs.
   final num? min;
+
+  /// The maximum numeric value for number-based inputs.
   final num? max;
+
+  /// The title attribute, often shown as a tooltip on hover.
   final String? title;
 
   @override
