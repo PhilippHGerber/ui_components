@@ -41,61 +41,61 @@ class PrefixModifier {
 }
 
 enum Is implements PrefixModifier {
-  /// Hover pseudo-class
+  /// `hover`
   hover('hover', PrefixModifierType.pseudoClass),
 
-  /// Focus pseudo-class
+  /// `focus`
   focus('focus', PrefixModifierType.pseudoClass),
 
-  /// Active pseudo-class
+  /// `active`
   active('active', PrefixModifierType.pseudoClass),
 
-  /// First pseudo-class
+  /// `first`
   first('first', PrefixModifierType.pseudoClass),
 
-  /// Last pseudo-class
+  /// `last`
   last('last', PrefixModifierType.pseudoClass),
 
-  /// Odd pseudo-class
+  /// `odd`
   odd('odd', PrefixModifierType.pseudoClass),
 
-  /// Even pseudo-class
+  /// `even`
   even('even', PrefixModifierType.pseudoClass),
 
-  /// Form state required
+  /// `required`
   required('required', PrefixModifierType.pseudoClass),
 
-  /// Form state invalid
+  /// `invalid`
   invalid('invalid', PrefixModifierType.pseudoClass),
 
-  /// Form state disabled
+  /// `disabled`
   disabled('disabled', PrefixModifierType.pseudoClass),
 
-  /// ::before pseudo-element
+  /// `::before`
   before('before', PrefixModifierType.pseudoClass),
 
-  /// ::after pseudo-element
+  /// `::after`
   after('after', PrefixModifierType.pseudoClass),
 
-  /// ::placeholder pseudo-element
+  /// `::placeholder`
   placeholder('placeholder', PrefixModifierType.pseudoClass),
 
-  /// ::file
+  /// `::file-selector-button`
   file('file', PrefixModifierType.pseudoClass),
 
-  /// ::marker
+  /// `::marker`
   marker('marker', PrefixModifierType.pseudoClass),
 
-  /// ::selection
+  /// `::selection`
   selection('selection', PrefixModifierType.pseudoClass),
 
-  /// ::first-letter
+  /// `::first-letter`
   firstLetter('first-letter', PrefixModifierType.pseudoClass),
 
-  /// ::first-line
+  /// `::first-line`
   firstLine('first-line', PrefixModifierType.pseudoClass),
 
-  /// ::backdrop
+  /// `::backdrop`
   backdrop('backdrop', PrefixModifierType.pseudoClass);
 
   @override
@@ -113,44 +113,23 @@ enum Is implements PrefixModifier {
 // TODO Container queries @container @md:flex-row
 // https://tailwindcss.com/docs/responsive-design#container-queries
 enum Breakpoint implements PrefixModifier {
-  /// Small breakpoint
+  /// `min-width: 640px`
   sm('sm', PrefixModifierType.breakpoint),
 
-  /// Medium breakpoint
+  /// `min-width: 768px`
   md('md', PrefixModifierType.breakpoint),
 
-  /// Large breakpoint
+  /// `min-width: 1024px`
   lg('lg', PrefixModifierType.breakpoint),
 
-  /// Extra large breakpoint
+  /// `min-width: 1280px`
   xl('xl', PrefixModifierType.breakpoint),
 
-  /// 2xl breakpoint
+  /// `min-width: 1536px`
   xl2('2xl', PrefixModifierType.breakpoint);
 
-  @override
-  final String _prefix;
-
-  @override
-  final PrefixModifierType type;
-
-  @override
-  String get prefix => '$_prefix:';
-
+  /// Breakpoint constructor
   const Breakpoint(this._prefix, this.type);
-}
-
-mixin Breakpoints<T extends BaseStyle<T>> on BaseStyle<T> {
-  T get atSm => at(Breakpoint.sm);
-  T get atMd => at(Breakpoint.md);
-  T get atLg => at(Breakpoint.lg);
-  T get atXl => at(Breakpoint.xl);
-  T get at2xl => at(Breakpoint.xl2);
-}
-
-enum Theme implements PrefixModifier {
-  /// Dark mode
-  dark('dark', PrefixModifierType.darkMode);
 
   @override
   final String _prefix;
@@ -160,8 +139,30 @@ enum Theme implements PrefixModifier {
 
   @override
   String get prefix => '$_prefix:';
+}
 
-  const Theme(this._prefix, this.type);
+/// A mixin that provides convenience getters for applying responsive breakpoints
+/// to a [BaseStyle] instance.
+///
+/// Example:
+/// ```dart
+/// final responsiveStyle = MyStyle().atSm;
+/// ```
+mixin Breakpoints<T extends BaseStyle<T>> on BaseStyle<T> {
+  /// Applies the `sm` breakpoint.
+  T get atSm => at(Breakpoint.sm);
+
+  /// Applies the `md` breakpoint.
+  T get atMd => at(Breakpoint.md);
+
+  /// Applies the `lg` breakpoint.
+  T get atLg => at(Breakpoint.lg);
+
+  /// Applies the `xl` breakpoint.
+  T get atXl => at(Breakpoint.xl);
+
+  /// Applies the `2xl` breakpoint.
+  T get at2xl => at(Breakpoint.xl2);
 }
 
 enum Media implements PrefixModifier {

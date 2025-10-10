@@ -34,16 +34,21 @@ abstract class CommonStyle<T extends CommonStyle<T>> extends BaseStyle<T>
   // }
 }
 
-// Typografie-Gruppe für alle text-bezogenen Stile
 
-// Layout-Gruppe für Positionierung und Anordnung
-
-// Farben und Hintergründe
+/// A utility class for applying theme-based color styles.
+///
+/// This includes utilities for setting background, text, and border colors
+/// based on the primary color defined in the theme.
 class Colors extends CommonStyle<Colors> {
   const Colors(super.cssClass, {super.modifiers}) : super(type: StyleType.style);
 
+  /// `background-color: primary`
   static const bgPrimary = Colors('bg-primary');
+
+  /// `color: primary`
   static const textPrimary = Colors('text-primary');
+
+  /// `border-color: primary`
   static const borderPrimary = Colors('border-primary');
 
   @override

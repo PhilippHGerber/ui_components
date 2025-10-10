@@ -2,6 +2,7 @@ import '../common_style.dart';
 import '../style_type.dart' show StyleType;
 import '../ui_prefix_modifier.dart';
 
+/// A utility class for applying background styles, including colors and opacity.
 class BgUtil extends CommonStyle<BgUtil> {
   const BgUtil(super.cssClass, {super.modifiers}) : super(type: StyleType.style);
 
@@ -16,23 +17,43 @@ class BgUtil extends CommonStyle<BgUtil> {
         ),
         super('bg-opacity-$value', type: StyleType.style);
 
-  // Background colors
+  /// `background-color: base-100`
   static const BgUtil base100 = BgUtil('bg-base-100');
+
+  /// `background-color: base-200`
   static const BgUtil base200 = BgUtil('bg-base-200');
+
+  /// `background-color: base-300`
   static const BgUtil base300 = BgUtil('bg-base-300');
+
+  /// `background-color: primary`
   static const BgUtil primary = BgUtil('bg-primary');
+
+  /// `background-color: secondary`
   static const BgUtil secondary = BgUtil('bg-secondary');
+
+  /// `background-color: neutral`
   static const BgUtil neutral = BgUtil('bg-neutral');
 
-  // Background opacity
+  /// `background-opacity: 0.75`
   static const BgUtil opacity75 = BgUtil('bg-opacity-75');
+
+  /// `background-opacity: 0.60`
   static const BgUtil opacity60 = BgUtil('bg-opacity-60');
+
+  /// `background-opacity: 0.50`
   static const BgUtil opacity50 = BgUtil('bg-opacity-50');
+
+  /// `background-opacity: 0.25`
   static const BgUtil opacity25 = BgUtil('bg-opacity-25');
+
+  /// `background-opacity: 0`
   static const BgUtil opacity0 = BgUtil('bg-opacity-0');
 
-  // Background position
+  /// `background-attachment: fixed`
   static const BgUtil fixed = BgUtil('bg-fixed');
+
+  /// `background-attachment: local`
   static const BgUtil local = BgUtil('bg-local');
 
   @override
