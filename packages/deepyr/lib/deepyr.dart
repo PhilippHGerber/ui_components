@@ -150,6 +150,9 @@ export 'src/components/select/select_style.dart' show SelectStyling;
 // Skeleton
 export 'src/components/skeleton/skeleton.dart';
 export 'src/components/skeleton/skeleton_style.dart' show SkeletonStyling;
+// Stack
+export 'src/components/stack/stack.dart';
+export 'src/components/stack/stack_style.dart' show StackStyling;
 // Stats
 export 'src/components/stats/stats.dart';
 export 'src/components/stats/stats_style.dart'

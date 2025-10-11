@@ -1,5 +1,10 @@
 # Changelog
 
+## Next release
+
+* **New Component**: `Stack` component for layering elements on top of each other, with positional modifiers like `Stack.top`, `Stack.start`, etc. [Preview](https://deepyr-doc.web.app/components/stack)
+
+
 ## 0.1.6
 
 ### Added

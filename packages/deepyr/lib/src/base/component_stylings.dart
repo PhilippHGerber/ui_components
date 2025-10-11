@@ -118,6 +118,7 @@ mixin AllComponentStylings
         RangeStyling,
         SelectStyling,
         SkeletonStyling,
+        StackStyling,
         StatsStyling,
         StatStyling,
         StatFigureStyling,
