@@ -85,17 +85,17 @@ class MyComponent extends StatelessComponent {
 - ✅ **Badge**
 - ✅ **Card**
 - 🔲 **Carousel**
-- 🔲 **Chat bubble**
+- ✅ **Chat bubble**
 - ✅ **Collapse**
 - ✅ **Countdown**
 - ✅ **Diff**
-- 🔲 **Hover Gallery**
+- ✅ **Hover Gallery**
 - ✅ **Kbd**
 - ✅ **List**
 - ✅ **Stat**
 - ✅ **Status**
 - ✅ **Table**
-- 🔲 **Timeline**
+- ✅ **Timeline**
 
 ---
 
@@ -119,7 +119,7 @@ class MyComponent extends StatelessComponent {
 - ✅ **Progress**
 - ✅ **Radial progress**
 - ✅ **Skeleton**
-- 🔲 **Toast**
+- ✅ **Toast**
 - ✅ **Tooltip**
 
 ---
@@ -134,7 +134,7 @@ class MyComponent extends StatelessComponent {
 - ✅ **Label**
 - ✅ **Radio**
 - ✅ **Range**
-- 🔲 **Rating**
+- ✅ **Rating**
 - ✅ **Select**
 - ✅ **Input field (Text Input)**
 - ✅ **Textarea**
@@ -152,7 +152,7 @@ class MyComponent extends StatelessComponent {
 - ✅ **Indicator**
 - ✅ **Join (group items)**
 - ✅ **Mask**
-- 🔲 **Stack**
+- ✅ **Stack**
 
 ---
 
