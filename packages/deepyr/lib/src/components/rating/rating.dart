@@ -20,67 +20,214 @@ import '../../base/ui_component_attributes.dart';
 import '../mask/mask_style.dart'; // Import to check for MaskStyling
 import 'rating_style.dart';
 
-/// An interactive or read-only component for capturing and displaying user ratings.
+/// A single, stylable item within a `RatingContainer`, rendering an `<input type="radio">`.
 ///
-/// This component can function in two modes, controlled by the `isReadOnly` property:
+/// This is a low-level building block that gives you per-item control over styling.
+/// It is designed to be used as a direct child of `RatingContainer`, which
+/// automatically injects the required `name` attribute for the radio group.
+class RatingItem extends UiComponent {
+  /// Creates a single, stylable rating item.
+  ///
+  /// - [value]: The numerical value this item represents (e.g., 1, 1.5, 2).
+  /// - [style]: A list of `Styling` utilities for this specific item,
+  ///   including a `MaskStyling` for the shape and a `BgUtil` for the color.
+  /// - [isChecked]: Whether this item is the currently selected one.
+  /// - [onSelect]: A callback invoked when this item is selected.
+  /// - [name]: The radio group name. This is typically injected by `RatingContainer`.
+  /// - [isHalf]: For half-star items, specifies which half ('first' or 'second').
+  const RatingItem({
+    required this.value,
+    this.isChecked = false,
+    this.onSelect,
+    this.name,
+    this.isHalf,
+    List<Styling>? style,
+    super.id,
+    super.classes,
+    super.key,
+  }) : super(null, tag: 'input', style: style);
+
+  final num value;
+  final bool isChecked;
+  final ValueChanged<num>? onSelect;
+  final String? name;
+  final String? isHalf; // Can be 'first' or 'second'
+
+  @override
+  String get baseClass =>
+      // Intelligently add the base 'mask' class if any mask shape is used.
+      (style?.any((s) => s is MaskStyling) ?? false) ? 'mask' : '';
+
+  @override
+  String get combinedClasses {
+    final base = super.combinedClasses;
+    if (isHalf == 'first') return '$base mask-half-1';
+    if (isHalf == 'second') return '$base mask-half-2';
+    return base;
+  }
+
+  @override
+  void configureAttributes(UiComponentAttributes attributes) {
+    super.configureAttributes(attributes);
+    attributes
+      ..add('type', 'radio')
+      ..add('value', value.toString())
+      ..addAria('label', '$value stars');
+    if (name != null) attributes.add('name', name!);
+    if (isChecked) attributes.add('checked', '');
+  }
+
+  @override
+  Component build(BuildContext context) {
+    return Component.element(
+      tag: tag,
+      id: id,
+      classes: combinedClasses,
+      styles: css,
+      attributes: componentAttributes,
+      events: onSelect != null
+          ? {
+              'change': (dynamic rawEvent) {
+                if (kIsWeb) {
+                  final target = (rawEvent as Event).target! as HTMLInputElement;
+                  final selectedValue = num.tryParse(target.value);
+                  if (selectedValue != null) onSelect!(selectedValue);
+                }
+              },
+            }
+          : events,
+    );
+  }
+
+  @override
+  RatingItem copyWith({
+    String? id,
+    String? classes,
+    Styles? css,
+    Map<String, String>? attributes,
+    Key? key,
+    num? value,
+    bool? isChecked,
+    ValueChanged<num>? onSelect,
+    String? name,
+    String? isHalf,
+  }) {
+    return RatingItem(
+      value: value ?? this.value,
+      isChecked: isChecked ?? this.isChecked,
+      onSelect: onSelect ?? this.onSelect,
+      name: name ?? this.name,
+      isHalf: isHalf ?? this.isHalf,
+      style: style,
+      id: id ?? this.id,
+      classes: mergeClasses(this.classes, classes),
+      key: key ?? this.key,
+    );
+  }
+}
+
+/// A "smart" container for `RatingItem` components that renders `<div class="rating">`.
 ///
-/// 1.  **Interactive (default):** Renders a group of styled radio inputs. It is a
-///     **controlled component**, meaning its state must be managed by a parent.
-///     You must provide the current `value` and handle state changes via the
-///     `onValueChanged` callback.
+/// Its primary role is to group `RatingItem`s and ensure they all share the same
+/// `name` attribute, making them function as a single, mutually exclusive radio group.
+/// This is the recommended component for building custom or multi-colored ratings.
 ///
-/// 2.  **Read-Only:** Renders a series of `<div>` elements to visually represent a
-///     rating without allowing user interaction. This is useful for displaying
-///     existing scores.
-///
-/// It intelligently generates the necessary HTML structure for full-star, half-star,
-/// and clearable ratings based on its properties.
-///
-/// ### Interactive Example:
+/// ### Example (Multi-Colored Rating):
 /// ```dart
-/// class MyReviewForm extends StatefulComponent {
-///   double _currentRating = 2.5;
-///
-///   @override
-///   State<MyReviewForm> createState() => _MyReviewFormState();
-/// }
-///
-/// class _MyReviewFormState extends State<MyReviewForm> {
-///   @override
-///   Component build(BuildContext context) {
-///     return Rating(
-///       name: 'review-rating', // A unique name is required for interactive mode
-///       value: _currentRating,
-///       onValueChanged: (newValue) {
-///         setState(() => _currentRating = newValue);
-///       },
-///       allowHalf: true,
-///       style: [Rating.lg],
-///       itemStyle: [Mask.star2, BgUtil.warning],
-///     );
-///   }
-/// }
+/// RatingContainer(
+///   name: 'custom-rating',
+///   [
+///     RatingItem(value: 1, isChecked: _val==1, onSelect: _handleSelect, style: [Mask.heart, BgUtil.red]),
+///     RatingItem(value: 2, isChecked: _val==2, onSelect: _handleSelect, style: [Mask.heart, BgUtil.orange]),
+///     // ... and so on
+///   ],
+/// )
 /// ```
+class RatingContainer extends UiComponent {
+  /// Creates a container for `RatingItem`s.
+  ///
+  /// - [name]: **Required.** The unique name for the radio button group.
+  /// - [children]: The list of components, which should include `RatingItem`s.
+  /// - [style]: Styles for the container, like `Rating.lg` or `Rating.half`.
+  const RatingContainer(
+    super.children, {
+    required this.name,
+    List<RatingStyling>? style,
+    super.id,
+    super.classes,
+    super.key,
+    super.attributes,
+  }) : super(tag: 'div', style: style);
+
+  final String name;
+
+  @override
+  String get baseClass => 'rating';
+
+  @override
+  Component build(BuildContext context) {
+    // Inject the `name` into all direct RatingItem children.
+    final processedChildren = children?.map((child) {
+      if (child is RatingItem) {
+        return child.copyWith(name: name);
+      }
+      return child;
+    }).toList();
+
+    return Component.element(
+      tag: tag,
+      id: id,
+      classes: combinedClasses,
+      children: processedChildren,
+    );
+  }
+
+  @override
+  RatingContainer copyWith({
+    String? id,
+    String? classes,
+    Styles? css,
+    Map<String, String>? attributes,
+    Key? key,
+    String? name,
+  }) {
+    return RatingContainer(
+      children ?? [],
+      name: name ?? this.name,
+      style: style as List<RatingStyling>?,
+      id: id ?? this.id,
+      classes: mergeClasses(this.classes, classes),
+      key: key ?? this.key,
+    );
+  }
+}
+
+// #endregion
+
+/// A high-level, controlled component for creating a uniform rating scale.
+///
+/// This component provides a simple API for the most common use cases where all
+/// items in the rating share the same style. It programmatically generates the
+/// necessary `RatingContainer` and `RatingItem`s internally.
+///
+/// For advanced use cases, like applying a different color to each star, use the
+/// more flexible `RatingContainer` and `RatingItem` components directly.
 class Rating extends UiComponent {
-  /// Creates a Rating component.
+  /// Creates a high-level, uniform Rating component.
   ///
   /// - [name]: A unique name for the underlying radio button group. **Required**
-  ///   for interactive mode (`isReadOnly: false`).
+  ///   for interactive mode.
   /// - [value]: The current rating value. Defaults to `0`.
-  /// - [onValueChanged]: A callback that fires when the user selects a new rating
-  ///   in interactive mode.
-  /// - [max]: The total number of shapes to display. Defaults to `5`.
+  /// - [onValueChanged]: A callback that fires when the user selects a new rating.
+  /// - [max]: The total number of stars to display. Defaults to `5`.
   /// - [isReadOnly]: If `true`, renders a non-interactive display. Defaults to `false`.
   /// - [allowHalf]: If `true`, enables half-star selection and rendering.
-  /// - [allowClear]: If `true` (and in interactive mode), allows the user to
-  ///   clear their rating by clicking the already selected star.
-  /// - [style]: A list of [RatingStyling] instances for the container (e.g., `Rating.lg`).
+  /// - [allowClear]: If `true` (and interactive), allows the user to clear their rating.
+  /// - [style]: Styles for the container (e.g., `Rating.lg`).
   /// - [itemStyle]: A list of `Styling` utilities (e.g., `Mask.star2`, `BgUtil.warning`)
-  ///   to be applied to each individual item. The component will automatically add the
+  ///   applied uniformly to every item. The component will automatically add the
   ///   base `mask` class if a `MaskStyling` is provided.
-  /// - [groupAriaLabel]: An accessible label for the entire rating group, providing
-  ///   context for screen readers (e.g., "Product score").
-  /// - Other parameters are inherited from [UiComponent].
+  /// - [groupAriaLabel]: An accessible label for the entire rating group.
   const Rating({
     this.name,
     this.value = 0,
@@ -135,207 +282,120 @@ class Rating extends UiComponent {
   final List<Styling>? itemStyle;
 
   @override
-  String get baseClass => 'rating';
-
-  @override
-  String get combinedClasses {
-    // Start with the classes from the base implementation.
-    final base = super.combinedClasses;
-    // Ergonomic improvement: Automatically add the 'rating-half' class if allowHalf is true.
-    if (allowHalf) {
-      // Create a set to avoid duplicates if the user also adds it manually.
-      final classesSet = base.split(' ').toSet();
-      classesSet.add('rating-half');
-      return classesSet.join(' ');
-    }
-    return base;
-  }
-
-  @override
-  void configureAttributes(UiComponentAttributes attributes) {
-    super.configureAttributes(attributes);
-    if (groupAriaLabel != null) {
-      // Use 'radiogroup' for interactive mode and a simple 'img' role for read-only
-      // to convey that it's a graphical representation of a value.
-      attributes.addRole(isReadOnly ? 'img' : 'radiogroup');
-      attributes.addAria('label', groupAriaLabel!);
-    }
-  }
-
-  /// This getter intelligently adds the base `mask` class if any `MaskStyling`
-  /// is present in the `itemStyle` list, fixing the visibility bug.
-  String get _itemClasses {
-    if (itemStyle == null || itemStyle!.isEmpty) {
-      return '';
-    }
-    // Check if any of the provided styles is a mask shape.
-    final isMasked = itemStyle!.any((s) => s is MaskStyling);
-    final classesString = itemStyle!.toClasses();
-
-    // If it's a mask, prepend the base 'mask' class.
-    return isMasked ? 'mask $classesString' : classesString;
-  }
+  String get baseClass => ''; // Base class is handled by RatingContainer
 
   @override
   Component build(BuildContext context) {
-    final items = isReadOnly ? _buildReadOnlyItems() : _buildInteractiveItems();
+    // Safely cast the inherited `style` property from `List<Styling>?`
+    // to the more specific `List<RatingStyling>?` that the constructor guarantees.
+    final typedContainerStyle = style as List<RatingStyling>?;
 
-    return Component.element(
-      tag: tag,
-      id: id,
-      classes: combinedClasses,
-      styles: css,
-      attributes: componentAttributes,
-      events: events,
-      children: items,
-    );
-  }
+    // Automatically add Rating.half to the container styles if allowHalf is true.
+    final effectiveContainerStyles = typedContainerStyle?.toList() ?? [];
+    if (allowHalf && !effectiveContainerStyles.contains(Rating.half)) {
+      effectiveContainerStyles.add(Rating.half);
+    }
 
-  /// Builds the list of components for an interactive rating (`<input type="radio">`).
-  List<Component> _buildInteractiveItems() {
-    final inputs = <Component>[];
-    final resolvedItemClasses = _itemClasses;
-
-    if (allowClear) {
-      inputs.add(
-        _buildRadioInput(
-          value: 0,
-          isChecked: value == 0,
-          ariaLabel: 'clear rating',
-          extraClasses: 'rating-hidden',
-        ),
+    if (isReadOnly) {
+      final items = <Component>[];
+      for (var i = 1; i <= max; i++) {
+        if (allowHalf) {
+          items.add(_buildReadOnlyDiv(i - 0.5));
+          items.add(_buildReadOnlyDiv(i));
+        } else {
+          items.add(_buildReadOnlyDiv(i));
+        }
+      }
+      return RatingContainer(
+        items,
+        name: name ?? '', // Name can be empty for read-only but is required by container
+        style: effectiveContainerStyles,
+        key: key,
+        id: id,
+        classes: classes,
+        // Pass accessibility attributes to the container
+        attributes: {'role': 'img', if (groupAriaLabel != null) 'aria-label': groupAriaLabel!},
       );
     }
 
-    // Generate the radio inputs for each star.
+    // Interactive Mode
+    final items = <Component>[];
+    if (allowClear) {
+      items.add(
+        RatingItem(
+          value: 0,
+          isChecked: value == 0,
+          onSelect: onValueChanged,
+          classes: 'rating-hidden',
+        ),
+      );
+    }
     for (var i = 1; i <= max; i++) {
       if (allowHalf) {
-        // For half stars, create two inputs per star.
-        final halfValue = i - 0.5;
-        // First half
-        inputs
-          ..add(
-            _buildRadioInput(
-              value: halfValue,
-              isChecked: value == halfValue,
-              ariaLabel: '$halfValue stars',
-              extraClasses: '$resolvedItemClasses mask-half-1',
-            ),
-          )
-          // Second half
-          ..add(
-            _buildRadioInput(
-              value: i,
-              isChecked: value == i,
-              ariaLabel: '$i stars',
-              extraClasses: '$resolvedItemClasses mask-half-2',
-            ),
-          );
-      } else {
-        // For full stars, create one input per star.
-        inputs.add(
-          _buildRadioInput(
+        items.add(
+          RatingItem(
+            value: i - 0.5,
+            isChecked: value == i - 0.5,
+            onSelect: onValueChanged,
+            style: itemStyle,
+            isHalf: 'first',
+          ),
+        );
+        items.add(
+          RatingItem(
             value: i,
             isChecked: value == i,
-            ariaLabel: '$i stars',
-            extraClasses: resolvedItemClasses,
+            onSelect: onValueChanged,
+            style: itemStyle,
+            isHalf: 'second',
           ),
         );
-      }
-    }
-    return inputs;
-  }
-
-  /// Builds the list of components for a read-only rating (`<div>`).
-  List<Component> _buildReadOnlyItems() {
-    final divs = <Component>[];
-    final resolvedItemClasses = _itemClasses;
-
-    for (var i = 1; i <= max; i++) {
-      if (allowHalf) {
-        final halfValue = i - 0.5;
-        // First half
-        divs
-          ..add(
-            _buildReadOnlyDiv(
-              isSelected: value >= halfValue,
-              ariaLabel: '$halfValue stars',
-              extraClasses: '$resolvedItemClasses mask-half-1',
-            ),
-          )
-          // Second half
-          ..add(
-            _buildReadOnlyDiv(
-              isSelected: value >= i,
-              ariaLabel: '$i stars',
-              extraClasses: '$resolvedItemClasses mask-half-2',
-            ),
-          );
       } else {
-        divs.add(
-          _buildReadOnlyDiv(
-            isSelected: value >= i,
-            ariaLabel: '$i stars',
-            extraClasses: resolvedItemClasses,
+        items.add(
+          RatingItem(
+            value: i,
+            isChecked: value == i,
+            onSelect: onValueChanged,
+            style: itemStyle,
           ),
         );
       }
     }
-    return divs;
-  }
 
-  /// A private helper method to construct a single radio input for the rating.
-  Component _buildRadioInput({
-    required num value,
-    required bool isChecked,
-    required String ariaLabel,
-    String? extraClasses,
-  }) {
-    return input(
-      type: InputType.radio,
-      name: name,
-      classes: extraClasses,
-      attributes: {
-        'value': value.toString(),
-        if (isChecked) 'checked': '',
-        'aria-label': ariaLabel,
-      },
-      events: onValueChanged != null
-          ? {
-              'change': (dynamic rawEvent) {
-                if (kIsWeb) {
-                  final target = (rawEvent as Event).target! as HTMLInputElement;
-                  final selectedValue = num.tryParse(target.value);
-                  if (selectedValue != null) {
-                    onValueChanged!(selectedValue);
-                  }
-                }
-              },
-            }
-          : null,
+    return RatingContainer(
+      items,
+      name: name!,
+      style: effectiveContainerStyles,
+      key: key,
+      id: id,
+      classes: classes,
+      // Pass accessibility attributes to the container
+      attributes: {'role': 'radiogroup', if (groupAriaLabel != null) 'aria-label': groupAriaLabel!},
     );
   }
 
-  /// A private helper method to construct a single `div` for a read-only rating.
-  Component _buildReadOnlyDiv({
-    required bool isSelected,
-    required String ariaLabel,
-    String? extraClasses,
-  }) {
-    // DaisyUI uses the `checked` attribute on the hidden radio to style the visible mask.
-    // For read-only, we must simulate this. We can use a data-attribute that we target with CSS,
-    // or rely on a different mechanism. The simplest is to ensure the background color is applied.
-    // In DaisyUI, the `.rating input:checked` is what applies the color. For read-only, we must handle this.
-    // Let's assume for now that the provided `itemStyle` includes a `BgUtil` color that will be applied.
-    // The `aria-current` attribute is for accessibility.
+  // Helper for read-only div generation
+  Component _buildReadOnlyDiv(num itemValue) {
+    final isMasked = itemStyle?.any((s) => s is MaskStyling) ?? false;
+    final itemClasses = isMasked ? 'mask ${itemStyle!.toClasses()}' : itemStyle?.toClasses() ?? '';
+
+    final halfClass = allowHalf
+        ? (itemValue.toString().endsWith('.5') ? 'mask-half-1' : 'mask-half-2')
+        : '';
+
     return div(
       [],
-      classes: extraClasses,
+      classes: '$itemClasses $halfClass',
       attributes: {
-        'aria-label': ariaLabel,
-        // Use aria-current to indicate the selected item for accessibility.
-        if (isSelected) 'aria-current': 'true',
+        'aria-label': '$itemValue stars',
+        if (value >= itemValue) 'aria-current': 'true',
       },
+      // For read-only, we must manually control the visibility/color.
+      // We apply the item styles only if the value is met.
+      // If not selected, we apply a transparent background to maintain the shape.
+      styles: value >= itemValue
+          ? css
+          : const Styles(raw: {'background-color': 'var(--fallback-b2,oklch(var(--b2)/.2))'}),
     );
   }
 
