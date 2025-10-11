@@ -167,6 +167,9 @@ export 'src/components/stats/stats_style.dart'
 // Status
 export 'src/components/status/status.dart';
 export 'src/components/status/status_style.dart' show StatusStyling;
+// Steps
+export 'src/components/steps/steps.dart';
+export 'src/components/steps/steps_style.dart' show StepIconStyling, StepStyling, StepsStyling;
 // Swap
 export 'src/components/swap/swap.dart';
 export 'src/components/swap/swap_style.dart' show SwapStyling;
@@ -189,6 +192,8 @@ export 'src/components/theme_controller/theme_service.dart';
 export 'src/components/timeline/timeline.dart';
 export 'src/components/timeline/timeline_style.dart' show TimelineContentStyling, TimelineStyling;
 // Toast
+export 'src/components/toast/toast.dart';
+export 'src/components/toast/toast_style.dart' show ToastStyling;
 // Toggle
 export 'src/components/toggle/toggle.dart';
 export 'src/components/toggle/toggle_style.dart' show ToggleStyling;

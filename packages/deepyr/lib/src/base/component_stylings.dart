@@ -127,6 +127,9 @@ mixin AllComponentStylings
         StatDescStyling,
         StatActionsStyling,
         StatusStyling,
+        StepsStyling,
+        StepStyling,
+        StepIconStyling,
         SwapStyling,
         TableStyling,
         TabsStyling,
@@ -135,6 +138,7 @@ mixin AllComponentStylings
         TimelineStyling,
         TimelineContentStyling,
         ThemeControllerStyling,
+        ToastStyling,
         ToggleStyling,
         TooltipStyling,
         ValidatorHintStyling {
