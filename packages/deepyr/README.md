@@ -6,9 +6,10 @@ Jaspr + DaisyUI => Deepyr
 
 A type-safe Dart implementation of DaisyUI components for Jaspr, providing a fluent API for building beautiful web apps with Tailwind CSS.
 
-## Proof of concept
+> [!WARNING]
+> Please keep in mind that Deepyr is still under active development
+> and therefore full backward compatibility is not guaranteed before reaching v1.0.0.
 
-This package currently serves as a proof-of-concept for integrating DaisyUI with Jaspr using a type-safe Dart API.
 
 ## 🚀 Live Demo & Documentation
 

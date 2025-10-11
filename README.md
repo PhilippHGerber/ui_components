@@ -1,8 +1,12 @@
-# UI Components Monorepo
+# UI Components for Jaspr
 
 This repository contains multiple UI component packages for [Jaspr](https://jaspr.site), built with Dart.
 
 Each package is designed to be modular and reusable in your Jaspr web projects.
+
+> [!WARNING]
+> Please keep in mind that Deepyr is still under active development
+> and therefore full backward compatibility is not guaranteed before reaching v1.0.0.
 
 ---
 
