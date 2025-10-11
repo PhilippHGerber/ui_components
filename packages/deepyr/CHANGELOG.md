@@ -2,26 +2,29 @@
 
 ## Next release
 
-* **New Component**: `Stack` component for layering elements on top of each other, with positional modifiers like `Stack.top`, `Stack.start`, etc. [Preview](https://deepyr-doc.web.app/components/stack)
+### Added
 
+* **New Component**: `Toast` component for displaying notifications in various screen positions ([Example](https://deepyr-doc.web.app/components/toast))
+* **New Component**: `Steps`, `Step`, and `StepIcon` components for showing progress in a process, with support for colors, custom content, and responsive layouts ([Example](https://deepyr-doc.web.app/components/steps)).
+* **New Component**: `Stack` component for layering elements on top of each other, with positional modifiers like `Stack.top`, `Stack.start`, etc. ([Example](https://deepyr-doc.web.app/components/stack)).
 
 ## 0.1.6
 
 ### Added
 
-* **New Component**: `Chat` component family for displaying conversations, including `Chat`, `ChatBubble`, `ChatImage`, `ChatHeader`, and `ChatFooter`. [Preview](https://deepyr-doc.web.app/components/chat)
+* **New Component**: `Chat` component family for displaying conversations, including `Chat`, `ChatBubble`, `ChatImage`, `ChatHeader`, and `ChatFooter` ([Example](https://deepyr-doc.web.app/components/chat)).
 
 ## 0.1.5
 
 ### Added
 
-* **New Component**: `HoverGallery` component for creating a pure CSS image gallery that reveals different images on horizontal hover. [Preview](https://deepyr-doc.web.app/components/hover-gallery)
+* **New Component**: `HoverGallery` component for creating a pure CSS image gallery that reveals different images on horizontal hover ([Example](https://deepyr-doc.web.app/components/hover-gallery)).
 
 ## 0.1.4
 
 ### Added
 
-* **New Component**: `Timeline` component for displaying a list of events in chronological order. [Preview](https://deepyr-doc.web.app/components/timeline)
+* **New Component**: `Timeline` component for displaying a list of events in chronological order ([Example](https://deepyr-doc.web.app/components/timeline)).
 
 * **Responsive API Enhancement:** The core styling API has been extended to support `max-width` breakpoints. All styling components now have a `.below(Breakpoint)` method, enabling styles that apply only *up to* a certain screen size (e.g., `Timeline.compact.below(Breakpoint.md)`). This also allows for creating ranged styles by chaining methods (e.g., `MyStyle.at(Breakpoint.sm).below(Breakpoint.lg)`).
 
