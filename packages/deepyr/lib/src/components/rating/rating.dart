@@ -2,13 +2,10 @@ import 'package:jaspr/jaspr.dart'
     show
         BuildContext,
         Component,
-        EventCallback,
-        InputType,
         Key,
         Styles,
         ValueChanged,
         div,
-        input,
         kIsWeb;
 import 'package:universal_web/web.dart' show Event, HTMLInputElement;
 
