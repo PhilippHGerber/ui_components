@@ -51,8 +51,11 @@ class BorderUtil extends CommonStyle<BorderUtil> {
   /// `border-color: base-200`.
   static const BorderUtil base200 = BorderUtil('border-base-200');
 
-  /// `border-color: base-300`. **This is the one you asked about.**
+  /// `border-color: base-300`.
   static const BorderUtil base300 = BorderUtil('border-base-300');
+
+  /// `border-color: base-content`.
+  static const BorderUtil baseContent = BorderUtil('border-base-content');
 
   /// `border-color: info`.
   static const BorderUtil info = BorderUtil('border-info');
@@ -81,8 +84,4 @@ class BorderUtil extends CommonStyle<BorderUtil> {
 
   /// `border-style: none`.
   static const BorderUtil none = BorderUtil('border-none');
-
-  // Note: Border radius is correctly handled by the `Effects` utility
-  // (e.g., `Effects.rounded`, `Effects.roundedBox`) as it relates to
-  // clipping and visual effects, not just the border property itself.
 }
