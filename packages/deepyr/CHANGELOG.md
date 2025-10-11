@@ -1,6 +1,6 @@
 # Changelog
 
-## Next release
+## 0.1.7
 
 ### Added
 
