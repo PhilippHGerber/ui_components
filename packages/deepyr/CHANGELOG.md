@@ -4,6 +4,7 @@
 
 ### Added
 
+* **New Component**: `Rating` component for selecting a value from a set of icons, with support for half-stars, custom icons via `Mask`, and sizes ([Example](https://deepyr-doc.web.app/components/rating))
 * **New Component**: `Toast` component for displaying notifications in various screen positions ([Example](https://deepyr-doc.web.app/components/toast))
 * **New Component**: `Steps`, `Step`, and `StepIcon` components for showing progress in a process, with support for colors, custom content, and responsive layouts ([Example](https://deepyr-doc.web.app/components/steps)).
 * **New Component**: `Stack` component for layering elements on top of each other, with positional modifiers like `Stack.top`, `Stack.start`, etc. ([Example](https://deepyr-doc.web.app/components/stack)).

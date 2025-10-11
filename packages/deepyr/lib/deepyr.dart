@@ -144,6 +144,9 @@ export 'src/components/radio/radio_style.dart' show RadioStyling;
 // Range
 export 'src/components/range/range.dart';
 export 'src/components/range/range_style.dart' show RangeStyling;
+// Rating
+export 'src/components/rating/rating.dart';
+export 'src/components/rating/rating_style.dart' show RatingStyling;
 // Select
 export 'src/components/select/select.dart';
 export 'src/components/select/select_style.dart' show SelectStyling;

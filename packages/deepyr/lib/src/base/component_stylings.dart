@@ -116,6 +116,7 @@ mixin AllComponentStylings
         RadialProgressStyling,
         RadioStyling,
         RangeStyling,
+        RatingStyling,
         SelectStyling,
         SkeletonStyling,
         StackStyling,
