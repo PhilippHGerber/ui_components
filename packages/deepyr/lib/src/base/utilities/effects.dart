@@ -482,4 +482,74 @@ class Effects extends CommonStyle<Effects> {
 
   /// `border-end-start-radius: full`
   static const Effects roundedEsFull = Effects('rounded-es-full');
+
+  // --- Ring Width ---
+  /// `ring` (default width)
+  static const Effects ring = Effects('ring');
+
+  /// `ring-0`
+  static const Effects ring0 = Effects('ring-0');
+
+  /// `ring-1`
+  static const Effects ring1 = Effects('ring-1');
+
+  /// `ring-2`
+  static const Effects ring2 = Effects('ring-2');
+
+  /// `ring-4`
+  static const Effects ring4 = Effects('ring-4');
+
+  /// `ring-8`
+  static const Effects ring8 = Effects('ring-8');
+
+  // --- Ring Color ---
+  /// `ring-primary`
+  static const Effects ringPrimary = Effects('ring-primary');
+
+  /// `ring-secondary`
+  static const Effects ringSecondary = Effects('ring-secondary');
+
+  /// `ring-accent`
+  static const Effects ringAccent = Effects('ring-accent');
+
+  /// `ring-neutral`
+  static const Effects ringNeutral = Effects('ring-neutral');
+
+  /// `ring-info`
+  static const Effects ringInfo = Effects('ring-info');
+
+  /// `ring-success`
+  static const Effects ringSuccess = Effects('ring-success');
+
+  /// `ring-warning`
+  static const Effects ringWarning = Effects('ring-warning');
+
+  /// `ring-error`
+  static const Effects ringError = Effects('ring-error');
+
+  // --- Ring Offset Width ---
+  /// `ring-offset-0`
+  static const Effects ringOffset0 = Effects('ring-offset-0');
+
+  /// `ring-offset-1`
+  static const Effects ringOffset1 = Effects('ring-offset-1');
+
+  /// `ring-offset-2`
+  static const Effects ringOffset2 = Effects('ring-offset-2');
+
+  /// `ring-offset-4`
+  static const Effects ringOffset4 = Effects('ring-offset-4');
+
+  /// `ring-offset-8`
+  static const Effects ringOffset8 = Effects('ring-offset-8');
+
+  // --- Ring Offset Color ---
+  /// `ring-offset-base-100`
+  static const Effects ringOffsetBase100 = Effects('ring-offset-base-100');
+
+  /// `ring-offset-base-200`
+  static const Effects ringOffsetBase200 = Effects('ring-offset-base-200');
+
+  /// `ring-offset-base-300`
+  static const Effects ringOffsetBase300 = Effects('ring-offset-base-300');
 }
