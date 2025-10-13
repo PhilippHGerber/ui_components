@@ -1,5 +1,6 @@
 import '../../../deepyr.dart' show MenuItem, MenuTitle;
 import '../../base/component_style.dart';
+import '../../base/style_type.dart' show StyleType;
 import '../../base/styling.dart';
 import '../../base/ui_prefix_modifier.dart';
 import 'menu.dart' show MenuItem, MenuTitle;
@@ -13,6 +14,11 @@ abstract class MenuItemStyling implements Styling {}
 class MenuItemStyle extends ComponentStyle<MenuItemStyle>
     with Breakpoints<MenuItemStyle>
     implements MenuItemStyling {
+  /// Creates a new [MenuItemStyle].
+  ///
+  /// - [cssClass]: The CSS class associated with this style.
+  /// - [type]: The [StyleType] of the style.
+  /// - [modifiers]: A list of [PrefixModifier]s to apply to this style.
   const MenuItemStyle(
     super.cssClass, {
     required super.type,

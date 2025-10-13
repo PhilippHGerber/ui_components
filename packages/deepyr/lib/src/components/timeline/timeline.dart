@@ -135,7 +135,12 @@ class TimelineItem extends UiComponent {
   /// - [start]: Optional content for the start side.
   /// - [middle]: Optional content for the middle (icon).
   /// - [end]: Optional content for the end side.
-  /// - [startConnectorStyle], [endConnectorStyle]: Type-safe styles for the connecting lines.
+  /// - [startConnectorStyle]: A list of `Styling` utilities to apply to the starting `<hr>` connector.
+  /// - [endConnectorStyle]: A list of `Styling` utilities to apply to the ending `<hr>` connector.
+  /// - [showStartConnector]: Internal flag to control the visibility of the start connector.
+  /// - [showEndConnector]: Internal flag to control the visibility of the end connector.
+  /// - [classes]: Additional CSS classes to apply to the component.
+  /// - [key]: A [Key] to uniquely identify this widget.
   TimelineItem({
     this.start,
     this.middle,

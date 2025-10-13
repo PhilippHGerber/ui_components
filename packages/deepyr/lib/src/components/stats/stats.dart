@@ -108,6 +108,12 @@ class Stat extends UiComponent {
 
 /// The title part of a [Stat] component (e.g., "Total Likes").
 class StatTitle extends UiComponent {
+  /// Creates the title part of a [Stat] component.
+  ///
+  /// - [children]: The text or other content for the title.
+  /// - [tag]: The HTML tag to use for the component, defaults to 'div'.
+  /// - [style]: A list of [StatTitleStyling] to apply.
+  /// - [key]: A [Key] to uniquely identify this widget.
   const StatTitle(super.children, {super.tag = 'div', List<StatTitleStyling>? style, super.key})
     : super(style: style);
 
@@ -133,6 +139,12 @@ class StatTitle extends UiComponent {
 
 /// The main value part of a [Stat] component (e.g., "25.6K").
 class StatValue extends UiComponent {
+  /// Creates the value part of a [Stat] component.
+  ///
+  /// - [children]: The text or other content for the value.
+  /// - [tag]: The HTML tag to use for the component, defaults to 'div'.
+  /// - [style]: A list of [StatValueStyling] to apply.
+  /// - [key]: A [Key] to uniquely identify this widget.
   const StatValue(super.children, {super.tag = 'div', List<StatValueStyling>? style, super.key})
     : super(style: style);
 
@@ -158,6 +170,12 @@ class StatValue extends UiComponent {
 
 /// The description part of a [Stat] component (e.g., "21% more than last month").
 class StatDesc extends UiComponent {
+  /// Creates the description part of a [Stat] component.
+  ///
+  /// - [children]: The text or other content for the description.
+  /// - [tag]: The HTML tag to use for the component, defaults to 'div'.
+  /// - [style]: A list of [StatDescStyling] to apply.
+  /// - [key]: A [Key] to uniquely identify this widget.
   const StatDesc(super.children, {super.tag = 'div', List<StatDescStyling>? style, super.key})
     : super(style: style);
 
@@ -183,6 +201,12 @@ class StatDesc extends UiComponent {
 
 /// The figure/icon part of a [Stat] component.
 class StatFigure extends UiComponent {
+  /// Creates the figure/icon part of a [Stat] component.
+  ///
+  /// - [children]: The icon or other visual content.
+  /// - [tag]: The HTML tag to use for the component, defaults to 'div'.
+  /// - [style]: A list of [StatFigureStyling] to apply.
+  /// - [key]: A [Key] to uniquely identify this widget.
   const StatFigure(super.children, {super.tag = 'div', List<StatFigureStyling>? style, super.key})
     : super(style: style);
 
@@ -208,6 +232,12 @@ class StatFigure extends UiComponent {
 
 /// The actions part of a [Stat] component, for buttons or other interactive elements.
 class StatActions extends UiComponent {
+  /// Creates the actions part of a [Stat] component.
+  ///
+  /// - [children]: The buttons or other interactive elements.
+  /// - [tag]: The HTML tag to use for the component, defaults to 'div'.
+  /// - [style]: A list of [StatActionsStyling] to apply.
+  /// - [key]: A [Key] to uniquely identify this widget.
   const StatActions(super.children, {super.tag = 'div', List<StatActionsStyling>? style, super.key})
     : super(style: style);
 
