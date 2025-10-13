@@ -11,52 +11,74 @@ class Spacing extends CommonStyle<Spacing> {
   const Spacing(super.cssClass, {super.modifiers}) : super(type: StyleType.spacing);
 
   // --- DYNAMIC CONSTRUCTORS ---
-  /// Margin on all sides. `m-{value}`
-  Spacing.m(double value) : super('m-${_formatValue(value)}', type: StyleType.spacing);
+  /// Margin on all sides. `m-{value}` or `-m-{value}`
+  factory Spacing.m(double value, {bool negative = false}) =>
+      Spacing('${negative ? '-m-' : 'm-'}${_formatValue(value)}');
 
-  /// Margin on x-axis. `mx-{value}`
-  Spacing.mx(double value) : super('mx-${_formatValue(value)}', type: StyleType.spacing);
+  /// Margin on x-axis. `mx-{value}` or `-mx-{value}`
+  factory Spacing.mx(double value, {bool negative = false}) =>
+      Spacing('${negative ? '-mx-' : 'mx-'}${_formatValue(value)}');
 
-  /// Margin on y-axis. `my-{value}`
-  Spacing.my(double value) : super('my-${_formatValue(value)}', type: StyleType.spacing);
+  /// Margin on y-axis. `my-{value}` or `-my-{value}`
+  factory Spacing.my(double value, {bool negative = false}) =>
+      Spacing('${negative ? '-my-' : 'my-'}${_formatValue(value)}');
 
-  /// Margin on top. `mt-{value}`
-  Spacing.mt(double value) : super('mt-${_formatValue(value)}', type: StyleType.spacing);
+  /// Margin on top. `mt-{value}` or `-mt-{value}`
+  factory Spacing.mt(double value, {bool negative = false}) =>
+      Spacing('${negative ? '-mt-' : 'mt-'}${_formatValue(value)}');
 
-  /// Margin on right. `mr-{value}` or `me-{value}` (end)
-  Spacing.mr(double value) : super('mr-${_formatValue(value)}', type: StyleType.spacing);
-  Spacing.me(double value) : super('me-${_formatValue(value)}', type: StyleType.spacing);
+  /// Margin on right. `mr-{value}` or `-mr-{value}`
+  factory Spacing.mr(double value, {bool negative = false}) =>
+      Spacing('${negative ? '-mr-' : 'mr-'}${_formatValue(value)}');
 
-  /// Margin on bottom. `mb-{value}`
-  Spacing.mb(double value) : super('mb-${_formatValue(value)}', type: StyleType.spacing);
+  /// Margin on end. `me-{value}` or `-me-{value}`
+  factory Spacing.me(double value, {bool negative = false}) =>
+      Spacing('${negative ? '-me-' : 'me-'}${_formatValue(value)}');
 
-  /// Margin on left. `ml-{value}` or `ms-{value}` (start)
-  Spacing.ml(double value) : super('ml-${_formatValue(value)}', type: StyleType.spacing);
-  Spacing.ms(double value) : super('ms-${_formatValue(value)}', type: StyleType.spacing);
+  /// Margin on bottom. `mb-{value}` or `-mb-{value}`
+  factory Spacing.mb(double value, {bool negative = false}) =>
+      Spacing('${negative ? '-mb-' : 'mb-'}${_formatValue(value)}');
+
+  /// Margin on left. `ml-{value}` or `-ml-{value}`
+  factory Spacing.ml(double value, {bool negative = false}) =>
+      Spacing('${negative ? '-ml-' : 'ml-'}${_formatValue(value)}');
+
+  /// Margin on start. `ms-{value}` or `-ms-{value}`
+  factory Spacing.ms(double value, {bool negative = false}) =>
+      Spacing('${negative ? '-ms-' : 'ms-'}${_formatValue(value)}');
 
   // --- Padding ---
   /// Padding on all sides. `p-{value}`
-  Spacing.p(double value) : super('p-${_formatValue(value)}', type: StyleType.spacing);
+  factory Spacing.p(double value) => Spacing('p-${_formatValue(value)}');
 
   /// Padding on x-axis. `px-{value}`
-  Spacing.px(double value) : super('px-${_formatValue(value)}', type: StyleType.spacing);
+  factory Spacing.px(double value) => Spacing('px-${_formatValue(value)}');
 
   /// Padding on y-axis. `py-{value}`
-  Spacing.py(double value) : super('py-${_formatValue(value)}', type: StyleType.spacing);
+  factory Spacing.py(double value) => Spacing('py-${_formatValue(value)}');
 
   /// Padding on top. `pt-{value}`
-  Spacing.pt(double value) : super('pt-${_formatValue(value)}', type: StyleType.spacing);
+  factory Spacing.pt(double value) => Spacing('pt-${_formatValue(value)}');
 
   /// Padding on right. `pr-{value}` or `pe-{value}` (end)
-  Spacing.pr(double value) : super('pr-${_formatValue(value)}', type: StyleType.spacing);
-  Spacing.pe(double value) : super('pe-${_formatValue(value)}', type: StyleType.spacing);
+  factory Spacing.pr(double value) => Spacing('pr-${_formatValue(value)}');
+  factory Spacing.pe(double value) => Spacing('pe-${_formatValue(value)}');
 
   /// Padding on bottom. `pb-{value}`
-  Spacing.pb(double value) : super('pb-${_formatValue(value)}', type: StyleType.spacing);
+  factory Spacing.pb(double value) => Spacing('pb-${_formatValue(value)}');
 
   /// Padding on left. `pl-{value}` or `ps-{value}` (start)
-  Spacing.pl(double value) : super('pl-${_formatValue(value)}', type: StyleType.spacing);
-  Spacing.ps(double value) : super('ps-${_formatValue(value)}', type: StyleType.spacing);
+  factory Spacing.pl(double value) => Spacing('pl-${_formatValue(value)}');
+  factory Spacing.ps(double value) => Spacing('ps-${_formatValue(value)}');
+
+  // --- Space Between ---
+  /// Space between items on x-axis. `space-x-{value}` or `-space-x-{value}`
+  factory Spacing.spaceX(double value, {bool negative = false}) =>
+      Spacing('${negative ? '-space-x-' : 'space-x-'}${_formatValue(value)}');
+
+  /// Space between items on y-axis. `space-y-{value}` or `-space-y-{value}`
+  factory Spacing.spaceY(double value, {bool negative = false}) =>
+      Spacing('${negative ? '-space-y-' : 'space-y-'}${_formatValue(value)}');
 
   @override
   Spacing create(List<PrefixModifier> modifiers) {
