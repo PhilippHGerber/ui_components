@@ -1,5 +1,6 @@
 import 'package:jaspr/jaspr.dart';
 
+import '../../base/common_style.dart';
 import '../../base/style_type.dart';
 import '../../base/ui_component.dart';
 import 'join_style.dart';
@@ -45,45 +46,6 @@ class Join extends UiComponent {
   @override
   String get baseClass => 'join';
 
-  /// Overridden build method to intelligently apply the `join-item` class
-  /// to all direct `UiComponent` children.
-  @override
-  Component build(BuildContext context) {
-    Component? finalChild;
-    List<Component>? finalChildren;
-
-    // Process a list of children if provided.
-    if (children != null) {
-      finalChildren = children!.map((c) {
-        if (c is UiComponent) {
-          // Clone the child, merging the 'join-item' class.
-          return c.copyWith(classes: 'join-item');
-        }
-        // Return non-UiComponent children (like text()) unmodified.
-        return c;
-      }).toList();
-    }
-    // Process a single child if provided.
-    else if (child != null) {
-      if (child is UiComponent) {
-        finalChild = (child! as UiComponent).copyWith(classes: 'join-item');
-      } else {
-        finalChild = child;
-      }
-    }
-
-    // return the final DomComponent with the transformed children.
-    return Component.element(
-      tag: tag,
-      id: id,
-      classes: combinedClasses,
-      styles: this.css,
-      attributes: componentAttributes,
-      events: this.events,
-      children: finalChildren ?? [?finalChild],
-    );
-  }
-
   @override
   Join copyWith({
     String? id,
@@ -92,9 +54,6 @@ class Join extends UiComponent {
     Map<String, String>? attributes,
     Key? key,
   }) {
-    // Note: The copyWith method creates a new Join component.
-    // The new component's build method will then apply the join-item logic
-    // to its children. We don't need to transform children here.
     return Join(
       children,
       tag: tag,
@@ -121,4 +80,6 @@ class Join extends UiComponent {
     'join-horizontal',
     type: StyleType.layout,
   );
+
+  static const item = MultiUsedStyle('join-item', type: StyleType.layout);
 }
