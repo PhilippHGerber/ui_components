@@ -13,6 +13,18 @@ class Size extends CommonStyle<Size> {
   /// Example: `Size.aspectRatio('16/9')` -> `aspect-[16/9]`
   factory Size.aspectRatio(String value) => Size('aspect-[$value]');
 
+  /// Creates a `max-w-[{value}]` utility for applying a custom max-width.
+  factory Size.maxW(String value) => Size('max-w-[$value]');
+
+  /// Creates a `min-w-[{value}]` utility for applying a custom min-width.
+  factory Size.minW(String value) => Size('min-w-[$value]');
+
+  /// Creates a `max-h-[{value}]` utility for applying a custom max-height.
+  factory Size.maxH(String value) => Size('max-h-[$value]');
+
+  /// Creates a `min-h-[{value}]` utility for applying a custom min-height.
+  factory Size.minH(String value) => Size('min-h-[$value]');
+
   // Container-based widths
   // Examples of responsive container layouts
   // Card(
