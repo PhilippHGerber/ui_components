@@ -34,6 +34,14 @@ abstract class CommonStyle<T extends CommonStyle<T>> extends BaseStyle<T>
   // }
 }
 
+class MultiUsedStyle extends CommonStyle<MultiUsedStyle> {
+  const MultiUsedStyle(super.cssClass, {required super.type, super.modifiers}) : super();
+
+  @override
+  MultiUsedStyle create(List<PrefixModifier> modifiers) {
+    return MultiUsedStyle(cssClass, type: type, modifiers: modifiers);
+  }
+}
 
 /// A utility class for applying theme-based color styles.
 ///
