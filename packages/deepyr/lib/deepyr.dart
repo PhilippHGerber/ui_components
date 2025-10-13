@@ -11,12 +11,14 @@ export 'src/base/ui_prefix_modifier.dart';
 // --- UTILITIES ---
 // General-purpose styling classes for layout, spacing, typography, etc.
 export 'src/base/utilities/alignment.dart';
+export 'src/base/utilities/animation.dart';
 export 'src/base/utilities/bg_util.dart';
 export 'src/base/utilities/border_util.dart';
 export 'src/base/utilities/effects.dart';
 export 'src/base/utilities/flex.dart';
 export 'src/base/utilities/font_util.dart';
 export 'src/base/utilities/grid.dart';
+export 'src/base/utilities/interactivity.dart';
 export 'src/base/utilities/layout.dart';
 export 'src/base/utilities/position.dart';
 export 'src/base/utilities/size.dart';

@@ -70,6 +70,7 @@ mixin AllComponentStylings
     implements
         AccordionStyling,
         AlertStyling,
+        AnimationStyling,
         AvatarStyling,
         BadgeStyling,
         ButtonStyling,
@@ -97,6 +98,7 @@ mixin AllComponentStylings
         IconStyling,
         IndicatorStyling,
         IndicatorItemStyling,
+        InteractivityStyling,
         InputStyling,
         JoinStyling,
         KbdStyling,
