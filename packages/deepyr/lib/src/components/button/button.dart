@@ -1,3 +1,4 @@
+// packages/deepyr/lib/src/components/button/button.dart
 import 'package:jaspr/jaspr.dart';
 
 import '../../base/style_type.dart';
@@ -21,7 +22,6 @@ enum ButtonHtmlType {
   button('button');
 
   const ButtonHtmlType(this.value);
-
   final String value;
 
   @override
@@ -149,176 +149,105 @@ class Button extends UiComponent {
 
   @override
   Component build(BuildContext context) {
-    // If this is a native submit button, render a primitive element
-    // and completely bypass the standard UiComponent event wiring.
+    // If isNativeSubmit is true, render a primitive element WITHOUT Jaspr's event listeners.
+    // This allows the browser's default behavior (like following an href or submitting a form) to proceed.
     if (isNativeSubmit) {
+      // Build attributes map conditionally
+      final nativeAttributes = <String, String>{
+        ...componentAttributes,
+      };
+
+      // Only add 'type' attribute for button/input tags
+      if (tag == 'button' || tag == 'input') {
+        nativeAttributes['type'] = (htmlType ?? ButtonHtmlType.submit).value;
+      }
+
       return Component.element(
         tag: tag,
         id: id,
         classes: combinedClasses,
         styles: this.css,
-        // Ensure the type is correctly set to 'submit' for dialog closing.
-        attributes: {
-          ...componentAttributes,
-          'type': (htmlType ?? ButtonHtmlType.submit).value,
-        },
-        // CRITICAL: Do NOT pass the `events` map.
+        attributes: nativeAttributes,
+        // Do NOT pass the `events` map.
         children: children ?? [?child],
       );
     }
 
-    // For all other cases, use the default UiComponent build behavior.
+    // For all other cases, use the default UiComponent build behavior which includes event listeners.
     return super.build(context);
   }
 
   // --- Static Button Modifiers ---
 
   /// Neutral button style. `btn-neutral`
-  static const ButtonStyle neutral = ButtonStyle(
-    'btn-neutral',
-    type: StyleType.style,
-  );
+  static const ButtonStyle neutral = ButtonStyle('btn-neutral', type: StyleType.style);
 
   /// Primary button style. `btn-primary`
-  static const ButtonStyle primary = ButtonStyle(
-    'btn-primary',
-    type: StyleType.style,
-  );
+  static const ButtonStyle primary = ButtonStyle('btn-primary', type: StyleType.style);
 
   /// Secondary button style. `btn-secondary`
-  static const ButtonStyle secondary = ButtonStyle(
-    'btn-secondary',
-    type: StyleType.style,
-  );
+  static const ButtonStyle secondary = ButtonStyle('btn-secondary', type: StyleType.style);
 
   /// Accent button style. `btn-accent`
-  static const ButtonStyle accent = ButtonStyle(
-    'btn-accent',
-    type: StyleType.style,
-  );
+  static const ButtonStyle accent = ButtonStyle('btn-accent', type: StyleType.style);
 
   /// Info button style. `btn-info`
-  static const ButtonStyle info = ButtonStyle(
-    'btn-info',
-    type: StyleType.style,
-  );
+  static const ButtonStyle info = ButtonStyle('btn-info', type: StyleType.style);
 
   /// Success button style. `btn-success`
-  static const ButtonStyle success = ButtonStyle(
-    'btn-success',
-    type: StyleType.style,
-  );
+  static const ButtonStyle success = ButtonStyle('btn-success', type: StyleType.style);
 
   /// Warning button style. `btn-warning`
-  static const ButtonStyle warning = ButtonStyle(
-    'btn-warning',
-    type: StyleType.style,
-  );
+  static const ButtonStyle warning = ButtonStyle('btn-warning', type: StyleType.style);
 
   /// Error button style. `btn-error`
-  static const ButtonStyle error = ButtonStyle(
-    'btn-error',
-    type: StyleType.style,
-  );
+  static const ButtonStyle error = ButtonStyle('btn-error', type: StyleType.style);
 
-  // Styles
   /// Outline button style. `btn-outline`
-  static const ButtonStyle outline = ButtonStyle(
-    'btn-outline',
-    type: StyleType.style,
-  ); // Was .border
+  static const ButtonStyle outline = ButtonStyle('btn-outline', type: StyleType.style);
 
-  /// Dash button style. `btn-dash` (New in DaisyUI 5)
-  static const ButtonStyle dash = ButtonStyle(
-    'btn-dash',
-    type: StyleType.style,
-  );
+  /// Dash button style. `btn-dash`
+  static const ButtonStyle dash = ButtonStyle('btn-dash', type: StyleType.style);
 
-  /// Soft button style. `btn-soft` (New in DaisyUI 5)
-  static const ButtonStyle soft = ButtonStyle(
-    'btn-soft',
-    type: StyleType.style,
-  );
+  /// Soft button style. `btn-soft`
+  static const ButtonStyle soft = ButtonStyle('btn-soft', type: StyleType.style);
 
-  /// Ghost button style (transparent background). `btn-ghost`
-  static const ButtonStyle ghost = ButtonStyle(
-    'btn-ghost',
-    type: StyleType.style,
-  );
+  /// Ghost button style. `btn-ghost`
+  static const ButtonStyle ghost = ButtonStyle('btn-ghost', type: StyleType.style);
 
-  /// Link button style (looks like a hyperlink). `btn-link`
-  static const ButtonStyle link = ButtonStyle(
-    'btn-link',
-    type: StyleType.style,
-  );
+  /// Link button style. `btn-link`
+  static const ButtonStyle link = ButtonStyle('btn-link', type: StyleType.style);
 
-  // Behavior modifiers
-  /// Active button state (appears pressed). `btn-active`
-  static const ButtonStyle active = ButtonStyle(
-    'btn-active',
-    type: StyleType.state,
-  );
+  /// Active button style. `btn-active`
+  static const ButtonStyle active = ButtonStyle('btn-active', type: StyleType.state);
 
-  /// Disabled button state (styles the button as disabled). `btn-disabled`
-  /// The HTML 'disabled' attribute and ARIA attributes will also be managed by `configureAttributes`.
-  static const ButtonStyle disabled = ButtonStyle(
-    'btn-disabled',
-    type: StyleType.state,
-  );
-
+  /// Disabled button style. `btn-disabled`
+  static const ButtonStyle disabled = ButtonStyle('btn-disabled', type: StyleType.state);
   // Size modifiers
   /// Extra small button size. `btn-xs`
-  static const ButtonStyle xs = ButtonStyle(
-    'btn-xs',
-    type: StyleType.sizing,
-  );
+  static const ButtonStyle xs = ButtonStyle('btn-xs', type: StyleType.sizing);
 
   /// Small button size. `btn-sm`
-  static const ButtonStyle sm = ButtonStyle(
-    'btn-sm',
-    type: StyleType.sizing,
-  );
+  static const ButtonStyle sm = ButtonStyle('btn-sm', type: StyleType.sizing);
 
   /// Medium button size (default). `btn-md`
-  static const ButtonStyle md = ButtonStyle(
-    'btn-md',
-    type: StyleType.sizing,
-  );
+  static const ButtonStyle md = ButtonStyle('btn-md', type: StyleType.sizing);
 
   /// Large button size. `btn-lg`
-  static const ButtonStyle lg = ButtonStyle(
-    'btn-lg',
-    type: StyleType.sizing,
-  );
+  static const ButtonStyle lg = ButtonStyle('btn-lg', type: StyleType.sizing);
 
-  /// Extra large button size. `btn-xl` (New in DaisyUI 5)
-  static const ButtonStyle xl = ButtonStyle(
-    'btn-xl',
-    type: StyleType.sizing,
-  );
-
+  /// Extra large button size. `btn-xl`
+  static const ButtonStyle xl = ButtonStyle('btn-xl', type: StyleType.sizing);
   // General modifiers
   /// Wide button style (takes more horizontal space). `btn-wide`
-  static const ButtonStyle wide = ButtonStyle(
-    'btn-wide',
-    type: StyleType.additional,
-  );
+  static const ButtonStyle wide = ButtonStyle('btn-wide', type: StyleType.additional);
 
   /// Block level button style (takes full width of its parent). `btn-block`
-  static const ButtonStyle block = ButtonStyle(
-    'btn-block',
-    type: StyleType.additional,
-  );
+  static const ButtonStyle block = ButtonStyle('btn-block', type: StyleType.additional);
 
   /// Square button shape. `btn-square`
-  static const ButtonStyle square = ButtonStyle(
-    'btn-square',
-    type: StyleType.form,
-  );
+  static const ButtonStyle square = ButtonStyle('btn-square', type: StyleType.form);
 
   /// Circle button shape. `btn-circle`
-  static const ButtonStyle circle = ButtonStyle(
-    'btn-circle',
-    type: StyleType.form,
-  );
+  static const ButtonStyle circle = ButtonStyle('btn-circle', type: StyleType.form);
 }
