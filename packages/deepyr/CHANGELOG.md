@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.8
+
+### Added
+
+* **New Component**: `Carousel` component for creating a scrollable list of items ([Example](https://deepyr-doc.web.app/components/carousel)).
+
 ## 0.1.7
 
 ### Added

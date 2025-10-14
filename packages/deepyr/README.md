@@ -33,7 +33,7 @@ Explore all available components and see them in action on the official document
 
     ```yaml
     dependencies:
-      deepyr: ^0.1.7
+      deepyr: ^0.1.8
     ```
 
 2. **Setup Tailwind CSS**
@@ -84,7 +84,7 @@ class MyComponent extends StatelessComponent {
 - ✅ **Avatar**
 - ✅ **Badge**
 - ✅ **Card**
-- 🔲 **Carousel**
+- ✅ **Carousel**
 - ✅ **Chat bubble**
 - ✅ **Collapse**
 - ✅ **Countdown**
@@ -107,7 +107,7 @@ class MyComponent extends StatelessComponent {
 - ✅ **Menu**
 - ✅ **Navbar**
 - ✅ **Pagination**
-- 🔲 **Steps**
+- ✅ **Steps**
 - ✅ **Tab**
 
 ---
