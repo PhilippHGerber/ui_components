@@ -76,6 +76,7 @@ mixin AllComponentStylings
         ButtonStyling,
         BreadcrumbsStyling,
         CardStyling,
+        CarouselStyling,
         ChatStyling,
         ChatBubbleStyling,
         ChatImageStyling,

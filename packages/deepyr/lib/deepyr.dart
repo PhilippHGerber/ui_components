@@ -48,6 +48,9 @@ export 'src/components/button/button_style.dart' show ButtonStyling;
 // Card
 export 'src/components/card/card.dart';
 export 'src/components/card/card_style.dart' show CardStyling;
+// Carousel
+export 'src/components/carousel/carousel.dart';
+export 'src/components/carousel/carousel_style.dart' show CarouselStyling;
 // Chat
 export 'src/components/chat/chat.dart';
 export 'src/components/chat/chat_style.dart'
