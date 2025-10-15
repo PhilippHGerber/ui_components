@@ -2,14 +2,13 @@
 
 [![pub version](https://img.shields.io/pub/v/deepyr.svg)](https://pub.dev/packages/deepyr)
 
-Jaspr + DaisyUI => Deepyr
+Jaspr + daisyUI => Deepyr
 
-A type-safe Dart implementation of DaisyUI components for Jaspr, providing a fluent API for building beautiful web apps with Tailwind CSS.
+A type-safe Dart implementation of daisyUI components for Jaspr, providing a fluent API for building beautiful web apps with Tailwind CSS.
 
 > [!WARNING]
 > Please keep in mind that Deepyr is still under active development
 > and therefore full backward compatibility is not guaranteed before reaching v1.0.0.
-
 
 ## 🚀 Live Demo & Documentation
 
@@ -22,7 +21,7 @@ Explore all available components and see them in action on the official document
 - 🎯 **Type Safety** - Catch styling errors at compile time
 - 🔧 **Fluent API** - Chain modifiers intuitively
 - 📱 **Responsive** - Built-in breakpoint support
-- 🎨 **DaisyUI Faithful** - 1:1 component mapping
+- 🎨 **daisyUI Faithful** - 1:1 component mapping
 - ⚡ **Performance** - Minimal runtime overhead
 
 ## Getting Started
@@ -38,7 +37,7 @@ Explore all available components and see them in action on the official document
 
 2. **Setup Tailwind CSS**
 
-    `deepyr` is a component library, not a CSS framework. You must have **Tailwind CSS v4** and **DaisyUI v5** installed and configured in your Jaspr project for the components to be styled correctly.
+    `deepyr` is a component library, not a CSS framework. You must have **Tailwind CSS v4** and **daisyUI v5** installed and configured in your Jaspr project for the components to be styled correctly.
 
 ## Usage Example
 
@@ -130,7 +129,7 @@ class MyComponent extends StatelessComponent {
 - ✅ **Checkbox**
 - ✅ **Fieldset**
 - ✅ **File Input**
-- 🔲 **Filter**
+- ✅ **Filter**
 - ✅ **Label**
 - ✅ **Radio**
 - ✅ **Range**

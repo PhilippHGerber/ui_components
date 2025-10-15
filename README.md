@@ -27,14 +27,14 @@ ui-components/
 | -------- | -------------------------------------------- |
 | `deepyr` | Shared core utilities and base functionality |
 
-Deepyr components are one-to-one realisation of the DaisyUI components with all
+Deepyr components are one-to-one realisation of the daisyUI components with all
 the advantages of Dart.
 
 ---
 
 ## Getting Started
 
-### TailwindCSS and DaisyUI
+### TailwindCSS and daisyUI
 
 ```bash
 npm init -y
@@ -97,11 +97,11 @@ Add to your `pubspec.yaml`:
 
 ### Core Implementation Strategy
 
-The library abstracts DaisyUI's class-based system into a robust, type-safe collection of Dart components and styling objects.
+The library abstracts daisyUI's class-based system into a robust, type-safe collection of Dart components and styling objects.
 
 Styling is managed through a clever system of Dart classes that represent CSS utilities. Component-specific styles (e.g., `Button.primary`) and general-purpose utilities (e.g., `Spacing.p(4)`, `TextUtil.center`) are unified under a common `Styling` interface. This allows developers to apply both types of styles together in a component's `style` list, offering a high degree of flexibility and code clarity.
 
-`deepyr`  is a foundational library that provides a 1:1, type-safe mapping of DaisyUI components and their modifiers.
+`deepyr`  is a foundational library that provides a 1:1, type-safe mapping of daisyUI components and their modifiers.
 
 ### Greatest Advantages of the `deepyr` Package
 
@@ -111,11 +111,11 @@ The `deepyr` package's architecture provides several key benefits for developers
 
 - **Fluent API for Responsive and State-based Design:** A standout feature is the fluent API for applying responsive and state-based variations. Instead of manually concatenating prefixes, developers can use intuitive methods like `.at(Breakpoint.md)` and `.on(Is.hover)`. This makes the code for complex, adaptive user interfaces significantly more readable and maintainable.
 
-- **High-Level Abstraction and Maintainability:** The package provides high-level abstractions for DaisyUI components. Developers can work with familiar components like `Card`, `Modal`, and `Drawer` without needing to memorize the specific underlying HTML structure and class names that DaisyUI requires. This abstraction also means that if DaisyUI were to update its class names, the changes could be handled within the `deepyr` library, insulating developers from breaking changes.
+- **High-Level Abstraction and Maintainability:** The package provides high-level abstractions for daisyUI components. Developers can work with familiar components like `Card`, `Modal`, and `Drawer` without needing to memorize the specific underlying HTML structure and class names that daisyUI requires. This abstraction also means that if daisyUI were to update its class names, the changes could be handled within the `deepyr` library, insulating developers from breaking changes.
 
 - **Focus on Accessibility:** The base `UiComponent` class includes a dedicated `configureAttributes` method, encouraging the proper setup of ARIA roles and other accessibility attributes from the component level. This built-in consideration for accessibility is a crucial aspect of modern web development.
 
-In summary, the `deepyr` package architecture prioritizes type safety, developer experience, and maintainability, providing a solid and scalable foundation for building sophisticated user interfaces with Jaspr and DaisyUI.
+In summary, the `deepyr` package architecture prioritizes type safety, developer experience, and maintainability, providing a solid and scalable foundation for building sophisticated user interfaces with Jaspr and daisyUI.
 
 ## License
 
