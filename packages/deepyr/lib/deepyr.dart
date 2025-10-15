@@ -85,6 +85,9 @@ export 'src/components/fieldset/fieldset_style.dart' show FieldsetStyling, Legen
 // FileInput
 export 'src/components/file_input/file_input.dart';
 export 'src/components/file_input/file_input_style.dart' show FileInputStyling;
+// Filter
+export 'src/components/filter/filter.dart';
+export 'src/components/filter/filter_style.dart' show FilterStyling;
 // Footer
 export 'src/components/footer/footer.dart';
 export 'src/components/footer/footer_style.dart' show FooterStyling;

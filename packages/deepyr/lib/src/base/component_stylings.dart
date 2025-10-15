@@ -92,6 +92,7 @@ mixin AllComponentStylings
         DropdownContentStyling,
         FieldsetStyling,
         FileInputStyling,
+        FilterStyling,
         FooterStyling,
         FormLabelStyling,
         HeroStyling,

@@ -1,5 +1,11 @@
 # Changelog
 
+## Next release
+
+### Added
+
+* **New Component**: `Filter` component for creating a group of radio buttons to filter items, with support for form-based and CSS-based reset functionality ([Example](https://deepyr-doc.web.app/components/filter)).
+
 ## 0.1.8
 
 ### Added
@@ -45,7 +51,7 @@
 * **New Component**: `Stat` and `Stats` components for displaying statistical data.
 * **New Component**: `List`, `ListRow`, and `ListCol` components for creating structured lists.
 * **New Component**: `Mask` component with a full set of shape modifiers.
-* **New Component**: `Table` component to be a 1:1 match with all official DaisyUI examples.
+* **New Component**: `Table` component to be a 1:1 match with all official daisyUI examples.
 
 ## 0.1.2
 
@@ -112,4 +118,4 @@
 
 * Initial project setup and foundation for the `deepyr` package.
 * Proof of Concept (PoC) release with the first component: `Button`.
-* Basic API structure for creating and styling DaisyUI components in Jaspr.
+* Basic API structure for creating and styling daisyUI components in Jaspr.
