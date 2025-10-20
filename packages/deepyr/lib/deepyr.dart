@@ -72,6 +72,9 @@ export 'src/components/diff/diff_style.dart' show DiffStyling;
 // Divider
 export 'src/components/divider/divider.dart';
 export 'src/components/divider/divider_style.dart' show DividerStyling;
+// Dock
+export 'src/components/dock/dock.dart';
+export 'src/components/dock/dock_style.dart' show DockItemStyling, DockLabelStyling, DockStyling;
 // Drawer
 export 'src/components/drawer/drawer.dart';
 export 'src/components/drawer/drawer_style.dart' show DrawerStyling;

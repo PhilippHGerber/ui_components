@@ -87,6 +87,7 @@ mixin AllComponentStylings
         CountdownStyling,
         DiffStyling,
         DividerStyling,
+        DockStyling,
         DrawerStyling,
         DropdownStyling,
         DropdownContentStyling,
