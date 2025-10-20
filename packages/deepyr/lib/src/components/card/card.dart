@@ -4,6 +4,7 @@ import '../../base/style_type.dart';
 import '../../base/styling.dart';
 import '../../base/ui_component.dart';
 import '../../base/ui_component_attributes.dart';
+import '../../base/ui_events.dart';
 import '../../base/utilities/alignment.dart';
 import '../../elements/figure.dart';
 import 'card_style.dart';
@@ -30,6 +31,7 @@ class Card extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.child,
     super.onClick,
     super.key,
@@ -61,6 +63,7 @@ class Card extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return Card(
@@ -73,6 +76,7 @@ class Card extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       child: child,
       onClick: onClick,
       key: key ?? this.key,
@@ -156,6 +160,7 @@ class CardBody extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.child,
     super.key,
   });
@@ -174,6 +179,7 @@ class CardBody extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return CardBody(
@@ -184,6 +190,7 @@ class CardBody extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       child: child,
       key: key ?? this.key,
     );
@@ -204,6 +211,7 @@ class CardTitle extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.child,
     super.key,
   });
@@ -222,6 +230,7 @@ class CardTitle extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return CardTitle(
@@ -232,6 +241,7 @@ class CardTitle extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       child: child,
       key: key ?? this.key,
     );
@@ -251,6 +261,7 @@ class CardActions extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.child,
     super.key,
   });
@@ -269,6 +280,7 @@ class CardActions extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return CardActions(
@@ -279,6 +291,7 @@ class CardActions extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       child: child,
       key: key ?? this.key,
     );

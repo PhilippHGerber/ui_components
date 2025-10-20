@@ -4,6 +4,7 @@ import '../../base/style_type.dart';
 import '../../base/styling.dart';
 import '../../base/styling_extensions.dart';
 import '../../base/ui_component.dart';
+import '../../base/ui_events.dart';
 import 'timeline_style.dart';
 
 /// The content on the "start" side of a [TimelineItem] (left in vertical, top in horizontal).
@@ -18,6 +19,8 @@ class TimelineStart extends UiComponent {
     super.tag = 'div',
     List<TimelineContentStyling>? style,
     super.classes,
+    super.attributes,
+    super.eventHandlers,
     super.key,
   }) : super(style: style);
 
@@ -36,6 +39,7 @@ class TimelineStart extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return TimelineStart(
@@ -43,6 +47,8 @@ class TimelineStart extends UiComponent {
       tag: tag,
       style: style as List<TimelineContentStyling>?,
       classes: mergeClasses(this.classes, classes),
+      attributes: attributes ?? componentAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
     );
   }
@@ -60,6 +66,8 @@ class TimelineEnd extends UiComponent {
     super.tag = 'div',
     List<TimelineContentStyling>? style,
     super.classes,
+    super.attributes,
+    super.eventHandlers,
     super.key,
   }) : super(style: style);
 
@@ -78,6 +86,7 @@ class TimelineEnd extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return TimelineEnd(
@@ -85,6 +94,8 @@ class TimelineEnd extends UiComponent {
       tag: tag,
       style: style as List<TimelineContentStyling>?,
       classes: mergeClasses(this.classes, classes),
+      attributes: attributes ?? componentAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
     );
   }
@@ -100,6 +111,8 @@ class TimelineMiddle extends UiComponent {
     super.children, {
     super.tag = 'div',
     super.classes,
+    super.attributes,
+    super.eventHandlers,
     super.key,
   }) : super();
 
@@ -112,12 +125,15 @@ class TimelineMiddle extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return TimelineMiddle(
       children,
       tag: tag,
       classes: mergeClasses(this.classes, classes),
+      attributes: attributes ?? componentAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
     );
   }
@@ -150,6 +166,8 @@ class TimelineItem extends UiComponent {
     bool showStartConnector = false,
     bool showEndConnector = false,
     super.classes,
+    super.attributes,
+    super.eventHandlers,
     super.key,
   }) : _showStartConnector = showStartConnector,
        _showEndConnector = showEndConnector,
@@ -203,6 +221,7 @@ class TimelineItem extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
     TimelineStart? start,
     TimelineMiddle? middle,
@@ -221,6 +240,8 @@ class TimelineItem extends UiComponent {
       showStartConnector: showStartConnector ?? _showStartConnector,
       showEndConnector: showEndConnector ?? _showEndConnector,
       classes: mergeClasses(this.classes, classes),
+      attributes: attributes ?? componentAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
     );
   }
@@ -238,7 +259,11 @@ class Timeline extends UiComponent {
   const Timeline(
     super.children, {
     List<TimelineStyling>? style,
+    super.id,
+    super.css,
     super.classes,
+    super.attributes,
+    super.eventHandlers,
     super.key,
   }) : super(tag: 'ul', style: style);
 
@@ -301,12 +326,16 @@ class Timeline extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return Timeline(
       children,
       style: style as List<TimelineStyling>?,
       classes: mergeClasses(this.classes, classes),
+      css: css ?? this.css,
+      attributes: attributes ?? componentAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
     );
   }

@@ -2,6 +2,7 @@ import 'package:jaspr/jaspr.dart' show Key, Styles;
 
 import '../../base/ui_component.dart';
 import '../../base/ui_component_attributes.dart';
+import '../../base/ui_events.dart';
 import '../label/label.dart' show Label;
 import 'form_label_style.dart';
 
@@ -29,6 +30,7 @@ class FormLabel extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.child,
     super.key,
   }) : super(style: style);
@@ -48,6 +50,7 @@ class FormLabel extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return FormLabel(
@@ -58,6 +61,7 @@ class FormLabel extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       child: child,
       key: key ?? this.key,
     );

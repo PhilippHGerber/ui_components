@@ -3,6 +3,7 @@ import 'package:jaspr/jaspr.dart' show Key, Styles;
 import '../../base/style_type.dart';
 import '../../base/ui_component.dart';
 import '../../base/ui_component_attributes.dart';
+import '../../base/ui_events.dart';
 import 'steps_style.dart';
 
 /// A container for a list of `Step` components to show progress in a process.
@@ -39,6 +40,7 @@ class Steps extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.key,
   }) : super(style: style);
 
@@ -51,6 +53,7 @@ class Steps extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return Steps(
@@ -61,6 +64,7 @@ class Steps extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
     );
   }
@@ -97,6 +101,7 @@ class Step extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.child,
     super.key,
   }) : super(style: style);
@@ -122,6 +127,7 @@ class Step extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return Step(
@@ -133,6 +139,7 @@ class Step extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       child: child,
       key: key ?? this.key,
     );
@@ -183,6 +190,7 @@ class StepIcon extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.child,
     super.key,
   }) : super(style: style);
@@ -196,6 +204,7 @@ class StepIcon extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return StepIcon(
@@ -206,6 +215,7 @@ class StepIcon extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       child: child,
       key: key ?? this.key,
     );

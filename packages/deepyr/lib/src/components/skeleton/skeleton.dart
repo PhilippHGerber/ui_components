@@ -1,6 +1,7 @@
 import 'package:jaspr/jaspr.dart' show Key, Styles;
 
 import '../../base/ui_component.dart';
+import '../../base/ui_events.dart';
 import 'skeleton_style.dart';
 
 /// A component that displays a placeholder preview of your content before it loads.
@@ -50,11 +51,12 @@ class Skeleton extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.key,
   }) : super(
-          null, // Skeletons typically have no children.
-          style: style,
-        );
+         null, // Skeletons typically have no children.
+         style: style,
+       );
 
   @override
   String get baseClass => 'skeleton';
@@ -65,6 +67,7 @@ class Skeleton extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return Skeleton(
@@ -74,6 +77,7 @@ class Skeleton extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
     );
   }

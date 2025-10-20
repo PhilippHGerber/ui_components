@@ -3,6 +3,7 @@ import 'package:jaspr/jaspr.dart';
 import '../../base/style_type.dart';
 import '../../base/ui_component.dart';
 import '../../base/ui_component_attributes.dart';
+import '../../base/ui_events.dart';
 import 'tooltip_style.dart';
 
 /// A component that shows a message when hovering over an element.
@@ -30,6 +31,7 @@ class Tooltip extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.key,
   }) : assert(
          tip == null || content == null,
@@ -82,6 +84,7 @@ class Tooltip extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return Tooltip(
@@ -94,6 +97,7 @@ class Tooltip extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
     );
   }
@@ -159,6 +163,7 @@ class TooltipContent extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.child,
     super.key,
   });
@@ -172,6 +177,7 @@ class TooltipContent extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return TooltipContent(
@@ -182,6 +188,7 @@ class TooltipContent extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       child: child,
       key: key ?? this.key,
     );

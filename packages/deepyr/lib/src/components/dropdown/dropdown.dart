@@ -3,6 +3,7 @@ import 'package:jaspr/jaspr.dart';
 import '../../base/style_type.dart';
 import '../../base/ui_component.dart';
 import '../../base/ui_component_attributes.dart';
+import '../../base/ui_events.dart';
 import '../button/button.dart' show Button;
 import 'dropdown_content_style.dart';
 import 'dropdown_style.dart';
@@ -62,6 +63,7 @@ class Dropdown extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.key,
   }) : super(
          null, // Children are managed via trigger/content.
@@ -179,6 +181,7 @@ class Dropdown extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return Dropdown(
@@ -190,6 +193,7 @@ class Dropdown extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
     );
   }
@@ -240,11 +244,13 @@ class DropdownContent extends UiComponent {
   /// - [children]: The items or content to display within the dropdown.
   /// - [tag]: The HTML tag, defaults to 'ul' (suitable for menus). Change to 'div' for card-like content.
   /// - [style]: A list of [DropdownContentStyling] (the interface) instances.
-  /// - [applyDefaultTabIndex]: If true (default), applies `tabindex="0"` to make the content
-  ///   focusable. This is common for DaisyUI's CSS focus-based dropdowns.
-  ///   Set to false if `tabindex` is managed manually or not needed (e.g., for `<details>` content).
-  /// - [role]: An optional ARIA role for the content (e.g., "menu", "listbox").
-  /// - Other parameters from [UiComponent].
+  /// - [id]: An optional ID for the content element.
+  /// - [classes]: Additional CSS classes to apply.
+  /// - [css]: Custom CSS styles.
+  /// - [attributes]: Additional HTML attributes to apply.
+  /// - [eventHandlers]: Event handlers for user interactions.
+  /// - [child]: An optional single child component.
+  /// - [key]: An optional key for the component.
   const DropdownContent(
     super.children, {
     super.tag = 'div',
@@ -253,6 +259,7 @@ class DropdownContent extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.child,
     super.key,
   }) : super(style: style);
@@ -275,6 +282,7 @@ class DropdownContent extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return DropdownContent(
@@ -285,6 +293,7 @@ class DropdownContent extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       child: child,
       key: key ?? this.key,
     );

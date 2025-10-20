@@ -2,6 +2,7 @@ import 'package:jaspr/jaspr.dart' show Key, Styles;
 
 import '../../base/ui_component.dart';
 import '../../base/ui_component_attributes.dart';
+import '../../base/ui_events.dart';
 import 'navbar_style.dart';
 
 /// A navigation bar component, typically placed at the top of a page or section.
@@ -29,6 +30,7 @@ class Navbar extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.child,
     super.key,
   });
@@ -58,6 +60,7 @@ class Navbar extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return Navbar(
@@ -69,10 +72,12 @@ class Navbar extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       child: child,
       key: key ?? this.key,
     );
   }
+
   // No static NavbarStyleModifiers are defined from navbar.txt as 'navbar' itself is the main class.
   // Other styles (colors, shadow) come from general utilities.
 }
@@ -90,6 +95,7 @@ class NavbarStart extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.child,
     super.key,
   });
@@ -103,6 +109,7 @@ class NavbarStart extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return NavbarStart(
@@ -113,6 +120,7 @@ class NavbarStart extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       child: child,
       key: key ?? this.key,
     );
@@ -132,6 +140,7 @@ class NavbarCenter extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.child,
     super.key,
   });
@@ -145,6 +154,7 @@ class NavbarCenter extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return NavbarCenter(
@@ -155,6 +165,7 @@ class NavbarCenter extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       child: child,
       key: key ?? this.key,
     );
@@ -174,6 +185,7 @@ class NavbarEnd extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.child,
     super.key,
   });
@@ -187,6 +199,7 @@ class NavbarEnd extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return NavbarEnd(
@@ -197,6 +210,7 @@ class NavbarEnd extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       child: child,
       key: key ?? this.key,
     );

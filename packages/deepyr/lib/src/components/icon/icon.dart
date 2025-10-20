@@ -3,6 +3,7 @@ import 'package:jaspr/jaspr.dart';
 import '../../base/style_type.dart';
 import '../../base/ui_component.dart';
 import '../../base/ui_component_attributes.dart';
+import '../../base/ui_events.dart';
 import 'icon_style.dart';
 
 // It's good practice to have Typography and Sizing utilities available
@@ -38,6 +39,7 @@ class Icon extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.key,
   }) : super(
          // The icon name is the direct text child of the span
@@ -83,6 +85,7 @@ class Icon extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return Icon(
@@ -95,29 +98,30 @@ class Icon extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
     );
   }
 
-//   @override
-//   Component build(BuildContext context) {
-//     // Combine user-provided CSS with our default reset.
-//     final combinedCss = Styles.combine([
-//       const Styles(raw: {'font-size': 'inherit'}), // Our default reset
-//       ?this.css,
-//     ]);
-//
-//     return Component.element(
-//       tag: tag,
-//       id: id,
-//       classes: combinedClasses,
-//       // Use the combined styles.
-//       styles: combinedCss,
-//       attributes: componentAttributes,
-//       events: this.events,
-//       children: children ?? [?child],
-//     );
-//   }
+  //   @override
+  //   Component build(BuildContext context) {
+  //     // Combine user-provided CSS with our default reset.
+  //     final combinedCss = Styles.combine([
+  //       const Styles(raw: {'font-size': 'inherit'}), // Our default reset
+  //       ?this.css,
+  //     ]);
+  //
+  //     return Component.element(
+  //       tag: tag,
+  //       id: id,
+  //       classes: combinedClasses,
+  //       // Use the combined styles.
+  //       styles: combinedCss,
+  //       attributes: componentAttributes,
+  //       events: this.events,
+  //       children: children ?? [?child],
+  //     );
+  //   }
 
   // --- Static Icon Modifiers (Type: IconModifier interface, Instantiating: IconStyleModifier) ---
   // These would correspond to specific Material Symbols CSS styling classes or font variation settings

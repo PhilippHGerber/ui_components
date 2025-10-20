@@ -4,6 +4,7 @@ import '../../base/style_type.dart';
 import '../../base/styling.dart' show Styling;
 import '../../base/ui_component.dart';
 import '../../base/ui_component_attributes.dart';
+import '../../base/ui_events.dart';
 import 'tab_style.dart';
 import 'tabs_style.dart';
 
@@ -32,6 +33,7 @@ class Tabs extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.child,
     super.key,
   }) : super(style: style);
@@ -62,6 +64,7 @@ class Tabs extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return Tabs(
@@ -73,6 +76,7 @@ class Tabs extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       child: child,
       key: key ?? this.key,
     );
@@ -180,6 +184,7 @@ class Tab extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.onClick,
     super.child,
     super.key,
@@ -300,6 +305,7 @@ class Tab extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
     // Add customStyles to the copyWith method
     Styles? customStyles,
@@ -319,6 +325,7 @@ class Tab extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       onClick: onClick,
       child: child,
       key: key ?? this.key,
@@ -377,6 +384,7 @@ class TabContent extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.child,
     super.key,
   });
@@ -404,6 +412,7 @@ class TabContent extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return TabContent(
@@ -415,6 +424,7 @@ class TabContent extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       child: child,
       key: key ?? this.key,
     );

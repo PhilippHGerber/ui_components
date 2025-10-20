@@ -5,6 +5,7 @@ import 'package:universal_web/web.dart' show Event, HTMLInputElement;
 import '../../base/style_type.dart';
 import '../../base/ui_component.dart';
 import '../../base/ui_component_attributes.dart';
+import '../../base/ui_events.dart';
 import 'range_style.dart';
 
 /// A range slider component used to select a value by sliding a handle.
@@ -66,6 +67,7 @@ class Range extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.key,
   }) : super(null, style: style); // Range elements have no children.
 
@@ -112,6 +114,7 @@ class Range extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return Range(
@@ -127,6 +130,7 @@ class Range extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
     );
   }

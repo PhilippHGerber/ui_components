@@ -3,6 +3,7 @@ import 'package:jaspr/jaspr.dart' show Key, Styles;
 import '../../base/style_type.dart';
 import '../../base/ui_component.dart';
 import '../../base/ui_component_attributes.dart';
+import '../../base/ui_events.dart';
 import 'input_style.dart';
 
 /// A component for user text input, rendering an HTML `<input>` element.
@@ -32,6 +33,7 @@ class Input extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.onInput,
     super.onChange,
     super.key,
@@ -103,7 +105,8 @@ class Input extends UiComponent {
   @override
   String get combinedClasses {
     final classes = super.combinedClasses;
-    final needsValidator = required ||
+    final needsValidator =
+        required ||
         pattern != null ||
         minLength != null ||
         maxLength != null ||
@@ -121,6 +124,7 @@ class Input extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return Input(
@@ -144,6 +148,7 @@ class Input extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
     );
   }

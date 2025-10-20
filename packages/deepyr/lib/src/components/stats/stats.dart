@@ -2,6 +2,7 @@ import 'package:jaspr/jaspr.dart' show Key, Styles;
 
 import '../../base/style_type.dart';
 import '../../base/ui_component.dart';
+import '../../base/ui_events.dart';
 import 'stats_style.dart';
 
 /// A container for showing numbers and data in a block. It groups multiple [Stat] components.
@@ -23,6 +24,7 @@ class Stats extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.key,
   }) : super(style: style);
 
@@ -35,6 +37,7 @@ class Stats extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return Stats(
@@ -45,6 +48,7 @@ class Stats extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
     );
   }
@@ -79,6 +83,7 @@ class Stat extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.key,
   }) : super(style: style);
 
@@ -91,6 +96,7 @@ class Stat extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return Stat(
@@ -101,6 +107,7 @@ class Stat extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
     );
   }
@@ -114,8 +121,14 @@ class StatTitle extends UiComponent {
   /// - [tag]: The HTML tag to use for the component, defaults to 'div'.
   /// - [style]: A list of [StatTitleStyling] to apply.
   /// - [key]: A [Key] to uniquely identify this widget.
-  const StatTitle(super.children, {super.tag = 'div', List<StatTitleStyling>? style, super.key})
-    : super(style: style);
+  const StatTitle(
+    super.children, {
+    super.tag = 'div',
+    List<StatTitleStyling>? style,
+    super.attributes,
+    super.eventHandlers,
+    super.key,
+  }) : super(style: style);
 
   @override
   String get baseClass => 'stat-title';
@@ -126,12 +139,15 @@ class StatTitle extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return StatTitle(
       children,
       tag: tag,
       style: style as List<StatTitleStyling>?,
+      attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
     );
   }
@@ -145,8 +161,14 @@ class StatValue extends UiComponent {
   /// - [tag]: The HTML tag to use for the component, defaults to 'div'.
   /// - [style]: A list of [StatValueStyling] to apply.
   /// - [key]: A [Key] to uniquely identify this widget.
-  const StatValue(super.children, {super.tag = 'div', List<StatValueStyling>? style, super.key})
-    : super(style: style);
+  const StatValue(
+    super.children, {
+    super.tag = 'div',
+    List<StatValueStyling>? style,
+    super.attributes,
+    super.eventHandlers,
+    super.key,
+  }) : super(style: style);
 
   @override
   String get baseClass => 'stat-value';
@@ -157,12 +179,15 @@ class StatValue extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return StatValue(
       children,
       tag: tag,
       style: style as List<StatValueStyling>?,
+      attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
     );
   }
@@ -176,8 +201,14 @@ class StatDesc extends UiComponent {
   /// - [tag]: The HTML tag to use for the component, defaults to 'div'.
   /// - [style]: A list of [StatDescStyling] to apply.
   /// - [key]: A [Key] to uniquely identify this widget.
-  const StatDesc(super.children, {super.tag = 'div', List<StatDescStyling>? style, super.key})
-    : super(style: style);
+  const StatDesc(
+    super.children, {
+    super.tag = 'div',
+    List<StatDescStyling>? style,
+    super.attributes,
+    super.eventHandlers,
+    super.key,
+  }) : super(style: style);
 
   @override
   String get baseClass => 'stat-desc';
@@ -188,12 +219,15 @@ class StatDesc extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return StatDesc(
       children,
       tag: tag,
       style: style as List<StatDescStyling>?,
+      attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
     );
   }
@@ -207,8 +241,14 @@ class StatFigure extends UiComponent {
   /// - [tag]: The HTML tag to use for the component, defaults to 'div'.
   /// - [style]: A list of [StatFigureStyling] to apply.
   /// - [key]: A [Key] to uniquely identify this widget.
-  const StatFigure(super.children, {super.tag = 'div', List<StatFigureStyling>? style, super.key})
-    : super(style: style);
+  const StatFigure(
+    super.children, {
+    super.tag = 'div',
+    List<StatFigureStyling>? style,
+    super.attributes,
+    super.eventHandlers,
+    super.key,
+  }) : super(style: style);
 
   @override
   String get baseClass => 'stat-figure';
@@ -219,12 +259,15 @@ class StatFigure extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return StatFigure(
       children,
       tag: tag,
       style: style as List<StatFigureStyling>?,
+      attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
     );
   }
@@ -238,8 +281,14 @@ class StatActions extends UiComponent {
   /// - [tag]: The HTML tag to use for the component, defaults to 'div'.
   /// - [style]: A list of [StatActionsStyling] to apply.
   /// - [key]: A [Key] to uniquely identify this widget.
-  const StatActions(super.children, {super.tag = 'div', List<StatActionsStyling>? style, super.key})
-    : super(style: style);
+  const StatActions(
+    super.children, {
+    super.tag = 'div',
+    List<StatActionsStyling>? style,
+    super.attributes,
+    super.eventHandlers,
+    super.key,
+  }) : super(style: style);
 
   @override
   String get baseClass => 'stat-actions';
@@ -250,12 +299,15 @@ class StatActions extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return StatActions(
       children,
       tag: tag,
       style: style as List<StatActionsStyling>?,
+      attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
     );
   }

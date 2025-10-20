@@ -3,6 +3,7 @@ import 'package:jaspr/jaspr.dart' show Key, Styles;
 import '../../../deepyr.dart' show Badge;
 import '../../base/style_type.dart';
 import '../../base/ui_component.dart';
+import '../../base/ui_events.dart';
 import '../badge/badge.dart' show Badge;
 import 'indicator_style.dart';
 
@@ -26,6 +27,7 @@ class Indicator extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.child,
     super.key,
   }) : super(style: style);
@@ -39,6 +41,7 @@ class Indicator extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return Indicator(
@@ -49,6 +52,7 @@ class Indicator extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       child: child,
       key: key ?? this.key,
     );
@@ -95,6 +99,7 @@ class IndicatorItem extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.child,
     super.key,
   }) : super(style: style);
@@ -148,6 +153,7 @@ class IndicatorItem extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return IndicatorItem(
@@ -158,6 +164,7 @@ class IndicatorItem extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       child: child,
       key: key ?? this.key,
     );
@@ -166,12 +173,16 @@ class IndicatorItem extends UiComponent {
   // These can be applied to an IndicatorItem to override the parent Indicator's position.
 
   /// Positions the item at the horizontal start. `indicator-start`
-  static const IndicatorItemStyle start =
-      IndicatorItemStyle('indicator-start', type: StyleType.layout);
+  static const IndicatorItemStyle start = IndicatorItemStyle(
+    'indicator-start',
+    type: StyleType.layout,
+  );
 
   /// Positions the item at the horizontal center. `indicator-center`
-  static const IndicatorItemStyle center =
-      IndicatorItemStyle('indicator-center', type: StyleType.layout);
+  static const IndicatorItemStyle center = IndicatorItemStyle(
+    'indicator-center',
+    type: StyleType.layout,
+  );
 
   /// Positions the item at the horizontal end. `indicator-end`
   static const IndicatorItemStyle end = IndicatorItemStyle('indicator-end', type: StyleType.layout);
@@ -180,10 +191,14 @@ class IndicatorItem extends UiComponent {
   static const IndicatorItemStyle top = IndicatorItemStyle('indicator-top', type: StyleType.layout);
 
   /// Positions the item at the vertical middle. `indicator-middle`
-  static const IndicatorItemStyle middle =
-      IndicatorItemStyle('indicator-middle', type: StyleType.layout);
+  static const IndicatorItemStyle middle = IndicatorItemStyle(
+    'indicator-middle',
+    type: StyleType.layout,
+  );
 
   /// Positions the item at the vertical bottom. `indicator-bottom`
-  static const IndicatorItemStyle bottom =
-      IndicatorItemStyle('indicator-bottom', type: StyleType.layout);
+  static const IndicatorItemStyle bottom = IndicatorItemStyle(
+    'indicator-bottom',
+    type: StyleType.layout,
+  );
 }

@@ -1,6 +1,7 @@
 import 'package:jaspr/jaspr.dart' show Key, Styles;
 
 import '../../base/ui_component.dart';
+import '../../base/ui_events.dart';
 import 'hero_style.dart';
 
 /// A component for displaying a large box, often with a background image and text content.
@@ -54,6 +55,7 @@ class Hero extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.key,
   }) : super(style: style);
 
@@ -66,6 +68,7 @@ class Hero extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return Hero(
@@ -76,6 +79,7 @@ class Hero extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
     );
   }
@@ -103,6 +107,7 @@ class HeroContent extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.child,
     super.key,
   }) : super();
@@ -116,6 +121,7 @@ class HeroContent extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return HeroContent(
@@ -126,6 +132,7 @@ class HeroContent extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       child: child,
       key: key ?? this.key,
     );
@@ -151,6 +158,7 @@ class HeroOverlay extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.key,
   }) : super(null); // Overlays do not have children.
 
@@ -163,6 +171,7 @@ class HeroOverlay extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return HeroOverlay(
@@ -172,6 +181,7 @@ class HeroOverlay extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
     );
   }

@@ -4,6 +4,7 @@ import 'package:jaspr/jaspr.dart';
 import '../../base/style_type.dart';
 import '../../base/ui_component.dart';
 import '../../base/ui_component_attributes.dart';
+import '../../base/ui_events.dart';
 import 'button_style.dart';
 
 /// Defines the valid HTML `type` attributes for a button element.
@@ -54,6 +55,7 @@ class Button extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.onClick,
     super.child,
     super.key,
@@ -127,6 +129,7 @@ class Button extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
     bool? isNativeSubmit,
   }) {
@@ -142,6 +145,7 @@ class Button extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
       child: child,
     );

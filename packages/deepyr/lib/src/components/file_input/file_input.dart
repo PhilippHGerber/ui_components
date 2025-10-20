@@ -5,6 +5,7 @@ import 'package:universal_web/web.dart' show Event, FileList, HTMLInputElement;
 import '../../base/style_type.dart';
 import '../../base/ui_component.dart';
 import '../../base/ui_component_attributes.dart';
+import '../../base/ui_events.dart';
 import 'file_input_style.dart';
 
 /// A component for user file selection, rendering an HTML `<input type="file">`.
@@ -65,6 +66,7 @@ class FileInput extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.key,
   }) : super(null, style: style); // FileInput elements have no children.
 
@@ -104,6 +106,7 @@ class FileInput extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return FileInput(
@@ -118,6 +121,7 @@ class FileInput extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
     );
   }

@@ -2,6 +2,7 @@ import 'package:jaspr/jaspr.dart';
 
 import '../../base/ui_component.dart';
 import '../../base/ui_component_attributes.dart';
+import '../../base/ui_events.dart';
 import 'radial_progress_style.dart';
 
 /// A component to show the progress of a task in a circular "pie chart" style.
@@ -45,6 +46,7 @@ class RadialProgress extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.key,
   }) : super(children, style: style);
 
@@ -78,6 +80,7 @@ class RadialProgress extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
     double? value,
     bool? showValueText,
@@ -96,6 +99,7 @@ class RadialProgress extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
     );
   }

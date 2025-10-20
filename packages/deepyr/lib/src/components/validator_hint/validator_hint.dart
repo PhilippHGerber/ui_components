@@ -1,6 +1,7 @@
 import 'package:jaspr/jaspr.dart' show Key, Styles;
 
 import '../../base/ui_component.dart';
+import '../../base/ui_events.dart';
 import 'validator_hint_style.dart';
 
 /// A component that displays a validation message for a form field.
@@ -27,6 +28,7 @@ class ValidatorHint extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.child,
     super.key,
   }) : super(style: style);
@@ -40,6 +42,7 @@ class ValidatorHint extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return ValidatorHint(
@@ -50,6 +53,7 @@ class ValidatorHint extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       child: child,
       key: key ?? this.key,
     );

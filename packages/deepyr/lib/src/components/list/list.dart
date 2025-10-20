@@ -4,6 +4,7 @@ import 'package:jaspr/ui.dart' show BuildContext;
 import '../../../deepyr.dart' show Flex;
 import '../../base/style_type.dart';
 import '../../base/ui_component.dart';
+import '../../base/ui_events.dart';
 import 'list_style.dart';
 
 /// The main container for a list, typically rendering as a `<ul>` or `<div>`.
@@ -21,6 +22,7 @@ class Listing extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.key,
   }) : super(style: style);
 
@@ -33,6 +35,7 @@ class Listing extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return Listing(
@@ -43,6 +46,7 @@ class Listing extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
     );
   }
@@ -69,6 +73,7 @@ class ListCol extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.key,
   }) : super(style: style);
 
@@ -82,6 +87,7 @@ class ListCol extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
     // Allow style to be injected by the parent (ListRow).
     List<ListColStyling>? style,
@@ -94,6 +100,7 @@ class ListCol extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
     );
   }
@@ -131,6 +138,7 @@ class ListRow extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.key,
   }) : super(style: style);
 
@@ -143,6 +151,7 @@ class ListRow extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return ListRow(
@@ -153,6 +162,7 @@ class ListRow extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
     );
   }

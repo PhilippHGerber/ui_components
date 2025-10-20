@@ -81,6 +81,7 @@ abstract class UiComponent extends StatelessComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   });
 

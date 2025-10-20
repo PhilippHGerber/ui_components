@@ -4,6 +4,7 @@ import 'package:universal_web/web.dart';
 import '../../base/style_type.dart';
 import '../../base/ui_component.dart';
 import '../../base/ui_component_attributes.dart';
+import '../../base/ui_events.dart';
 import 'swap_style.dart';
 
 // Example for helpers, assuming Icon component exists
@@ -41,6 +42,7 @@ class Swap extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.onClick, // onClick on the label itself
     super.key,
   }) : super(
@@ -92,6 +94,7 @@ class Swap extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return Swap(
@@ -107,6 +110,7 @@ class Swap extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       onClick: onClick,
       key: key ?? this.key,
     );

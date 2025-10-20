@@ -5,6 +5,7 @@ import '../../base/styling.dart';
 import '../../base/styling_extensions.dart';
 import '../../base/ui_component.dart';
 import '../../base/ui_component_attributes.dart';
+import '../../base/ui_events.dart';
 import 'menu_style.dart';
 
 /// A container for a list of navigation links, which can be arranged vertically or horizontally.
@@ -31,6 +32,7 @@ class Menu extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.child,
     super.key,
   }) : super(style: style);
@@ -68,6 +70,7 @@ class Menu extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return Menu(
@@ -79,6 +82,7 @@ class Menu extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       child: child,
       key: key ?? this.key,
     );
@@ -122,6 +126,7 @@ class MenuTitle extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.child,
     super.key,
   });
@@ -135,6 +140,7 @@ class MenuTitle extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return MenuTitle(
@@ -145,6 +151,7 @@ class MenuTitle extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       child: child,
       key: key ?? this.key,
     );
@@ -176,6 +183,7 @@ class MenuItem extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.child,
     super.key,
   }) : super(tag: 'a');
@@ -222,6 +230,7 @@ class MenuItem extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return MenuItem(
@@ -235,6 +244,7 @@ class MenuItem extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       child: child,
       key: key ?? this.key,
     );
@@ -261,6 +271,8 @@ class MenuSubmenu extends UiComponent {
     this.ulStyle,
     super.id,
     super.classes,
+    super.attributes,
+    super.eventHandlers,
     super.key,
   }) : super(children, tag: 'details');
 
@@ -311,6 +323,7 @@ class MenuSubmenu extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     // This copyWith implementation might need ulStyle if it were to be modified by a parent.
@@ -322,6 +335,8 @@ class MenuSubmenu extends UiComponent {
       ulStyle: ulStyle,
       id: id ?? this.id,
       classes: mergeClasses(this.classes, classes),
+      attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
     );
   }
@@ -341,6 +356,8 @@ class MenuHoverSubmenu extends UiComponent {
     this.ulStyle,
     super.id,
     super.classes,
+    super.attributes,
+    super.eventHandlers,
     super.key,
   }) : super(children, tag: 'li');
 
@@ -376,6 +393,7 @@ class MenuHoverSubmenu extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return MenuHoverSubmenu(
@@ -384,6 +402,8 @@ class MenuHoverSubmenu extends UiComponent {
       ulStyle: ulStyle,
       id: id ?? this.id,
       classes: mergeClasses(this.classes, classes),
+      attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
     );
   }
@@ -400,6 +420,7 @@ class MenuDropdownToggle extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.child,
     super.key,
     super.onClick,
@@ -414,6 +435,7 @@ class MenuDropdownToggle extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return MenuDropdownToggle(
@@ -423,6 +445,7 @@ class MenuDropdownToggle extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       child: child,
       onClick: onClick,
       key: key ?? this.key,
@@ -441,6 +464,7 @@ class MenuDropdownContent extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.child,
     super.key,
   }) : super();
@@ -454,6 +478,7 @@ class MenuDropdownContent extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return MenuDropdownContent(
@@ -463,6 +488,7 @@ class MenuDropdownContent extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       child: child,
       key: key ?? this.key,
     );

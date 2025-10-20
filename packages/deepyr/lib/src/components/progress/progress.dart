@@ -3,6 +3,7 @@ import 'package:jaspr/jaspr.dart' show Key, Styles;
 import '../../base/style_type.dart';
 import '../../base/ui_component.dart';
 import '../../base/ui_component_attributes.dart';
+import '../../base/ui_events.dart';
 import 'progress_style.dart';
 
 /// A component to show the progress of a task or the passing of time.
@@ -47,6 +48,7 @@ class Progress extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.key,
   }) : super(null, style: style); // Progress elements have no children.
 
@@ -76,6 +78,7 @@ class Progress extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return Progress(
@@ -87,6 +90,7 @@ class Progress extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
     );
   }

@@ -3,6 +3,7 @@ import 'package:jaspr/jaspr.dart' show Key, Styles;
 import '../base/styling.dart';
 import '../base/ui_component.dart';
 import '../base/ui_component_attributes.dart';
+import '../base/ui_events.dart';
 
 /// Represents an HTML `<figure>` element, typically used to encapsulate media
 /// like images, diagrams, or code snippets, optionally with a caption.
@@ -25,6 +26,7 @@ class Figure extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.child,
     super.key,
   });
@@ -43,6 +45,7 @@ class Figure extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return Figure(
@@ -53,6 +56,7 @@ class Figure extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       child: child,
       key: key ?? this.key,
     );

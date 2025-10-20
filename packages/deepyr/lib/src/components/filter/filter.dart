@@ -3,6 +3,7 @@ import 'package:universal_web/web.dart' show Event, HTMLInputElement;
 
 import '../../base/ui_component.dart';
 import '../../base/ui_component_attributes.dart';
+import '../../base/ui_events.dart';
 import '../button/button_style.dart';
 import '../join/join.dart';
 import 'filter_style.dart';
@@ -84,6 +85,7 @@ class Filter<T> extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.key,
   }) : assert(children.isNotEmpty, 'Filter must have at least one FilterItem child.'),
        super(
@@ -119,6 +121,7 @@ class Filter<T> extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
     T? groupValue,
     ValueChanged<T>? onValueChanged,
@@ -138,6 +141,7 @@ class Filter<T> extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
     );
   }
@@ -220,6 +224,7 @@ class FilterItem<T> extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.key,
   }) : super(null, tag: 'input', style: style);
 
@@ -279,6 +284,7 @@ class FilterItem<T> extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
     // Additional properties for injection
     String? name,
@@ -297,6 +303,7 @@ class FilterItem<T> extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
     );
   }

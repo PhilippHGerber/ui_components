@@ -2,6 +2,7 @@ import 'package:jaspr/jaspr.dart';
 
 import '../../base/ui_component.dart';
 import '../../base/ui_component_attributes.dart';
+import '../../base/ui_events.dart';
 import 'diff_style.dart';
 
 /// A component for visually comparing two pieces of content ("before" and "after")
@@ -53,6 +54,7 @@ class Diff extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     this.ariaLabel,
     super.key,
   }) : super(style: style);
@@ -79,6 +81,7 @@ class Diff extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return Diff(
@@ -89,6 +92,7 @@ class Diff extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       ariaLabel: ariaLabel,
       key: key ?? this.key,
     );
@@ -138,6 +142,7 @@ class DiffItem1 extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.child,
     super.key,
   }) : super();
@@ -161,6 +166,7 @@ class DiffItem1 extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return DiffItem1(
@@ -171,6 +177,7 @@ class DiffItem1 extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       child: child,
       key: key ?? this.key,
     );
@@ -194,6 +201,7 @@ class DiffItem2 extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.child,
     super.key,
   }) : super();
@@ -217,6 +225,7 @@ class DiffItem2 extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return DiffItem2(
@@ -227,6 +236,7 @@ class DiffItem2 extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       child: child,
       key: key ?? this.key,
     );
@@ -246,6 +256,7 @@ class DiffResizer extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.key,
   }) : super(null);
 
@@ -258,6 +269,7 @@ class DiffResizer extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
     return DiffResizer(
@@ -267,6 +279,7 @@ class DiffResizer extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
     );
   }

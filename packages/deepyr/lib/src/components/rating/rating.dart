@@ -7,6 +7,7 @@ import '../../base/styling.dart';
 import '../../base/styling_extensions.dart';
 import '../../base/ui_component.dart';
 import '../../base/ui_component_attributes.dart';
+import '../../base/ui_events.dart';
 import '../mask/mask_style.dart'; // Import to check for MaskStyling
 import 'rating_style.dart';
 
@@ -34,6 +35,8 @@ class RatingItem extends UiComponent {
     List<Styling>? style,
     super.id,
     super.classes,
+    super.attributes,
+    super.eventHandlers,
     super.key,
   }) : super(null, tag: 'input', style: style);
 
@@ -95,6 +98,7 @@ class RatingItem extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
     num? value,
     bool? isChecked,
@@ -111,6 +115,8 @@ class RatingItem extends UiComponent {
       style: style,
       id: id ?? this.id,
       classes: mergeClasses(this.classes, classes),
+      attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
     );
   }
@@ -145,8 +151,9 @@ class RatingContainer extends UiComponent {
     List<RatingStyling>? style,
     super.id,
     super.classes,
-    super.key,
     super.attributes,
+    super.eventHandlers,
+    super.key,
   }) : super(tag: 'div', style: style);
 
   final String name;
@@ -178,6 +185,7 @@ class RatingContainer extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
     String? name,
   }) {
@@ -187,6 +195,8 @@ class RatingContainer extends UiComponent {
       style: style as List<RatingStyling>?,
       id: id ?? this.id,
       classes: mergeClasses(this.classes, classes),
+      attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
     );
   }
@@ -234,6 +244,7 @@ class Rating extends UiComponent {
     super.classes,
     super.css,
     super.attributes,
+    super.eventHandlers,
     super.key,
   }) : assert(
          isReadOnly || name != null,
@@ -395,6 +406,7 @@ class Rating extends UiComponent {
     String? classes,
     Styles? css,
     Map<String, String>? attributes,
+    Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
     String? name,
     num? value,
@@ -422,6 +434,7 @@ class Rating extends UiComponent {
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
+      eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
     );
   }
