@@ -70,7 +70,7 @@ class MyComponent extends StatelessComponent {
 
 - ✅ **Button**
 - ✅ **Dropdown**
-- 🔲 **FAB / Speed Dial**
+- ✅ **FAB / Speed Dial**
 - ✅ **Modal**
 - ✅ **Swap**
 - ✅ **Theme Controller**
@@ -101,7 +101,7 @@ class MyComponent extends StatelessComponent {
 ### **Navigation**
 
 - ✅ **Breadcrumbs**
-- 🔲 **Dock**
+- ✅ **Dock**
 - ✅ **Link**
 - ✅ **Menu**
 - ✅ **Navbar**

@@ -4,6 +4,7 @@
 
 ### Added
 
+* **New Component**: `FAB` component for creating a Floating Action Button with "Speed Dial" functionality, implemented as a fully controlled component for Dart-driven interactivity ([Example](https://deepyr-doc.web.app/components/fab)).
 * **New Component**: `Dock` component for creating a responsive bottom navigation bar, composed of `DockItem` and `DockLabel` for flexible and type-safe implementation ([Example](https://deepyr-doc.web.app/components/dock)).
 * **New Component**: `Filter` component for creating a group of radio buttons to filter items, with support for form-based and CSS-based reset functionality ([Example](https://deepyr-doc.web.app/components/filter)).
 

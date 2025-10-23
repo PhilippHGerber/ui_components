@@ -20,6 +20,7 @@ export 'src/base/utilities/font_util.dart';
 export 'src/base/utilities/grid.dart';
 export 'src/base/utilities/interactivity.dart';
 export 'src/base/utilities/layout.dart';
+export 'src/base/utilities/placement.dart';
 export 'src/base/utilities/position.dart';
 export 'src/base/utilities/size.dart';
 export 'src/base/utilities/spacing.dart';
@@ -82,6 +83,9 @@ export 'src/components/drawer/drawer_style.dart' show DrawerStyling;
 export 'src/components/dropdown/dropdown.dart';
 export 'src/components/dropdown/dropdown_content_style.dart' show DropdownContentStyling;
 export 'src/components/dropdown/dropdown_style.dart' show DropdownStyling;
+// FAB
+export 'src/components/fab/fab.dart';
+export 'src/components/fab/fab_style.dart' show FabActionStyling, FabStyling;
 // Fieldset
 export 'src/components/fieldset/fieldset.dart';
 export 'src/components/fieldset/fieldset_style.dart' show FieldsetStyling, LegendStyling;
