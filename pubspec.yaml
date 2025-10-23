@@ -7,9 +7,12 @@ environment:
 
 workspace:
   - packages/deepyr
+  - packages/elevyr
+  - examples/deepyr_example
+  - examples/elevyr_example
 
 dependencies:
-  jaspr: ^0.21.5
+  jaspr: 0.21.5
 
 # Spezifiziere lint und test in den dev_dependencies damit diese sich alle Projekte teilen können.
 dev_dependencies:

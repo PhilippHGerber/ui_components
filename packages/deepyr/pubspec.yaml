@@ -12,7 +12,7 @@ resolution: workspace
 
 # Add regular dependencies here.
 dependencies:
-  jaspr: ^0.21.5
+  jaspr: 0.21.5
   universal_web: ^1.1.0
 
 dev_dependencies:
