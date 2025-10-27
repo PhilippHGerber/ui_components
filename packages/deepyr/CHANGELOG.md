@@ -1,6 +1,6 @@
 # Changelog
 
-## Next release
+## 0.2.0
 
 ### Added
 
