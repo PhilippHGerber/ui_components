@@ -32,7 +32,7 @@ Explore all available components and see them in action on the official document
 
     ```yaml
     dependencies:
-      deepyr: ^0.2.0
+      deepyr: ^0.2.1
     ```
 
 2. **Setup Tailwind CSS**
@@ -70,7 +70,7 @@ class MyComponent extends StatelessComponent {
 
 - ✅ **Button**
 - ✅ **Dropdown**
-- 🔲 **FAB / Speed Dial**
+- ✅ **FAB / Speed Dial**
 - ✅ **Modal**
 - ✅ **Swap**
 - ✅ **Theme Controller**
