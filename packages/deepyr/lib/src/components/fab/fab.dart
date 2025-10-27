@@ -1,29 +1,57 @@
 import 'package:jaspr/jaspr.dart';
+import 'package:universal_web/js_interop.dart';
+import 'package:universal_web/web.dart';
 
+import '../../../deepyr.dart';
 import '../../base/style_type.dart';
-import '../../base/ui_component.dart';
-import '../../base/ui_events.dart';
 import 'fab_style.dart';
+
+// #region JS-Interop for Focus Management
+
+/// A JS-interop function that calls `.blur()` on the currently focused element in the document.
+/// This is the most reliable way to remove focus from the FAB container and trigger its closing animation.
+@JS('document.activeElement.blur')
+external void _blurActiveElement();
+
+/// A safe Dart wrapper for the JS interop function. It ensures the code only
+/// runs on the client-side, preventing errors during server-side rendering (SSR).
+void blurActiveElement() {
+  if (kIsWeb) {
+    try {
+      _blurActiveElement();
+    } catch (e) {
+      // Log error if the JS call fails for any reason.
+      print('Could not blur active element: $e');
+    }
+  }
+}
+
+// #endregion
+
+// #region FAB Component System
 
 /// A "smart container" for creating a Floating Action Button (FAB) with an optional
 /// "Speed Dial" menu that appears on focus or click.
 ///
-/// This component abstracts away daisyUI's specific DOM structure and the need for
-/// manual workarounds for browser bugs (like the Safari focus issue), providing a
-/// clean, compositional, and type-safe API.
-///
-/// The `Fab`'s interactivity is based on the pure CSS `:focus-within` pseudo-class.
+/// This component provides a high-level, compositional API that abstracts away
+/// DaisyUI's specific DOM structure and the need for manual workarounds for browser
+/// bugs (like the Safari focus issue), delivering a clean and type-safe developer experience.
 ///
 /// ### API Structure:
+/// The `Fab` component is built using named parameters for clarity:
 /// - **`trigger`**: The main, always-visible button. You provide a standard `deepyr` component.
 /// - **`actions`**: A list of `FabAction` components that appear when the FAB is open.
 /// - **`mainAction` / `closeAction`**: Optional components to replace the trigger when open.
 ///
-/// ### Safari Compatibility:
-/// The component automatically renders the provided `trigger` within a
-/// `<div tabindex="0" role="button">`, ensuring consistent focus behavior across all
-/// modern browsers, including Safari, without requiring the developer to change how
-/// they write their code.
+/// ### Interactivity Model:
+/// The component's interactivity is based on the pure CSS `:focus-within` pseudo-class.
+/// - The `Fab` component automatically wraps your `trigger` in a focusable `div`,
+///   which acts as the focus entry point.
+/// - When the `closeAction` or `mainAction` is clicked, they are rendered as
+///   **non-focusable** elements. Their `onClick` event is intercepted to first
+///   execute your callback and then programmatically blur the container, ensuring
+///   the menu closes reliably across all browsers.
+@immutable
 class Fab extends UiComponent {
   /// Creates a Floating Action Button (FAB) container.
   ///
@@ -53,7 +81,7 @@ class Fab extends UiComponent {
          mainAction == null || closeAction == null,
          'A Fab component cannot have both a mainAction and a closeAction.',
        ),
-       super(null, style: style); // Children are managed via named properties.
+       super(null, style: style);
 
   /// The main, always-visible button component that opens the speed dial.
   final Component trigger;
@@ -69,6 +97,77 @@ class Fab extends UiComponent {
 
   @override
   String get baseClass => 'fab';
+
+  /// A helper method to build the non-focusable wrappers for `closeAction` and `mainAction`.
+  ///
+  /// This is the core of the fix. It takes the user-provided action component,
+  /// extracts its visual parts, and rebuilds it as a non-interactive `<span>`
+  /// with a custom click handler.
+  Component _buildActionWrapper(UiComponent actionComponent) {
+    // Determine the base class ('fab-close' or 'fab-main-action').
+    final baseClass = actionComponent.baseClass;
+    final visualButton = actionComponent.children!.first as UiComponent;
+    final label = (actionComponent is FabClose)
+        ? actionComponent.label
+        : (actionComponent is FabMainAction ? actionComponent.label : null);
+
+    final userOnClick = (actionComponent is FabClose)
+        ? actionComponent.onClick
+        : (actionComponent is FabMainAction ? actionComponent.onClick : null);
+
+    final buttonContent = <Component>[
+      ...?visualButton.children,
+      if (visualButton.child != null) visualButton.child!,
+    ];
+
+    final nonFocusableButton = span(
+      buttonContent,
+      classes: visualButton.combinedClasses,
+    );
+
+    return div(
+      classes: baseClass,
+      [
+        ?label,
+        nonFocusableButton,
+      ],
+      events: {
+        'click': (dynamic rawEvent) {
+          // First, execute the user's intended action, casting the event for type safety.
+          userOnClick?.call(rawEvent as MouseEvent);
+          // Then, programmatically blur the container to close the menu.
+          blurActiveElement();
+        },
+      },
+    );
+  }
+
+  @override
+  Component build(BuildContext context) {
+    return Component.element(
+      tag: tag,
+      id: id,
+      classes: combinedClasses,
+      styles: this.css,
+      attributes: componentAttributes,
+      events: this.events,
+      children: [
+        // 1. The focusable trigger wrapper. This solves the Safari bug and
+        //    provides a consistent focus target.
+        div(
+          attributes: {'tabindex': '0', 'role': 'button'},
+          [trigger],
+        ),
+
+        // 2. The close or main action, processed to be non-focusable.
+        if (closeAction != null) _buildActionWrapper(closeAction!),
+        if (mainAction != null) _buildActionWrapper(mainAction!),
+
+        // 3. The speed dial actions, which remain fully interactive.
+        ...actions,
+      ],
+    );
+  }
 
   @override
   Fab copyWith({
@@ -95,64 +194,12 @@ class Fab extends UiComponent {
     );
   }
 
-  @override
-  Component build(BuildContext context) {
-    final effectiveChildren = <Component>[];
-
-    // 1. Abstract away the Safari focus bug by rendering the trigger inside a
-    //    styled, focusable <div>.
-    Component effectiveTrigger;
-    if (trigger is UiComponent) {
-      final triggerComponent = trigger as UiComponent;
-      effectiveTrigger = div(
-        // CORRECTED: Pass children as the first positional argument.
-        triggerComponent.children ?? [if (triggerComponent.child != null) triggerComponent.child!],
-        // Named arguments for other properties.
-        attributes: {'tabindex': '0', 'role': 'button'},
-        classes: triggerComponent.combinedClasses,
-        styles: triggerComponent.css,
-      );
-    } else {
-      // For primitive components, wrap them in a basic focusable div.
-      effectiveTrigger = div(
-        [trigger], // CORRECTED: Pass child in a list as the first argument.
-        attributes: {'tabindex': '0', 'role': 'button'},
-      );
-    }
-    effectiveChildren.add(effectiveTrigger);
-
-    // 2. Add the main or close action if provided.
-    if (mainAction != null) {
-      effectiveChildren.add(mainAction!);
-    }
-    if (closeAction != null) {
-      effectiveChildren.add(closeAction!);
-    }
-
-    // 3. Add the list of speed dial actions.
-    effectiveChildren.addAll(actions);
-
-    // 4. Render the final container with the processed children.
-    return Component.element(
-      tag: tag,
-      id: id,
-      classes: combinedClasses,
-      styles: this.css,
-      attributes: componentAttributes,
-      events: this.events,
-      children: effectiveChildren,
-    );
-  }
-
-  // --- Static Style Modifiers ---
-
   /// Renders the speed dial actions in a quarter-circle "flower" arrangement.
-  /// This can fit 1 to 4 action buttons.
   static const FabStyle flower = FabStyle('fab-flower', type: StyleType.layout);
 }
 
 /// A structural component that wraps a single speed dial action, optionally with a label.
-/// It handles the layout for the label and the button.
+@immutable
 class FabAction extends UiComponent {
   /// Creates a single speed dial action.
   ///
@@ -161,7 +208,7 @@ class FabAction extends UiComponent {
   FabAction({
     required Component child,
     this.label,
-    super.tag = 'div', // Rendered as a div only if there is a label.
+    super.tag = 'div',
     super.style,
     super.id,
     super.classes,
@@ -175,16 +222,13 @@ class FabAction extends UiComponent {
   final Component? label;
 
   @override
-  String get baseClass => ''; // No base class for the wrapper itself.
+  String get baseClass => '';
 
   @override
   Component build(BuildContext context) {
-    // CORRECTED: The single child component is the first element in the 'children' list.
-    final actionButton = children!.first;
-
     // If there is no label, render the child directly to avoid an unnecessary <div> wrapper.
     if (label == null) {
-      return actionButton;
+      return children!.first;
     }
     // If a label exists, render the wrapper div with the label and child.
     return Component.element(
@@ -194,7 +238,7 @@ class FabAction extends UiComponent {
       styles: this.css,
       attributes: componentAttributes,
       events: this.events,
-      children: [label!, actionButton],
+      children: [label!, children!.first],
     );
   }
 
@@ -207,7 +251,6 @@ class FabAction extends UiComponent {
     Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
-    // CORRECTED: Access the child from the 'children' list.
     return FabAction(
       child: children!.first,
       label: label,
@@ -223,13 +266,14 @@ class FabAction extends UiComponent {
   }
 }
 
-/// A specialized action that replaces the trigger button when the FAB is open,
-/// providing an explicit "close" button.
+/// A specialized component that provides a close button to replace the trigger when the FAB is open.
+@immutable
 class FabClose extends UiComponent {
   /// Creates a close action for a `Fab`.
   ///
-  /// - [child]: **Required.** The `deepyr` component for the close button, typically a `Button` with an '✕' icon.
+  /// - [child]: **Required.** The `deepyr` component for the close button, typically a `Button`.
   /// - [label]: An optional `Component` to display next to the close button.
+  /// - [onClick]: An optional callback to execute when the close button is clicked.
   FabClose({
     required Component child,
     this.label,
@@ -240,6 +284,7 @@ class FabClose extends UiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
+    super.onClick,
     super.key,
   }) : super([child]);
 
@@ -250,31 +295,6 @@ class FabClose extends UiComponent {
   String get baseClass => 'fab-close';
 
   @override
-  Component build(BuildContext context) {
-    // CORRECTED: The single child component is the first element in the 'children' list.
-    final actionButton = children!.first;
-
-    if (label == null) {
-      // If the child is a UiComponent, use copyWith to safely add the class.
-      if (actionButton is UiComponent) {
-        return actionButton.copyWith(classes: mergeClasses(actionButton.classes, baseClass));
-      }
-      // For primitive components, wrap them in a div with the class.
-      return div([actionButton], classes: baseClass);
-    }
-    // If a label exists, the baseClass is on the container itself.
-    return Component.element(
-      tag: tag,
-      id: id,
-      classes: combinedClasses, // combinedClasses already includes baseClass
-      styles: this.css,
-      attributes: componentAttributes,
-      events: this.events,
-      children: [label!, actionButton],
-    );
-  }
-
-  @override
   FabClose copyWith({
     String? id,
     String? classes,
@@ -283,7 +303,6 @@ class FabClose extends UiComponent {
     Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
-    // CORRECTED: Access the child from the 'children' list.
     return FabClose(
       child: children!.first,
       label: label,
@@ -294,18 +313,20 @@ class FabClose extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
+      onClick: onClick,
       key: key ?? this.key,
     );
   }
 }
 
-/// A specialized action that replaces the trigger button when the FAB is open,
-/// providing a primary or default action.
+/// A specialized component that provides a primary action to replace the trigger when the FAB is open.
+@immutable
 class FabMainAction extends UiComponent {
   /// Creates a main action for a `Fab`.
   ///
   /// - [child]: **Required.** The `deepyr` `Button` component for the main action.
   /// - [label]: An optional `Component` to display next to the main action button.
+  /// - [onClick]: An optional callback to execute when the main action is clicked.
   FabMainAction({
     required Component child,
     this.label,
@@ -316,6 +337,7 @@ class FabMainAction extends UiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
+    super.onClick,
     super.key,
   }) : super([child]);
 
@@ -326,31 +348,6 @@ class FabMainAction extends UiComponent {
   String get baseClass => 'fab-main-action';
 
   @override
-  Component build(BuildContext context) {
-    // CORRECTED: The single child component is the first element in the 'children' list.
-    final actionButton = children!.first;
-
-    if (label == null) {
-      // If the child is a UiComponent, use copyWith to safely add the class.
-      if (actionButton is UiComponent) {
-        return actionButton.copyWith(classes: mergeClasses(actionButton.classes, baseClass));
-      }
-      // For primitive components, wrap them in a div with the class.
-      return div([actionButton], classes: baseClass);
-    }
-    // If a label exists, the baseClass is on the container itself.
-    return Component.element(
-      tag: tag,
-      id: id,
-      classes: combinedClasses, // combinedClasses already includes baseClass
-      styles: this.css,
-      attributes: componentAttributes,
-      events: this.events,
-      children: [label!, actionButton],
-    );
-  }
-
-  @override
   FabMainAction copyWith({
     String? id,
     String? classes,
@@ -359,7 +356,6 @@ class FabMainAction extends UiComponent {
     Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
   }) {
-    // CORRECTED: Access the child from the 'children' list.
     return FabMainAction(
       child: children!.first,
       label: label,
@@ -370,7 +366,10 @@ class FabMainAction extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
+      onClick: onClick,
       key: key ?? this.key,
     );
   }
 }
+
+// #endregion
