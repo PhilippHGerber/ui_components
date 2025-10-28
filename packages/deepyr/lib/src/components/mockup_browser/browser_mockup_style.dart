@@ -9,11 +9,11 @@ import 'browser_mockup_toolbar.dart';
 /// component-specific modifiers; this interface is used to allow general utilities
 /// (like `BgUtil`, `BorderUtil`, `Effects`, etc.) to be applied to the main
 /// component frame.
-abstract class BrowserMockupStyling implements Styling {}
+abstract class MockupBrowserStyling implements Styling {}
 
 /// A marker interface for any utility that can be passed to a [BrowserToolbar]'s
 /// `style` list.
 ///
 /// This allows for type-safe application of styles. `BrowserToolbar` has no
 /// component-specific modifiers, so this interface is used for applying general utilities.
-abstract class BrowserToolbarStyling implements Styling {}
+abstract class MockupBrowserToolbarStyling implements Styling {}

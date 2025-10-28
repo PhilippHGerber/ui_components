@@ -28,13 +28,13 @@ class BrowserMockup extends UiComponent {
   /// - [addressBar]: The `Component` to display inside the address bar,
   ///   typically a `text()` widget with a URL.
   /// - [content]: The main `Component` to display within the browser's "viewport".
-  /// - [style]: A list of [BrowserMockupStyling] instances for applying
+  /// - [style]: A list of [MockupBrowserStyling] instances for applying
   ///   general utilities like background colors and borders to the main frame.
   /// - Other parameters are inherited from [UiComponent].
   const BrowserMockup({
     required this.addressBar,
     required this.content,
-    List<BrowserMockupStyling>? style,
+    List<MockupBrowserStyling>? style,
     super.tag = 'div',
     super.id,
     super.classes,
@@ -88,7 +88,7 @@ class BrowserMockup extends UiComponent {
     return BrowserMockup(
       addressBar: addressBar ?? this.addressBar,
       content: content ?? this.content,
-      style: style as List<BrowserMockupStyling>?,
+      style: style as List<MockupBrowserStyling>?,
       tag: tag,
       id: id ?? this.id,
       classes: mergeClasses(this.classes, classes),

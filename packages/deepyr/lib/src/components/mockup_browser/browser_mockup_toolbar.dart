@@ -14,11 +14,11 @@ class BrowserToolbar extends UiComponent {
   /// Creates a [BrowserToolbar] component.
   ///
   /// - [addressBarContent]: The component to display inside the address bar.
-  /// - [style]: A list of [BrowserToolbarStyling] instances for applying
+  /// - [style]: A list of [MockupBrowserToolbarStyling] instances for applying
   ///   general utilities to the toolbar element.
   const BrowserToolbar({
     required this.addressBarContent,
-    List<BrowserToolbarStyling>? style,
+    List<MockupBrowserToolbarStyling>? style,
     super.tag = 'div',
     super.id,
     super.classes,
@@ -62,7 +62,7 @@ class BrowserToolbar extends UiComponent {
   }) {
     return BrowserToolbar(
       addressBarContent: addressBarContent ?? this.addressBarContent,
-      style: style as List<BrowserToolbarStyling>?,
+      style: style as List<MockupBrowserToolbarStyling>?,
       tag: tag,
       id: id ?? this.id,
       classes: mergeClasses(this.classes, classes),
