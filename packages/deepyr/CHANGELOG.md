@@ -1,9 +1,11 @@
 # Changelog
 
-## Next release
+## 0.3.0
 
 ### Added
 
+* **New Component**: `MockupPhone` for displaying content within an iPhone-style frame, using a simple `content` property for the screen area ([Example](https://deepyr-doc.web.app/components/phone)).
+* **New Component**: `MockupWindow` for showing content inside a generic OS-style window frame ([Example](https://deepyr-doc.web.app/components/window)).
 * **New Component**: `BrowserMockup` for creating a browser window mockup with a compositional API for the toolbar and content area ([Example](https://deepyr-doc.web.app/components/browser)).
 * **New Component**: `MockupCode` for displaying code blocks, featuring a developer-friendly API with `.fromString()` and `.fromList()` factories, automatic line numbering, and per-line styling capabilities ([Example](https://deepyr-doc.web.app/components/code)).
 
