@@ -1,5 +1,12 @@
 # Changelog
 
+## Next release
+
+### Added
+
+* **New Component**: `BrowserMockup` for creating a browser window mockup with a compositional API for the toolbar and content area ([Example](https://deepyr-doc.web.app/components/browser)).
+* **New Component**: `MockupCode` for displaying code blocks, featuring a developer-friendly API with `.fromString()` and `.fromList()` factories, automatic line numbering, and per-line styling capabilities ([Example](https://deepyr-doc.web.app/components/code)).
+
 ## 0.2.1
 
 fixed README

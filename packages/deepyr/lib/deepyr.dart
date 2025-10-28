@@ -143,8 +143,11 @@ export 'src/components/menu/menu_item_style.dart' show MenuItemStyling;
 export 'src/components/menu/menu_style.dart' show MenuStyling;
 // Mockup Browser
 export 'src/components/mockup_browser/browser_mockup.dart';
-export 'src/components/mockup_browser/browser_mockup_style.dart' show BrowserMockupStyling;
+export 'src/components/mockup_browser/browser_mockup_style.dart' show MockupBrowserStyling;
 export 'src/components/mockup_browser/browser_mockup_toolbar.dart';
+// Mockup Code
+export 'src/components/mockup_code/code_mockup.dart';
+export 'src/components/mockup_code/code_mockup_style.dart' show MockupCodeStyling;
 // Modal
 export 'src/components/modal/modal.dart';
 export 'src/components/modal/modal_style.dart' show ModalStyling;
