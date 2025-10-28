@@ -1,5 +1,3 @@
-// packages/deepyr/lib/src/base/utilities/layout.dart
-
 import '../common_style.dart';
 import '../style_type.dart';
 import '../ui_prefix_modifier.dart';

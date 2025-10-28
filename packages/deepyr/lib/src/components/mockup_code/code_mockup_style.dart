@@ -1,5 +1,3 @@
-// packages/deepyr/lib/src/components/mockup_code/code_mockup_style.dart
-
 import '../../base/styling.dart';
 import 'code_mockup.dart';
 

@@ -1,4 +1,3 @@
-// packages/deepyr/lib/src/components/button/button.dart
 import 'package:jaspr/jaspr.dart';
 
 import '../../base/style_type.dart';
