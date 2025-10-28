@@ -144,7 +144,11 @@ class TextUtil extends CommonStyle<TextUtil> {
   static const TextUtil leadingLoose = TextUtil('leading-loose');
 
   // --- Text Colors (Theme-based) ---
-  // These are convenient aliases for applying DaisyUI's semantic theme colors to text.
+  /// Applies white color to text. `text-white`
+  static const TextUtil white = TextUtil('text-white');
+
+  /// Applies black color to text. `text-black`
+  static const TextUtil black = TextUtil('text-black');
 
   /// Applies the primary theme color to text. `text-primary`
   static const TextUtil primary = TextUtil('text-primary');
