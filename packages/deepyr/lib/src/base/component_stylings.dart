@@ -121,6 +121,8 @@ mixin AllComponentStylings
         MenuItemStyling,
         MockupBrowserStyling,
         MockupCodeStyling,
+        MockupPhoneStyling,
+        MockupWindowStyling,
         ModalStyling,
         NavbarStyling,
         ProgressStyling,
