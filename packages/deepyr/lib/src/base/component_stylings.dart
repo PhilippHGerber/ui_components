@@ -75,6 +75,7 @@ mixin AllComponentStylings
         BadgeStyling,
         ButtonStyling,
         BreadcrumbsStyling,
+        BrowserMockupStyling,
         CardStyling,
         CarouselStyling,
         ChatStyling,
