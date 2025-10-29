@@ -1,6 +1,5 @@
 // This file defines the Accordion and AccordionItem components,
-// which are used to create collapsible content sections where only one
-// item can be open at a time.
+// which are used to create collapsible content sections.
 
 import 'package:jaspr/jaspr.dart';
 
@@ -8,81 +7,106 @@ import '../../../deepyr.dart';
 import '../../base/style_type.dart';
 import 'accordion_style.dart';
 
-/// A logical component that manages a group of [AccordionItem]s.
+/// A logical "smart container" that manages a group of [AccordionItem]s,
+/// ensuring that only one can be open at a time.
 ///
-/// This component does not render its own HTML element. Instead, it processes its
-/// [AccordionItem] children to ensure they all share the same `name` attribute,
-/// allowing them to function as a single accordion group where only one item can be
-/// open at a time.
+/// This is a **controlled component**. Its state (which item is open) must be
+/// managed by a parent `StatefulComponent`. The parent holds an `int?` representing
+/// the index of the open item and passes it to the `openIndex` property.
 ///
-/// Wrap this component in a styled `div` or `Container` for layout
-/// and effects like `join`.
+/// The `Accordion` component itself does not render a DOM element; it processes
+/// its children to inject the necessary properties (`isOpen` and `onToggle`)
+/// for them to function as a coordinated group.
+///
+/// ### Example Usage (in a StatefulComponent):
+///
+/// ```dart
+/// class MyAccordionPage extends StatefulComponent {
+///   @override
+///   State<MyAccordionPage> createState() => _MyAccordionPageState();
+/// }
+///
+/// class _MyAccordionPageState extends State<MyAccordionPage> {
+///   int? _openAccordionIndex; // State to hold the open item's index
+///
+///   @override
+///   Component build(BuildContext context) {
+///     return Accordion(
+///       openIndex: _openAccordionIndex,
+///       onToggle: (index) {
+///         setState(() {
+///           // Toggle behavior: close if the same item is clicked again.
+///           _openAccordionIndex = _openAccordionIndex == index ? null : index;
+///         });
+///       },
+///       [
+///         AccordionItem(title: text('Item 1'), content: text('Content 1')),
+///         AccordionItem(title: text('Item 2'), content: text('Content 2')),
+///       ],
+///     );
+///   }
+/// }
+/// ```
 class Accordion extends StatelessComponent {
-  /// Creates an Accordion group manager.
+  /// Creates a controlled Accordion group manager.
   ///
   /// - [children]: A list of components, expected to contain [AccordionItem]s.
-  /// - [name]: A unique name for the radio button group. If not provided, a unique
-  ///   name is generated. It's recommended to provide a stable name for consistency.
+  /// - [openIndex]: The index of the `AccordionItem` that should be open.
+  ///   A value of `null` means all items are closed.
+  /// - [onToggle]: A callback that fires when an `AccordionItem`'s title is
+  ///   clicked. It provides the index of the clicked item.
   const Accordion(
     this.children, {
-    this.name,
+    this.openIndex,
+    this.onToggle,
     super.key,
   });
 
-  /// A list of child components, which should include [AccordionItem]s.
+  /// The list of child components, which should be exclusively [AccordionItem]s
+  /// for the component to function correctly.
   final List<Component> children;
 
-  /// The name for the radio button group, essential for the accordion behavior.
-  final String? name;
+  /// The index of the currently open `AccordionItem`. If `null`, all items are closed.
+  final int? openIndex;
+
+  /// A callback invoked with the index of the `AccordionItem` that was clicked.
+  final ValueChanged<int>? onToggle;
 
   @override
   Component build(BuildContext context) {
-    // Generate a unique name for the radio group if one isn't provided.
-    final effectiveName = name ?? 'accordion-${key.hashCode}';
+    final items = children.whereType<AccordionItem>().toList();
 
-    // Iterate through children and rebuild AccordionItems with the shared name.
     return Component.fragment([
-      for (final child in children)
-        if (child is AccordionItem)
-          // return a new AccordionItem, injecting the managed 'name'.
-          // All other properties are passed through from the original child.
-          AccordionItem(
-            title: child.title,
-            content: child.content,
-            name: effectiveName, // This is the key logic.
-            initiallyOpen: child.initiallyOpen,
-            style: child.style,
-            classes: child.classes,
-            tag: child.tag,
-            id: child.id,
-            key: child.key,
-            attributes: child.userProvidedAttributes,
-            css: child.css,
-          )
-        else
-          // Pass through any non-AccordionItem children as-is.
-          child,
+      for (var i = 0; i < items.length; i++)
+        // Use `copyWith` to inject the calculated `isOpen` state and the
+        // `onToggle` callback into each child item.
+        items[i].copyWith(
+          isOpen: i == openIndex,
+          onToggle: () => onToggle?.call(i),
+        ),
     ]);
   }
 }
 
 /// Represents a single collapsible item within an [Accordion].
 ///
-/// This component is based on the DaisyUI `collapse` component but is specifically
-/// configured to work with a radio input for the accordion behavior.
+/// This is a controlled component whose visibility is determined by the `isOpen`
+/// property. It no longer manages its own state with a hidden input.
 class AccordionItem extends UiComponent {
-  /// Creates a single item for an Accordion.
+  /// Creates a single, controlled item for an Accordion.
   ///
   /// - [title]: The component to be displayed in the clickable title area.
   /// - [content]: The component to be displayed in the collapsible content area.
-  /// - [name]: The name of the radio button group. This is typically managed by the parent [Accordion] component.
-  /// - [initiallyOpen]: If true, this item will be the one open by default in the accordion group.
-  /// - [style]: A list of [AccordionStyling] modifiers, like [AccordionItem.arrow] or [AccordionItem.plus].
+  /// - [isOpen]: If `true`, the item will be visually open. This is typically
+  ///   controlled by the parent `Accordion`.
+  /// - [onToggle]: A callback that fires when the title is clicked. This is
+  ///   typically provided by the parent `Accordion`.
+  /// - [style]: A list of [AccordionStyling] modifiers, like `AccordionItem.arrow`.
   const AccordionItem({
     required this.title,
     required this.content,
-    required this.name,
-    this.initiallyOpen = false,
+    this.isOpen = false,
+    this.onToggle,
     super.style,
     super.tag = 'div',
     super.id,
@@ -93,23 +117,37 @@ class AccordionItem extends UiComponent {
     super.key,
   }) : super(null); // Children are managed internally.
 
-  /// The content for the visible, clickable title bar of the accordion item.
+  /// The content for the visible, clickable title bar.
   final Component title;
 
-  /// The content that is shown or hidden when the item is toggled.
+  /// The content that is shown or hidden.
   final Component content;
 
-  /// The shared name for the radio input group, connecting all items in the accordion.
-  final String name;
+  /// Determines if this item is rendered in an open state.
+  final bool isOpen;
 
-  /// Determines if this item is open by default when the accordion is first rendered.
-  final bool initiallyOpen;
+  /// A callback invoked when the title of this item is clicked.
+  final VoidCallback? onToggle;
 
   @override
   String get baseClass => 'collapse';
 
   @override
-  Map<String, String> get userProvidedAttributes => super.userProvidedAttributes;
+  String get combinedClasses {
+    var classes = super.combinedClasses;
+    // Conditionally apply the 'collapse-open' class based on the `isOpen` state.
+    if (isOpen) {
+      classes = '$classes collapse-open';
+    }
+    return classes;
+  }
+
+  @override
+  void configureAttributes(UiComponentAttributes attributes) {
+    super.configureAttributes(attributes);
+    // Add ARIA attributes for better accessibility.
+    attributes.addAria('expanded', isOpen.toString());
+  }
 
   @override
   AccordionItem copyWith({
@@ -119,12 +157,15 @@ class AccordionItem extends UiComponent {
     Map<String, String>? attributes,
     Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
+    // Add the new controlled properties to `copyWith`.
+    bool? isOpen,
+    VoidCallback? onToggle,
   }) {
     return AccordionItem(
       title: title,
       content: content,
-      name: name,
-      initiallyOpen: initiallyOpen,
+      isOpen: isOpen ?? this.isOpen,
+      onToggle: onToggle ?? this.onToggle,
       tag: tag,
       style: style,
       id: id ?? this.id,
@@ -138,8 +179,6 @@ class AccordionItem extends UiComponent {
 
   @override
   Component build(BuildContext context) {
-    // The UiComponent's build method will render a single DomComponent.
-    // We provide the specific internal structure of the accordion item as its children.
     return Component.element(
       tag: tag,
       id: id,
@@ -148,15 +187,10 @@ class AccordionItem extends UiComponent {
       attributes: componentAttributes,
       events: this.events,
       children: [
-        input(
-          type: InputType.radio,
-          name: name,
-          attributes: {
-            if (initiallyOpen) 'checked': 'checked',
-          },
-        ),
         div(
           classes: 'collapse-title font-semibold',
+          // Attach the `onToggle` callback to the title's click event.
+          events: onToggle != null ? {'click': (_) => onToggle!()} : null,
           [title],
         ),
         div(
@@ -168,28 +202,6 @@ class AccordionItem extends UiComponent {
   }
 
   // --- Static Style Modifiers ---
-
-  /// Adds an arrow icon to the accordion item for visual feedback.
-  static const AccordionStyle arrow = AccordionStyle(
-    'collapse-arrow',
-    type: StyleType.additional,
-  );
-
-  /// Adds a plus/minus icon to the accordion item for visual feedback.
-  static const AccordionStyle plus = AccordionStyle(
-    'collapse-plus',
-    type: StyleType.additional,
-  );
-
-  /// Forces the item to be visually open. Useful for overriding radio state.
-  static const AccordionStyle open = AccordionStyle(
-    'collapse-open',
-    type: StyleType.state,
-  );
-
-  /// Forces the item to be visually closed. Useful for overriding radio state.
-  static const AccordionStyle close = AccordionStyle(
-    'collapse-close',
-    type: StyleType.state,
-  );
+  static const AccordionStyle arrow = AccordionStyle('collapse-arrow', type: StyleType.additional);
+  static const AccordionStyle plus = AccordionStyle('collapse-plus', type: StyleType.additional);
 }
