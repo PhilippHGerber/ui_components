@@ -125,7 +125,7 @@ class MyComponent extends StatelessComponent {
 
 ### **Data input**
 
-- 🔲 **Calendar**
+- 🔲 **Calendar** (coming soon in v0.5)
 - ✅ **Checkbox**
 - ✅ **Fieldset**
 - ✅ **File Input**
