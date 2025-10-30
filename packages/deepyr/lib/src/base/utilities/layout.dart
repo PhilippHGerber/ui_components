@@ -52,6 +52,10 @@ class Layout extends CommonStyle<Layout> {
   /// Creates a negative order utility. `-order-{value}`
   factory Layout.orderNeg(int value) => Layout('-order-$value');
 
+  /// Marks an element as a `group` for styling children based on parent state
+  /// (e.g., using `SomeStyle.on([Group.focus])`). `group`
+  static const Layout group = Layout('group');
+
   /// Helper to format a value, removing .0 for whole numbers.
   static String _formatValue(num value) {
     if (value == value.truncate()) {
