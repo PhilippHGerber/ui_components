@@ -1,5 +1,4 @@
 import 'package:jaspr/jaspr.dart';
-import 'package:universal_web/web.dart' show Event, HTMLInputElement;
 
 import '../../../deepyr.dart';
 import '../../base/style_type.dart';
@@ -7,47 +6,74 @@ import 'collapse_style.dart';
 
 /// Defines the activation mechanism for a [Collapse] component.
 enum CollapseMethod {
-  /// The component opens when it receives focus and closes when it loses focus (on blur).
-  ///
-  /// This method renders a `<div>` with `tabindex="0"`. It is suitable for simple,
-  /// non-persistent content reveals.
+  /// The component opens when it receives focus and closes when it loses focus.
+  /// Renders a `<div>` with `tabindex="0"`. No state management needed.
   focus,
 
-  /// The component toggles between open and closed states on each click.
-  ///
-  /// This method renders a hidden `<input type="checkbox">` internally to manage the state.
-  /// The state persists until the component is clicked again.
+  /// The component's open/closed state is controlled by a parent component.
+  /// This method is now a **controlled component**.
   checkbox,
 
-  /// The component uses the native HTML `<details>` and `<summary>` elements.
-  ///
-  /// This is a semantically correct and accessible method, but it does not support
-  /// CSS transitions for the open/close animation. The state is managed by the browser.
+  /// Uses the native HTML `<details>` and `<summary>` elements.
+  /// No state management needed for basic open/close.
   details,
 }
 
 /// A component for showing and hiding content in a collapsible panel.
 ///
-/// It can be activated by focus, a checkbox, or by using the native `<details>` element,
-/// controlled by the [method] property.
+/// It can be activated by focus, a parent-controlled state (checkbox method),
+/// or by using the native `<details>` element, controlled by the [method] property.
+///
+/// ### State Management:
+/// - **`focus` & `details` methods:** Are self-contained and do not require state management.
+/// - **`checkbox` method:** This is now a **controlled component**. You must manage its
+///   state in a parent `StatefulComponent` using the `isOpen` and `onToggle` properties.
+///
+/// ### Example (Checkbox Method):
+/// ```dart
+/// class MyCollapsible extends StatefulComponent {
+///   @override
+///   State<MyCollapsible> createState() => _MyCollapsibleState();
+/// }
+///
+/// class _MyCollapsibleState extends State<MyCollapsible> {
+///   bool _isPanelOpen = false;
+///
+///   @override
+///   Component build(BuildContext context) {
+///     return Collapse(
+///       method: CollapseMethod.checkbox,
+///       isOpen: _isPanelOpen,
+///       onToggle: () {
+///         setState(() => _isPanelOpen = !_isPanelOpen);
+///       },
+///       title: text('Click me'),
+///       content: text('Content'),
+///     );
+///   }
+/// }
+/// ```
 class Collapse extends UiComponent {
   /// Creates a Collapse component.
   ///
   /// - [title]: The component for the always-visible title area.
   /// - [content]: The component for the collapsible content area.
   /// - [method]: The activation mechanism to use. Defaults to [CollapseMethod.focus].
-  /// - [initiallyOpen]: If `true`, the component will be open on first render.
-  ///   This applies to the `checkbox` and `details` methods.
-  /// - [onToggle]: A callback for the `checkbox` method that fires when the state
-  ///   changes, providing the new open state (`true` for open, `false` for closed).
-  /// - [style]: A list of [CollapseStyling] modifiers, such as [Collapse.arrow]
-  ///   or [Collapse.plus], to customize the appearance.
+  /// - For `checkbox` method:
+  ///   - [isOpen]: The current open state of the component.
+  ///   - [onToggle]: A callback that fires when the title is clicked.
+  /// - For `details` method:
+  ///   - [initiallyOpen]: If `true`, the component will be open on first render.
+  /// - [style]: A list of [CollapseStyling] modifiers.
   const Collapse({
     required this.title,
     required this.content,
     this.method = CollapseMethod.focus,
-    this.initiallyOpen = false,
+    // Properties for controlled (checkbox) method
+    this.isOpen = false,
     this.onToggle,
+    // Property for uncontrolled (details) method
+    this.initiallyOpen = false,
     super.style,
     super.id,
     super.classes,
@@ -66,20 +92,27 @@ class Collapse extends UiComponent {
   /// The activation method determining the underlying HTML structure and behavior.
   final CollapseMethod method;
 
-  /// Determines if the component is open by default.
-  ///
-  /// For [CollapseMethod.checkbox], this sets the initial `checked` state.
-  /// For [CollapseMethod.details], this adds the `open` attribute.
-  /// This property has no effect on the `focus` method.
-  final bool initiallyOpen;
+  /// **For `checkbox` method:** The current open state of the component.
+  final bool isOpen;
 
-  /// A callback that is invoked when the state of a `checkbox`-based collapse changes.
-  ///
-  /// This is only applicable when `method` is [CollapseMethod.checkbox].
-  final ValueChanged<bool>? onToggle;
+  /// **For `checkbox` method:** A callback invoked when the title is clicked.
+  final VoidCallback? onToggle;
+
+  /// **For `details` method:** Determines if the component is open by default.
+  final bool initiallyOpen;
 
   @override
   String get baseClass => 'collapse';
+
+  @override
+  String get combinedClasses {
+    var classes = super.combinedClasses;
+    // For the controlled checkbox method, conditionally apply the open class.
+    if (method == CollapseMethod.checkbox && isOpen) {
+      classes = '$classes collapse-open';
+    }
+    return classes;
+  }
 
   @override
   void configureAttributes(UiComponentAttributes attributes) {
@@ -87,18 +120,16 @@ class Collapse extends UiComponent {
 
     switch (method) {
       case CollapseMethod.focus:
-        // Make the div focusable to enable the :focus CSS pseudo-class.
         if (!userProvidedAttributes.containsKey('tabindex')) {
           attributes.add('tabindex', '0');
         }
+        attributes.addAria('expanded', 'false'); // CSS handles visual state
       case CollapseMethod.details:
-        // Set the initial open state for the <details> element.
         if (initiallyOpen) {
           attributes.add('open', '');
         }
       case CollapseMethod.checkbox:
-        // No specific attributes needed on the root element for the checkbox method.
-        break;
+        attributes.addAria('expanded', isOpen.toString());
     }
   }
 
@@ -110,13 +141,17 @@ class Collapse extends UiComponent {
     Map<String, String>? attributes,
     Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
+    // Add new properties to copyWith
+    bool? isOpen,
+    VoidCallback? onToggle,
   }) {
     return Collapse(
       title: title,
       content: content,
       method: method,
+      isOpen: isOpen ?? this.isOpen,
+      onToggle: onToggle ?? this.onToggle,
       initiallyOpen: initiallyOpen,
-      onToggle: onToggle,
       style: style,
       id: id ?? this.id,
       classes: mergeClasses(this.classes, classes),
@@ -129,45 +164,32 @@ class Collapse extends UiComponent {
 
   @override
   Component build(BuildContext context) {
-    final titleComponent = div(classes: 'collapse-title font-semibold', [title]);
-    final contentComponent = div(classes: 'collapse-content text-sm', [content]);
-
-    final List<Component> children;
     var effectiveTag = 'div';
+    final List<Component> children;
+
+    final contentComponent = div(classes: 'collapse-content text-sm', [content]);
 
     switch (method) {
       case CollapseMethod.focus:
+        final titleComponent = div(classes: 'collapse-title font-semibold', [title]);
         children = [titleComponent, contentComponent];
+
       case CollapseMethod.checkbox:
-        children = [
-          input(
-            type: InputType.checkbox,
-            attributes: {
-              if (initiallyOpen) 'checked': 'checked',
-            },
-            events: onToggle != null
-                ? {
-                    'change': (dynamic rawEvent) {
-                      if (kIsWeb) {
-                        final target = (rawEvent as Event).target! as HTMLInputElement;
-                        onToggle!(target.checked);
-                      }
-                    },
-                  }
-                : null,
-          ),
-          titleComponent,
-          contentComponent,
-        ];
+        // The title now has the click handler, and there is no hidden input.
+        final titleComponent = div(
+          classes: 'collapse-title font-semibold',
+          events: onToggle != null ? {'click': (_) => onToggle!()} : null,
+          [title],
+        );
+        children = [titleComponent, contentComponent];
+
       case CollapseMethod.details:
         effectiveTag = 'details';
-        children = [
-          summary(classes: 'collapse-title font-semibold', [title]),
-          contentComponent, // In <details>, content is a direct child
-        ];
+        // The title is wrapped in a <summary> for the native details element.
+        final titleComponent = summary(classes: 'collapse-title font-semibold', [title]);
+        children = [titleComponent, contentComponent];
     }
 
-    // return a single DomComponent with the determined tag and children.
     return Component.element(
       tag: effectiveTag,
       id: id,
@@ -180,30 +202,17 @@ class Collapse extends UiComponent {
   }
 
   // --- Static Style Modifiers ---
-
   /// Adds an arrow icon to the collapse component.
-  static const CollapseStyle arrow = CollapseStyle(
-    'collapse-arrow',
-    type: StyleType.additional,
-  );
+  static const CollapseStyle arrow = CollapseStyle('collapse-arrow', type: StyleType.additional);
 
   /// Adds a plus/minus icon to the collapse component.
-  static const CollapseStyle plus = CollapseStyle(
-    'collapse-plus',
-    type: StyleType.additional,
-  );
+  static const CollapseStyle plus = CollapseStyle('collapse-plus', type: StyleType.additional);
 
   /// Forces the component to be visually open, overriding its current state.
   /// Note: This does not work for the `details` method.
-  static const CollapseStyle open = CollapseStyle(
-    'collapse-open',
-    type: StyleType.state,
-  );
+  static const CollapseStyle open = CollapseStyle('collapse-open', type: StyleType.state);
 
   /// Forces the component to be visually closed, overriding its current state.
   /// Note: This does not work for the `details` method.
-  static const CollapseStyle close = CollapseStyle(
-    'collapse-close',
-    type: StyleType.state,
-  );
+  static const CollapseStyle close = CollapseStyle('collapse-close', type: StyleType.state);
 }
