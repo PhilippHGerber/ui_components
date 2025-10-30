@@ -25,6 +25,8 @@ export 'src/base/utilities/position.dart';
 export 'src/base/utilities/size.dart';
 export 'src/base/utilities/spacing.dart';
 export 'src/base/utilities/text_util.dart';
+export 'src/base/utilities/transform.dart';
+export 'src/base/utilities/transition.dart';
 // --- COMPONENTS ---
 // All DaisyUI components with their respective styling interfaces.
 

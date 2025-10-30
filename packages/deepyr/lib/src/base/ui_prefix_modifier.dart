@@ -27,6 +27,9 @@ enum PrefixModifierType {
   /// A feature or preference-based media query variant (e.g., `motion-reduce:`).
   variant,
 
+  /// A state based on a parent or ancestor element (e.g., `group-hover:`).
+  groupState,
+
   /// A device orientation variant (e.g., `portrait:`, `landscape:`).
   orientation,
 }
@@ -37,6 +40,28 @@ class PrefixModifier {
   final String _prefix;
   final PrefixModifierType type;
 
+  String get prefix => '$_prefix:';
+}
+
+/// A prefix modifier for styling an element based on the state of a parent
+/// marked with the `Layout.group` utility.
+enum Group implements PrefixModifier {
+  /// `group-focus`
+  focus('group-focus', PrefixModifierType.groupState),
+
+  /// `group-hover`
+  hover('group-hover', PrefixModifierType.groupState);
+
+  /// Group constructor
+  const Group(this._prefix, this.type);
+
+  @override
+  final String _prefix;
+
+  @override
+  final PrefixModifierType type;
+
+  @override
   String get prefix => '$_prefix:';
 }
 
