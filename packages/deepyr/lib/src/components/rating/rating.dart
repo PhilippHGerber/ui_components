@@ -202,8 +202,6 @@ class RatingContainer extends UiComponent {
   }
 }
 
-// #endregion
-
 /// A high-level, controlled component for creating a uniform rating scale.
 ///
 /// This component provides a simple API for the most common use cases where all

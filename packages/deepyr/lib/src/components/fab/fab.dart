@@ -6,8 +6,6 @@ import '../../../deepyr.dart';
 import '../../base/style_type.dart';
 import 'fab_style.dart';
 
-// #region JS-Interop for Focus Management
-
 /// A JS-interop function that calls `.blur()` on the currently focused element in the document.
 /// This is the most reliable way to remove focus from the FAB container and trigger its closing animation.
 @JS('document.activeElement.blur')
@@ -25,10 +23,6 @@ void blurActiveElement() {
     }
   }
 }
-
-// #endregion
-
-// #region FAB Component System
 
 /// A "smart container" for creating a Floating Action Button (FAB) with an optional
 /// "Speed Dial" menu that appears on focus or click.
@@ -371,5 +365,3 @@ class FabMainAction extends UiComponent {
     );
   }
 }
-
-// #endregion
