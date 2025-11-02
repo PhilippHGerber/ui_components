@@ -93,6 +93,23 @@ abstract class BaseStyle<T extends BaseStyle<T>> implements Styling, Comparable<
     return create([...existingModifiers, modifier]);
   }
 
+  /// Applies a custom state or variant [PrefixModifier].
+  ///
+  /// This method is used for applying component-specific variants that are not
+  /// standard pseudo-classes, such as DaisyUI's `is-drawer-open:`. It provides
+  /// a fluent and type-safe way to handle these custom states.
+  ///
+  /// Example:
+  /// ```dart
+  /// // Generates the class "is-drawer-open:w-64"
+  /// Size.w64.when(DrawerIs.open)
+  /// ```
+  T when(PrefixModifier state) {
+    final existingModifiers = modifiers ?? [];
+    return create([...existingModifiers, state]);
+  }
+  
+
   /// Returns the string representation of this utility class, including all applied prefixes.
   /// For example, `hover:md:text-lg`.
   @override
