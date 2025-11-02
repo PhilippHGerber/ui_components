@@ -1,6 +1,3 @@
-// This file defines the styling interfaces and classes for the AccordionItem component.
-// It follows the standard deepyr pattern for component-specific styling.
-
 import '../../base/component_style.dart';
 import '../../base/style_type.dart';
 import '../../base/styling.dart';
