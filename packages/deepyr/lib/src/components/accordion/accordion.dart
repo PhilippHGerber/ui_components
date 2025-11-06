@@ -224,7 +224,8 @@ class AccordionItem<T> extends UiComponent {
         input(
           type: InputType.radio,
           name: name,
-          checked: isChecked, // Bound to Dart state via the `groupValue` prop.
+          // Jaspr bug workaround: use `true`/`null` instead of `true`/`false`.
+          checked: isChecked ? true : null,
           onChange: (_) {
             // Notifies the parent to update the state.
             if (kIsWeb) {
