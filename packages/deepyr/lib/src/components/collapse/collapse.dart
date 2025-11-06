@@ -167,7 +167,8 @@ class Collapse extends UiComponent {
         children = [
           input(
             type: InputType.checkbox,
-            checked: isOpen,
+            // Jaspr bug workaround: use `true`/`null` instead of `true`/`false`.
+            checked: isOpen ? true : null,
             onChange: (dynamic value) {
               // Jaspr's `input` `onChange` provides `dynamic`.
               if (onToggle != null && kIsWeb && value is bool) {
