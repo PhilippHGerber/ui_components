@@ -80,7 +80,7 @@ export 'src/components/dock/dock.dart';
 export 'src/components/dock/dock_style.dart' show DockItemStyling, DockLabelStyling, DockStyling;
 // Drawer
 export 'src/components/drawer/drawer.dart';
-export 'src/components/drawer/drawer_style.dart' show DrawerStyling;
+export 'src/components/drawer/drawer_style.dart' show DrawerIs, DrawerStyling;
 // Dropdown
 export 'src/components/dropdown/dropdown.dart';
 export 'src/components/dropdown/dropdown_content_style.dart' show DropdownContentStyling;

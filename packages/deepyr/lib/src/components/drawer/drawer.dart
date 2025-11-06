@@ -1,28 +1,76 @@
-import 'package:jaspr/jaspr.dart' hide css;
-import 'package:universal_web/web.dart' show Event, HTMLInputElement;
+import 'package:jaspr/jaspr.dart';
 
 import '../../base/style_type.dart';
 import '../../base/ui_component.dart';
-import '../../base/ui_component_attributes.dart';
 import '../../base/ui_events.dart';
 import 'drawer_style.dart';
 
-/// A container component that provides a slide-out panel (sidebar) for navigation or content.
+/// A responsive slide-out panel (drawer) that follows the controlled component pattern.
 ///
-/// The drawer's visibility is controlled by an internal checkbox. Interaction is handled by
-/// linking <label> elements (like [DrawerSide]'s overlay or a custom button) to this checkbox
-/// using the [drawerId]. The component's state is synchronized via the [onToggle] callback,
-/// which correctly handles the browser's `onChange` event.
+/// The `Drawer` provides a flexible way to implement navigation sidebars and mobile
+/// menus. Its visibility is managed entirely by a parent stateful component.
+///
+/// ### Design: Controlled Component
+/// This is a **controlled component**. Its open/closed state is not managed internally.
+/// You must:
+/// 1. Own the state (e.g., a `bool _isDrawerOpen`) in a parent `StatefulComponent`.
+/// 2. Pass this state to the `Drawer` via the `isOpen` property.
+/// 3. Provide an `onToggle` callback to update your state when the user interacts
+///    with the drawer.
+///
+/// ### Responsive Behavior
+/// To make the drawer permanently visible on large screens while remaining toggleable
+/// on mobile, apply the `lg:drawer-open` class to the `Drawer`'s `classes` property.
+/// The `isOpen` state will then only control the mobile overlay behavior.
+///
+/// ### Internal Mechanism
+/// The drawer uses a hidden, **controlled** checkbox (`<input type="checkbox">`) that
+/// is linked to trigger elements (`<label>`) to manage its state via CSS. This
+/// component abstracts that complexity away.
+///
+/// ### Example Usage (in a StatefulComponent):
+///
+/// ```dart
+/// class MyPage extends StatefulComponent {
+///   @override
+///   State<MyPage> createState() => _MyPageState();
+/// }
+///
+/// class _MyPageState extends State<MyPage> {
+///   // 1. Parent component owns the state.
+///   bool _isDrawerOpen = false;
+///
+///   @override
+///   Component build(BuildContext context) {
+///     return Drawer(
+///       // 2. Control the state from the parent.
+///       isOpen: _isDrawerOpen,
+///       // 3. Update the state via the callback.
+///       onToggle: (isOpen) => setState(() => _isDrawerOpen = isOpen),
+///       // Apply responsive visibility using a standard CSS class.
+///       classes: 'lg:drawer-open',
+///       side: DrawerSide(menuContent: Menu([...])),
+///       content: DrawerContent([
+///         DrawerTrigger([ Button([Icon('menu')]) ]),
+///         // ... your other page content
+///       ]),
+///     );
+///   }
+/// }
+/// ```
 class Drawer extends UiComponent {
-  /// Creates a Drawer container component.
+  /// Creates a controlled Drawer container component.
   ///
-  /// - [content]: The main content area of the page ([DrawerContent]).
-  /// - [side]: The slide-out panel content ([DrawerSide]).
-  /// - [drawerId]: A unique ID for the internal checkbox. Essential for linking toggle labels.
-  /// - [isOpen]: The current state of the drawer (true for open, false for closed).
-  /// - [onToggle]: A callback that fires when the drawer's state changes. It receives the new boolean state.
-  /// - [styles]: A list of [DrawerStyling] instances for styling and behavior (e.g., [Drawer.end]).
-  /// - Other parameters are inherited from [UiComponent].
+  /// - [content]: The main content area, wrapped in a [DrawerContent]. This is
+  ///   where you should place your [DrawerTrigger].
+  /// - [side]: The slide-out panel, wrapped in a [DrawerSide].
+  /// - [drawerId]: Stable ID for the internal control checkbox. This ID must be
+  ///   unique on the page and is used to link trigger to the drawer.
+  /// - [isOpen]: The current state of the drawer (`true` for open). This is the
+  ///   single source of truth for the drawer's interactive state.
+  /// - [onToggle]: A callback that fires when the drawer's state changes,
+  ///   allowing the parent to update its state.
+  /// - [style]: A list of [DrawerStyling] modifiers (e.g., [Drawer.end]).
   const Drawer({
     required this.content,
     required this.side,
@@ -45,7 +93,8 @@ class Drawer extends UiComponent {
   /// The slide-out panel content.
   final DrawerSide side;
 
-  /// Whether the drawer is currently open. This directly controls the 'checked' state of the internal checkbox.
+  /// Whether the drawer is currently open. This directly controls the `checked` state
+  /// of the internal checkbox, making this a controlled component.
   final bool isOpen;
 
   /// This callback is crucial for state management. It is triggered when the internal
@@ -58,12 +107,10 @@ class Drawer extends UiComponent {
   @override
   String get baseClass => 'drawer';
 
-  @override
-  void configureAttributes(UiComponentAttributes attributes) {
-    super.configureAttributes(attributes);
-    // No additional attributes needed by default.
-  }
-
+  /// Creates a new instance of [Drawer] with the provided properties replaced.
+  ///
+  /// This method is essential for the "smart container" pattern, allowing parent
+  /// components to programmatically clone and modify their children.
   @override
   Drawer copyWith({
     String? id,
@@ -72,13 +119,18 @@ class Drawer extends UiComponent {
     Map<String, String>? attributes,
     Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
+    DrawerContent? content,
+    DrawerSide? side,
+    bool? isOpen,
+    ValueChanged<bool>? onToggle,
+    String? drawerId,
   }) {
     return Drawer(
-      content: content,
-      side: side,
-      drawerId: drawerId,
-      isOpen: isOpen,
-      onToggle: onToggle,
+      content: content ?? this.content,
+      side: side ?? this.side,
+      isOpen: isOpen ?? this.isOpen,
+      onToggle: onToggle ?? this.onToggle,
+      drawerId: drawerId ?? this.drawerId,
       tag: tag,
       styles: style as List<DrawerStyling>?,
       id: id ?? this.id,
@@ -96,57 +148,43 @@ class Drawer extends UiComponent {
       tag: tag,
       id: id,
       classes: combinedClasses,
-      styles: css,
+      styles: this.css,
       attributes: componentAttributes,
       events: this.events,
       children: [
-        // The hidden checkbox that controls the drawer's visibility via CSS.
         input(
           type: InputType.checkbox,
           id: drawerId,
           classes: 'drawer-toggle',
-          attributes: {
-            if (isOpen) 'checked': '',
+          // Jaspr bug see https://github.com/schultek/jaspr/issues/631
+          checked: isOpen ? true : null,
+          // Use the raw event parameter
+          events: {
+            'change': (_) {
+              if (kIsWeb && onToggle != null) {
+                // Toggle based on current state
+                onToggle!(!isOpen);
+              }
+            },
           },
-          events: onToggle != null
-              ? {
-                  'change': (dynamic rawEvent) {
-                    if (kIsWeb) {
-                      final target = (rawEvent as Event).target! as HTMLInputElement;
-                      onToggle!(target.checked);
-                    }
-                  },
-                }
-              : null,
         ),
         content,
-        DrawerSide(
-          menuContent: side.menuContent,
-          drawerId: drawerId,
-          // Pass through other properties from the user-provided 'side' component.
-          tag: side.tag,
-          id: side.id,
-          style: side.style,
-          classes: side.classes,
-          css: side.css,
-          attributes: side.componentAttributes,
-          key: side.key,
-        ),
+        side.copyWith(htmlFor: drawerId),
       ],
     );
   }
 
   // --- Static Drawer Modifiers ---
 
-  /// Changes drawer to open from the right side. `drawer-end`
+  /// Changes the drawer to open from the right side. `drawer-end`
   static const DrawerStyle end = DrawerStyle('drawer-end', type: StyleType.layout);
-
-  /// Forces the drawer to be open. Can be used with responsive prefixes.
-  /// e.g., `Drawer.open.at(Breakpoint.lg)` produces `lg:drawer-open`.
-  static const DrawerStyle open = DrawerStyle('drawer-open', type: StyleType.state);
 }
 
-/// Represents the main content area of a page when a [Drawer] is present.
+/// The main content area of a [Drawer].
+///
+/// This component acts as a container for the primary content of your page.
+/// It is essential to place your [DrawerTrigger] within this component to ensure
+/// proper functionality. All other page content should also be nested here.
 class DrawerContent extends UiComponent {
   const DrawerContent(
     super.children, {
@@ -164,6 +202,7 @@ class DrawerContent extends UiComponent {
   @override
   String get baseClass => 'drawer-content';
 
+  /// Creates a new instance of [DrawerContent] with the provided properties replaced.
   @override
   DrawerContent copyWith({
     String? id,
@@ -172,9 +211,12 @@ class DrawerContent extends UiComponent {
     Map<String, String>? attributes,
     Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
+    List<Component>? children,
+    Component? child,
   }) {
     return DrawerContent(
-      children,
+      children ?? this.children ?? [],
+      child: child ?? this.child,
       tag: tag,
       style: style,
       id: id ?? this.id,
@@ -182,22 +224,28 @@ class DrawerContent extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
-      child: child,
       key: key ?? this.key,
     );
   }
 }
 
 /// Represents the slide-out panel (sidebar) of a [Drawer].
-/// Contains a clickable overlay and the menu/content for the panel.
+///
+/// This component serves as the container for the drawer's visible content and the
+/// interactive overlay. It is composed of two key parts:
+/// 1. A `<label>` that acts as a clickable overlay to close the drawer.
+/// 2. The `menuContent` you provide, which is the actual sidebar UI.
+///
+/// The `htmlFor` property is automatically managed by the parent [Drawer] to link
+/// the overlay to the internal control checkbox.
 class DrawerSide extends UiComponent {
   /// Creates a DrawerSide component.
   ///
   /// - [menuContent]: The actual content to display within the slide-out panel.
-  /// - [drawerId]: The ID used by the label overlay to associate with the drawer's toggle checkbox.
+  /// - [htmlFor]: The 'for' attribute for the overlay label, injected by parent Drawer.
   const DrawerSide({
     required this.menuContent,
-    this.drawerId,
+    this.htmlFor,
     super.tag = 'div',
     super.style,
     super.id,
@@ -206,17 +254,18 @@ class DrawerSide extends UiComponent {
     super.attributes,
     super.eventHandlers,
     super.key,
-  }) : super(null); // Children are managed internally.
+  }) : super(null);
 
-  /// The content to display within the drawer panel.
+  /// The sidebar content to display in the slide-out panel.
   final Component menuContent;
 
-  /// The ID for the drawer toggle mechanism, used by the overlay's `for` attribute.
-  final String? drawerId;
+  /// The `for` attribute of the overlay label, injected by the parent `Drawer`.
+  final String? htmlFor;
 
   @override
   String get baseClass => 'drawer-side';
 
+  /// Creates a new instance of [DrawerSide] with the provided properties replaced.
   @override
   DrawerSide copyWith({
     String? id,
@@ -225,10 +274,12 @@ class DrawerSide extends UiComponent {
     Map<String, String>? attributes,
     Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
+    Component? menuContent,
+    String? htmlFor,
   }) {
     return DrawerSide(
-      menuContent: menuContent,
-      drawerId: drawerId,
+      menuContent: menuContent ?? this.menuContent,
+      htmlFor: htmlFor ?? this.htmlFor,
       tag: tag,
       style: style,
       id: id ?? this.id,
@@ -242,25 +293,30 @@ class DrawerSide extends UiComponent {
 
   @override
   Component build(BuildContext context) {
-    final attributes = <String, String>{'aria-label': 'close sidebar'};
-    if (drawerId != null) {
-      attributes['for'] = drawerId!;
-    }
-
-    final overlayLabel = label(
-      classes: 'drawer-overlay',
-      attributes: attributes,
-      [],
-    );
+    // This solves the SSR flash: we conditionally add the `hidden` attribute
+    // during Server-Side Rendering to prevent the flash of content.
+    final ssrAttributes = !kIsWeb ? {'hidden': ''} : null;
 
     return Component.element(
       tag: tag,
       id: id,
       classes: combinedClasses,
-      styles: css,
-      attributes: componentAttributes,
+      styles: this.css,
+      attributes: {
+        if (ssrAttributes != null) ...ssrAttributes,
+        ...componentAttributes,
+      },
       events: this.events,
-      children: [overlayLabel, menuContent],
+      children: [
+        // This label acts as the overlay that closes the drawer when clicked.
+        label(
+          htmlFor: htmlFor,
+          classes: 'drawer-overlay',
+          attributes: {'aria-label': 'close sidebar'},
+          [],
+        ),
+        menuContent,
+      ],
     );
   }
 }
