@@ -1,4 +1,5 @@
 import 'package:jaspr/jaspr.dart';
+import 'package:universal_web/web.dart' show Event, HTMLInputElement;
 
 import '../../base/style_type.dart';
 import '../../base/ui_component.dart';
@@ -160,10 +161,11 @@ class Drawer extends UiComponent {
           checked: isOpen ? true : null,
           // Use the raw event parameter
           events: {
-            'change': (_) {
+            'change': (dynamic rawEvent) {
               if (kIsWeb && onToggle != null) {
-                // Toggle based on current state
-                onToggle!(!isOpen);
+                // Get the actual 'checked' property from the DOM element.
+                final target = (rawEvent as Event).target! as HTMLInputElement;
+                onToggle!(target.checked);
               }
             },
           },
