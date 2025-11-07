@@ -226,6 +226,7 @@ class MenuItem extends UiComponent {
 
   @override
   MenuItem copyWith({
+    String? href,
     String? id,
     String? classes,
     Styles? css,
