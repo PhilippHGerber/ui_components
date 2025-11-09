@@ -1,5 +1,11 @@
 # Changelog
 
+## Next release
+
+### Changed
+
+* **`Drawer`:** The `Drawer` component is now a fully self-synchronizing controlled component. Programmatic changes to the `isOpen` prop (for example, setting it to `false` to close the drawer on navigation) are now automatically and reliably reflected in the UI. This provides a cleaner, purely declarative API.
+
 ## 0.3.0
 
 ### Added
