@@ -47,7 +47,7 @@ class TimelineStart extends UiComponent {
       tag: tag,
       style: style as List<TimelineContentStyling>?,
       classes: mergeClasses(this.classes, classes),
-      attributes: attributes ?? componentAttributes,
+      attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
     );
@@ -94,7 +94,7 @@ class TimelineEnd extends UiComponent {
       tag: tag,
       style: style as List<TimelineContentStyling>?,
       classes: mergeClasses(this.classes, classes),
-      attributes: attributes ?? componentAttributes,
+      attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
     );
@@ -132,7 +132,7 @@ class TimelineMiddle extends UiComponent {
       children,
       tag: tag,
       classes: mergeClasses(this.classes, classes),
-      attributes: attributes ?? componentAttributes,
+      attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
     );
@@ -210,7 +210,7 @@ class TimelineItem extends UiComponent {
       classes: combinedClasses,
       styles: this.css,
       attributes: componentAttributes,
-      events: this.events,
+      events: eventMap,
       children: kids,
     );
   }
@@ -240,7 +240,7 @@ class TimelineItem extends UiComponent {
       showStartConnector: showStartConnector ?? _showStartConnector,
       showEndConnector: showEndConnector ?? _showEndConnector,
       classes: mergeClasses(this.classes, classes),
-      attributes: attributes ?? componentAttributes,
+      attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
     );
@@ -315,7 +315,7 @@ class Timeline extends UiComponent {
       classes: combinedClasses,
       styles: this.css,
       attributes: componentAttributes,
-      events: this.events,
+      events: eventMap,
       children: finalChildren,
     );
   }
@@ -334,7 +334,7 @@ class Timeline extends UiComponent {
       style: style as List<TimelineStyling>?,
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
-      attributes: attributes ?? componentAttributes,
+      attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
     );
