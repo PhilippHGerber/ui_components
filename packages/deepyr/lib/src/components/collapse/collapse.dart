@@ -158,7 +158,7 @@ class Collapse extends UiComponent {
 
     var effectiveTag = 'div';
     final List<Component> children;
-    final eventMap = Map<String, EventCallback>.from(this.events);
+    final eventMap = Map<String, EventCallback>.from(this.eventMap);
 
     switch (method) {
       case CollapseMethod.focus:

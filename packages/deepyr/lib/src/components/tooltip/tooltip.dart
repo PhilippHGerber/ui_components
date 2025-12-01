@@ -73,7 +73,7 @@ class Tooltip extends UiComponent {
       classes: combinedClasses,
       styles: this.css,
       attributes: componentAttributes,
-      events: this.events,
+      events: eventMap,
       children: effectiveChildren,
     );
   }

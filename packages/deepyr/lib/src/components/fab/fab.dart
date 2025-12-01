@@ -144,7 +144,7 @@ class Fab extends UiComponent {
       classes: combinedClasses,
       styles: this.css,
       attributes: componentAttributes,
-      events: this.events,
+      events: eventMap,
       children: [
         // 1. The focusable trigger wrapper. This solves the Safari bug and
         //    provides a consistent focus target.
@@ -231,7 +231,7 @@ class FabAction extends UiComponent {
       classes: combinedClasses,
       styles: this.css,
       attributes: componentAttributes,
-      events: this.events,
+      events: eventMap,
       children: [label!, children!.first],
     );
   }

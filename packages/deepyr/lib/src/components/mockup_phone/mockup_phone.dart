@@ -54,7 +54,7 @@ class MockupPhone extends UiComponent {
       classes: combinedClasses,
       styles: this.css,
       attributes: componentAttributes,
-      events: this.events,
+      events: eventMap,
       children: [
         // The camera notch is rendered automatically.
         div(classes: 'mockup-phone-camera', []),

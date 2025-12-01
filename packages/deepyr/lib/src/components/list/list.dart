@@ -213,7 +213,7 @@ class ListRow extends UiComponent {
       classes: combinedClasses,
       styles: css,
       attributes: componentAttributes,
-      events: events,
+      events: eventMap,
       children: effectiveChildren,
     );
   }

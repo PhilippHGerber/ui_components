@@ -88,7 +88,7 @@ class RatingItem extends UiComponent {
                 }
               },
             }
-          : events,
+          : eventMap,
     );
   }
 

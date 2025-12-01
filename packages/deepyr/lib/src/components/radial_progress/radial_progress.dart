@@ -137,7 +137,7 @@ class RadialProgress extends UiComponent {
       classes: combinedClasses,
       styles: combinedStyles,
       attributes: componentAttributes,
-      events: this.events,
+      events: eventMap,
       children: finalChildren,
     );
   }

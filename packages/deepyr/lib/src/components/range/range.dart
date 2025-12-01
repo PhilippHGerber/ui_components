@@ -137,7 +137,7 @@ class Range extends UiComponent {
 
   @override
   Component build(BuildContext context) {
-    final eventMap = Map<String, EventCallback>.from(events);
+    final eventMap = Map<String, EventCallback>.from(this.eventMap);
 
     if (onValueChanged != null) {
       // The 'input' event fires continuously as the user drags the slider.

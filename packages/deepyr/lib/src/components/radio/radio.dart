@@ -138,7 +138,7 @@ class Radio<T> extends UiComponent {
 
   @override
   Component build(BuildContext context) {
-    final eventMap = Map<String, EventCallback>.from(events);
+    final eventMap = Map<String, EventCallback>.from(this.eventMap);
 
     // The 'change' event fires when a radio button is selected.
     eventMap['change'] = (dynamic event) {

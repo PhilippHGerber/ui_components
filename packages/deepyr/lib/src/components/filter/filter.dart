@@ -177,7 +177,7 @@ class Filter<T> extends UiComponent {
     }
 
     // Add the onReset event handler if applicable.
-    final eventMap = Map<String, EventCallback>.from(this.events);
+    final eventMap = Map<String, EventCallback>.from(this.eventMap);
     if (method == FilterMethod.form && onReset != null) {
       eventMap['reset'] = (_) => onReset!();
     }
@@ -310,7 +310,7 @@ class FilterItem<T> extends UiComponent {
 
   @override
   Component build(BuildContext context) {
-    final eventMap = Map<String, EventCallback>.from(this.events);
+    final eventMap = Map<String, EventCallback>.from(this.eventMap);
 
     // The 'change' event fires when a radio button is selected.
     if (onSelect != null) {

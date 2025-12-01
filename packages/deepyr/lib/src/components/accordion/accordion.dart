@@ -190,6 +190,7 @@ class AccordionItem<T> extends UiComponent {
   }) {
     // A null `groupValue` is a valid state (nothing selected), so we can't use `??`.
     // We check if the argument was passed by checking for nullability of the argument itself.
+    // The `null is T` check reliably determines if the generic type T itself is nullable.
     final effectiveGroupValue = (groupValue != null || null is T) ? groupValue : this.groupValue;
 
     return AccordionItem<T>(
@@ -218,7 +219,7 @@ class AccordionItem<T> extends UiComponent {
       classes: combinedClasses,
       styles: this.css,
       attributes: componentAttributes,
-      events: this.events,
+      events: eventMap,
       children: [
         // This is now a fully controlled input, solving the Jaspr v0.21.6 issue.
         input(

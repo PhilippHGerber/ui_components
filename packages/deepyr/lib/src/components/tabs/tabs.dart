@@ -344,7 +344,7 @@ class Tab extends UiComponent {
         if (customStyles != null) customStyles!,
       ]),
       attributes: componentAttributes,
-      events: events,
+      events: eventMap,
       children: children ?? [?child],
     );
   }

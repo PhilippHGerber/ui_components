@@ -148,7 +148,7 @@ class MockupCode extends UiComponent {
       classes: combinedClasses,
       styles: this.css,
       attributes: componentAttributes,
-      events: this.events,
+      events: eventMap,
       children: [
         for (final line in lines)
           pre(

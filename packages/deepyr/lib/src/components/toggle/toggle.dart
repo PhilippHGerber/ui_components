@@ -122,7 +122,7 @@ class Toggle extends UiComponent {
   @override
   Component build(BuildContext context) {
     // Start with the standard events from the base class.
-    final eventMap = Map<String, EventCallback>.from(events);
+    final eventMap = Map<String, EventCallback>.from(this.eventMap);
 
     if (onToggle != null) {
       eventMap['change'] = (dynamic event) {

@@ -139,7 +139,7 @@ class Drawer extends UiComponent {
       classes: combinedClasses,
       styles: this.css,
       attributes: componentAttributes,
-      events: this.events,
+      events: eventMap,
       children: [
         input(
           type: InputType.checkbox,
@@ -282,7 +282,7 @@ class DrawerSide extends UiComponent {
       classes: combinedClasses,
       styles: this.css,
       attributes: componentAttributes,
-      events: this.events,
+      events: eventMap,
       children: [
         // This label acts as the overlay that closes the drawer when clicked.
         label(

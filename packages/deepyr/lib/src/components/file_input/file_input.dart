@@ -128,7 +128,7 @@ class FileInput extends UiComponent {
 
   @override
   Component build(BuildContext context) {
-    final eventMap = Map<String, EventCallback>.from(events);
+    final eventMap = Map<String, EventCallback>.from(this.eventMap);
 
     if (onFilesSelected != null) {
       // The 'change' event fires when a file is selected.

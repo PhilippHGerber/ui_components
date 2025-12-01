@@ -61,7 +61,7 @@ class BrowserMockup extends UiComponent {
       classes: combinedClasses,
       styles: this.css,
       attributes: componentAttributes,
-      events: this.events,
+      events: eventMap,
       children: [
         // The toolbar is created internally, abstracting this detail.
         BrowserToolbar(addressBarContent: addressBar),

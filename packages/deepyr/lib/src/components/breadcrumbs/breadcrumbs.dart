@@ -82,7 +82,7 @@ class Breadcrumbs extends UiComponent {
       classes: combinedClasses,
       styles: this.css,
       attributes: componentAttributes,
-      events: this.events,
+      events: eventMap,
       // DaisyUI structure is `div.breadcrumbs > ul > li > a`
       children: [ul(listItems ?? [])],
     );

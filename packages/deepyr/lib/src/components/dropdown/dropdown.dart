@@ -84,15 +84,6 @@ class Dropdown extends UiComponent {
   String get baseClass => 'dropdown';
 
   @override
-  void configureAttributes(UiComponentAttributes attributes) {
-    super.configureAttributes(attributes);
-    // For the focus method, the container itself should NOT be focusable.
-    // Instead, the trigger and content elements inside it should be.
-    // This was the source of the bug. The `Button` trigger is inherently
-    // focusable, and `DropdownContent` adds its own tabindex.
-  }
-
-  @override
   Component build(BuildContext context) {
     final List<Component> effectiveChildren;
 
@@ -112,7 +103,7 @@ class Dropdown extends UiComponent {
           id: triggerComponent.id,
           styles: triggerComponent.css,
           attributes: triggerComponent.componentAttributes,
-          events: triggerComponent.events,
+          events: triggerComponent.eventMap,
           children: triggerComponent.children ?? [?triggerComponent.child],
         );
       } else {
@@ -145,7 +136,7 @@ class Dropdown extends UiComponent {
           id: button.id,
           classes: button.combinedClasses,
           styles: button.css,
-          events: button.events,
+          events: button.eventMap,
           // Preserve user attributes, only adding defaults if not provided.
           // This allows developers to override the role (e.g., to 'menuitem')
           // or tabindex if they have a specific accessibility requirement.
@@ -170,7 +161,7 @@ class Dropdown extends UiComponent {
       classes: combinedClasses,
       styles: this.css,
       attributes: componentAttributes,
-      events: this.events,
+      events: eventMap,
       children: effectiveChildren,
     );
   }

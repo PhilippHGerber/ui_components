@@ -42,7 +42,7 @@ class BrowserToolbar extends UiComponent {
       classes: combinedClasses,
       styles: this.css,
       attributes: componentAttributes,
-      events: this.events,
+      events: eventMap,
       children: [
         // This div with the `input` class provides the address bar styling.
         div(classes: 'input', [addressBarContent]),
