@@ -1,203 +1,183 @@
-import 'package:jaspr/jaspr.dart' hide css;
-import 'package:universal_web/web.dart';
+import 'package:jaspr/jaspr.dart';
+import 'package:universal_web/web.dart' show HTMLInputElement, document;
 
+import '../../base/stateful_ui_component.dart';
 import '../../base/style_type.dart';
-import '../../base/ui_component.dart';
 import '../../base/ui_component_attributes.dart';
-import '../../base/ui_events.dart';
 import 'swap_style.dart';
 
-// Example for helpers, assuming Icon component exists
-// import '../icon.dart'; // If Icon is a separate component in your library
-
-/// A component that toggles between two visual states ("on" and "off")
-/// when an internal checkbox is toggled. It can also represent an indeterminate state.
+/// A component that toggles between two visual states ("on" and "off") when clicked.
+/// It can also represent a third, indeterminate state.
 ///
-/// The `styles` list accepts [SwapStyling] (the interface) instances,
-/// which includes specific swap animations (like [Swap.rotate]) and general utilities.
-class Swap extends UiComponent {
-  /// Creates a Swap component.
+/// The `Swap` component wraps two or three elements and switches their visibility
+/// based on a checkbox state or a CSS class.
+///
+/// `Swap` is a **controlled component**. Its state is not managed internally.
+/// Instead, you must provide its current state via the [isOn] property and
+/// handle state changes with the [onToggle] callback.
+///
+/// ### Example:
+///
+/// ```dart
+/// Swap(
+///   isOn: isDarkMode,
+///   onToggle: (value) => setDarkMode(value),
+///   onContent: Icon('dark_mode'),
+///   offContent: Icon('light_mode'),
+///   style: [Swap.rotate],
+/// )
+/// ```
+class Swap extends StatefulUiComponent {
+  /// Creates a controlled Swap component.
   ///
-  /// - [onContent]: The [Component] to display when the swap is in the "on" (checked) state.
-  /// - [offContent]: The [Component] to display when the swap is in the "off" (unchecked) state.
-  /// - [tag]: The HTML tag for the root element, defaults to 'label' to associate with the internal checkbox.
-  /// - [indeterminateContent]: Optional [Component] to display when the swap is in an indeterminate state.
-  /// - [checked]: If true, the swap is initially in the "on" state.
-  /// - [indeterminate]: If true, the swap is initially in the indeterminate state.
-  ///   Note: An indeterminate checkbox is visually distinct but its value when submitted in a form is usually `false`.
-  /// - [style]: A list of [SwapStyling] (the interface) instances.
-  /// - [onToggle]: Callback function that is invoked when the swap state changes (checked/unchecked).
-  ///   Receives the new checked state as a boolean.
-  /// - Other parameters are inherited from [UiComponent].
+  /// - [onContent]: The component to display when `isOn` is true.
+  /// - [offContent]: The component to display when `isOn` is false.
+  /// - [isOn]: The current state of the swap. `true` shows [onContent], `false` shows [offContent].
+  /// - [onToggle]: A callback that fires when the user clicks the component.
+  /// - [indeterminate]: If `true`, shows [indeterminateContent] (if provided) or a mixed state.
+  /// - [indeterminateContent]: Optional component to display when [indeterminate] is true.
+  /// - [style]: A list of [SwapStyling] modifiers (e.g., `Swap.rotate`, `Swap.flip`).
+  /// - [tag]: The HTML tag for the root element, defaults to 'label'.
   const Swap({
     required this.onContent,
     required this.offContent,
-    super.tag = 'label',
-    this.indeterminateContent,
-    this.checked = false,
-    this.indeterminate = false,
-    List<SwapStyling>? style,
+    this.isOn = false,
     this.onToggle,
-    super.id, // ID for the label, can be used with 'for' if checkbox ID is known/set
+    this.indeterminate = false,
+    this.indeterminateContent,
+    super.tag = 'label',
+    List<SwapStyling>? style,
+    super.id,
     super.classes,
     super.css,
     super.attributes,
     super.eventHandlers,
-    super.onClick, // onClick on the label itself
     super.key,
-  }) : super(
-         null, // Children are managed internally in the build method
-         style: style,
-       );
+  }) : super(null, style: style);
 
   /// The content to display when the swap is in the "on" (checked) state.
   final Component onContent;
 
-  /// The content to display when the "off" (unchecked) state.
+  /// The content to display when the swap is in the "off" (unchecked) state.
   final Component offContent;
 
   /// Optional content to display when the swap is in an indeterminate state.
   final Component? indeterminateContent;
 
-  /// Initial checked state.
-  final bool checked;
+  /// The current state of the swap. `true` corresponds to the "on" state.
+  final bool isOn;
 
-  /// Initial indeterminate state.
+  /// If true, the component will be in a visual indeterminate state.
   final bool indeterminate;
 
-  /// Callback when the toggle state changes. `void Function(bool isChecked)`
+  /// A callback that is invoked with the new boolean state when the user
+  /// interacts with the component.
   final ValueChanged<bool>? onToggle;
 
   @override
-  String get baseClass => 'swap'; // DaisyUI base class
+  String get baseClass => 'swap';
+
+  @override
+  State<Swap> createState() => _SwapState();
 
   @override
   void configureAttributes(UiComponentAttributes attributes) {
-    super.configureAttributes(attributes);
-    // The <label> tag for 'swap' doesn't typically require specific ARIA roles
-    // beyond what its association with the checkbox provides.
-    // If the checkbox ID were known and stable, `attributes.add('for', checkboxId)` could be set here.
-    // However, managing the checkbox ID centrally can be tricky if `id` prop is for the label.
+    if (!attributes.build().containsKey('role')) {
+      attributes.addRole('switch');
+    }
+  }
 
-    // Check for active state modifier to potentially set aria-pressed or similar,
-    // though 'swap-active' mainly controls visibility of on/off content via CSS.
-    // final List<SwapStyleModifier> styleModifiers =
-    //     this.modifiers?.whereType<SwapStyleModifier>().toList() ?? [];
-    // if (styleModifiers.contains(Swap.active)) {
-    //    // This state is usually controlled by the internal checkbox's :checked state
-    // }
+  /// Forces the "on" state to be active via CSS class, overriding the checkbox state.
+  /// `swap-active`
+  static const SwapStyle active = SwapStyle('swap-active', type: StyleType.state);
+
+  /// Applies a rotation animation on toggle. `swap-rotate`
+  static const SwapStyle rotate = SwapStyle('swap-rotate', type: StyleType.effect);
+
+  /// Applies a flip animation on toggle. `swap-flip`
+  static const SwapStyle flip = SwapStyle('swap-flip', type: StyleType.effect);
+}
+
+class _SwapState extends StatefulUiComponentState<Swap> {
+  /// Generates a unique ID for the internal checkbox input.
+  /// This is necessary to find the element in the DOM for the indeterminate state.
+  String get _checkboxId =>
+      component.id != null ? '${component.id}_input' : 'swap_input_${component.hashCode}';
+
+  @override
+  String get baseClass => component.baseClass;
+
+  @override
+  void configureAttributes(UiComponentAttributes attributes) {
+    // 1. Call super to run the Widget's configuration (adds role='switch')
+    super.configureAttributes(attributes);
+
+    // 2. Add dynamic state
+    if (component.indeterminate) {
+      attributes.addAria('checked', 'mixed');
+    } else {
+      attributes.addAria('checked', component.isOn.toString());
+    }
   }
 
   @override
-  Swap copyWith({
-    String? id,
-    String? classes,
-    Styles? css,
-    Map<String, String>? attributes,
-    Map<String, List<UiEventHandler>>? eventHandlers,
-    Key? key,
-  }) {
-    return Swap(
-      onContent: onContent,
-      offContent: offContent,
-      tag: tag,
-      indeterminateContent: indeterminateContent,
-      checked: checked,
-      indeterminate: indeterminate,
-      style: style as List<SwapStyling>?,
-      onToggle: onToggle,
-      id: id ?? this.id,
-      classes: mergeClasses(this.classes, classes),
-      css: css ?? this.css,
-      attributes: attributes ?? userProvidedAttributes,
-      eventHandlers: eventHandlers ?? this.eventHandlers,
-      onClick: onClick,
-      key: key ?? this.key,
-    );
+  void initState() {
+    super.initState();
+    _updateIndeterminateState();
+  }
+
+  @override
+  void didUpdateComponent(Swap oldComponent) {
+    super.didUpdateComponent(oldComponent);
+    if (oldComponent.indeterminate != component.indeterminate) {
+      _updateIndeterminateState();
+    }
+  }
+
+  /// Updates the JavaScript `indeterminate` property of the input element.
+  /// This property cannot be set via HTML attributes.
+  void _updateIndeterminateState() {
+    if (!kIsWeb) return;
+
+    // Schedule this after the build cycle to ensure the element exists.
+    Future.delayed(Duration.zero, () {
+      final input = document.getElementById(_checkboxId) as HTMLInputElement?;
+      if (input != null) {
+        input.indeterminate = component.indeterminate;
+      }
+    });
   }
 
   @override
   Component build(BuildContext context) {
-    // Generate a unique ID for the checkbox if no main ID is provided for the label
-    // to ensure the label's 'for' attribute (if used) could point to it.
-    // However, direct nesting of the input within the label often makes 'for' unnecessary.
-    final checkboxId = id != null ? '${id}_checkbox' : 'swap_checkbox_${key.hashCode}';
-
-    final swapChildren = <Component>[
-      // Hidden checkbox for controlling state.
-      // The `onChange` handler for this input will trigger `onToggle`.
-      input(
-        type: InputType.checkbox,
-        id: checkboxId, // ID for potential 'for' attribute on label
-        attributes: <String, String>{
-          if (checked && !indeterminate)
-            'checked': '', // 'checked' attribute makes it visually checked
-          // 'indeterminate' is a JS property, not an HTML attribute for initial state.
-          // It needs to be set via JS after the element is in the DOM.
-          // For a purely declarative Jaspr component, simulating indeterminate
-          // visually might require CSS if JS manipulation is avoided here.
-          // DaisyUI's `swap-indeterminate` class handles the visual state when `indeterminate` prop is true.
-        },
-        events: onToggle != null
-            ? <String, EventCallback>{
-                'change': (dynamic rawEvent) {
-                  if (kIsWeb) {
-                    final target = (rawEvent as Event).target! as HTMLInputElement;
-                    onToggle!(target.checked);
-                  }
-                },
-              }
-            : null,
-      ),
-
-      // "On" state content
-      div(classes: 'swap-on', <Component>[onContent]),
-
-      // "Off" state content
-      div(classes: 'swap-off', <Component>[offContent]),
-    ];
-
-    // Optional indeterminate state content. DaisyUI uses a sibling `swap-indeterminate`
-    // and controls its visibility along with swap-on/off based on checkbox state
-    // and potentially the presence of `swap-active` on the main `swap` element.
-    // The `indeterminate` JS property on the checkbox is what truly makes it indeterminate.
-    if (indeterminate && indeterminateContent != null) {
-      swapChildren.add(div(classes: 'swap-indeterminate', <Component>[indeterminateContent!]));
-    }
+    final indeterminateContent = component.indeterminateContent;
 
     return Component.element(
-      tag: tag, // Should be 'label' for accessibility with the checkbox
-      id: id,
-      // If tag is 'label', 'for' attribute can be added to link to checkbox
-      // attributes: tag == 'label' ? {'for': checkboxId, ...componentAttributes} : componentAttributes,
-      // For simplicity, direct nesting of input in label usually works.
-      // The `componentAttributes` getter will be called.
+      tag: component.tag,
+      id: component.id,
+      classes: combinedClasses,
+      styles: component.css,
       attributes: componentAttributes,
-      classes:
-          combinedClasses, // Includes 'swap' and potentially 'swap-active' if `indeterminate` is true for styling
-      styles: css,
-      events: this.events, // For onClick on the label itself
-      children: swapChildren,
+      events: eventMap,
+      children: [
+        // The hidden checkbox controls the state logic
+        input(
+          id: _checkboxId,
+          type: InputType.checkbox,
+          // checked attribute controls the visual state via CSS
+          checked: component.isOn ? true : null,
+          onChange: (dynamic value) {
+            // In a controlled component, we toggle based on the current known state.
+            component.onToggle?.call(!component.isOn);
+          },
+        ),
+
+        div(classes: 'swap-on', [component.onContent]),
+        div(classes: 'swap-off', [component.offContent]),
+
+        if (indeterminateContent != null)
+          div(classes: 'swap-indeterminate', [indeterminateContent]),
+      ],
     );
   }
-
-  // --- Static Swap Modifiers (Type: SwapModifier interface, Instantiating: SwapStyleModifier) ---
-
-  /// Applies if the swap is in the "on" state.
-  /// Often controlled by the internal checkbox's `:checked` pseudo-class,
-  /// but `swap-active` can be used to force the "on" state penampilan.
-  /// If `indeterminate` is true, `swap-active` might also be needed for `swap-indeterminate` visibility.
-  static const SwapStyle active = SwapStyle('swap-active', type: StyleType.state);
-
-  // Animation effect modifiers
-  /// Applies a rotation animation on toggle. `swap-rotate`
-  static const SwapStyle rotate = SwapStyle(
-    'swap-rotate',
-    type: StyleType.effect,
-  ); // Was .additional
-  /// Applies a flip animation on toggle. `swap-flip`
-  static const SwapStyle flip = SwapStyle(
-    'swap-flip',
-    type: StyleType.effect,
-  ); // Was .additional
 }
