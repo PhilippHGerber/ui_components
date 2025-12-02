@@ -1,8 +1,9 @@
 import 'dart:async';
 
 import 'package:jaspr/jaspr.dart';
-import 'package:universal_web/web.dart' show Event, HTMLInputElement, document;
+import 'package:universal_web/web.dart' show HTMLInputElement, document;
 
+import '../../base/stateful_ui_component.dart';
 import '../../base/style_type.dart';
 import '../../base/ui_component.dart';
 import '../../base/ui_events.dart';
@@ -11,55 +12,44 @@ import 'drawer_style.dart';
 /// A responsive slide-out panel that follows the controlled component pattern.
 ///
 /// The `Drawer` provides a flexible way to implement navigation sidebars and mobile
-/// menus. Its visibility is managed entirely by a parent stateful component, making
-// it a **controlled component**.
+/// menus. Its visibility is managed entirely by a parent stateful component via
+/// the [isOpen] property.
 ///
 /// ### Design: Controlled & Self-Synchronizing
-/// This component is fully controlled by its parent via the `isOpen` property. It is
-/// also self-synchronizing: if you programmatically change `isOpen` (e.g., to close
-/// the drawer after navigation), the component will automatically update the DOM
-/// to reflect that change, ensuring the UI is always consistent.
+/// This component is fully controlled by its parent. It is also self-synchronizing:
+/// if you programmatically change [isOpen] (e.g., to close the drawer after navigation),
+/// the component will automatically update the underlying DOM checkbox to reflect
+/// that change.
 ///
-/// ### Example Usage (in a StatefulComponent):
+/// ### Example:
 ///
 /// ```dart
-/// class MyPage extends StatefulComponent {
-///   @override
-///   State<MyPage> createState() => _MyPageState();
-/// }
-///
-/// class _MyPageState extends State<MyPage> {
-///   bool _isDrawerOpen = false;
-///   static const String _drawerId = 'my-unique-drawer-id';
-///
-///   @override
-///   Component build(BuildContext context) {
-///     return Drawer(
-///       drawerId: _drawerId,
-///       isOpen: _isDrawerOpen,
-///       onToggle: (isOpen) => setState(() => _isDrawerOpen = isOpen),
-///       classes: 'lg:drawer-open', // Always open on large screens
-///       side: DrawerSide(menuContent: Menu([...])),
-///       content: DrawerContent([
-///         label(
-///           htmlFor: _drawerId,
-///           classes: 'btn drawer-button lg:hidden',
-///           [Icon('menu')],
-///         ),
-///         // ... page content
-///       ]),
-///     );
-///   }
-/// }
+/// Drawer(
+///   drawerId: 'my-drawer',
+///   isOpen: _isDrawerOpen,
+///   onToggle: (isOpen) => setState(() => _isDrawerOpen = isOpen),
+///   classes: 'lg:drawer-open', // Always open on large screens
+///   side: DrawerSide(menuContent: Menu([...])),
+///   content: DrawerContent([
+///     // Trigger button
+///     label(
+///       htmlFor: 'my-drawer',
+///       classes: 'btn drawer-button lg:hidden',
+///       [Icon('menu')],
+///     ),
+///     // ... page content
+///   ]),
+/// )
 /// ```
-class Drawer extends UiComponent {
+class Drawer extends StatefulUiComponent {
   /// Creates a controlled Drawer container component.
   ///
   /// - [content]: The main content area, wrapped in a [DrawerContent].
   /// - [side]: The slide-out panel, wrapped in a [DrawerSide].
   /// - [drawerId]: A stable, unique ID for the internal control checkbox.
+  ///   This ID is used to link trigger labels (like the hamburger button) to the drawer.
   /// - [isOpen]: The current state of the drawer (`true` for open).
-  /// - [onToggle]: A callback that fires when the drawer's state changes.
+  /// - [onToggle]: A callback that fires when the drawer's state changes (e.g., user clicks overlay).
   /// - [style]: A list of [DrawerStyling] modifiers (e.g., [Drawer.end]).
   const Drawer({
     required this.content,
@@ -68,14 +58,14 @@ class Drawer extends UiComponent {
     this.isOpen = false,
     this.onToggle,
     super.tag = 'div',
-    List<DrawerStyling>? styles,
+    List<DrawerStyling>? style,
     super.id,
     super.classes,
     super.css,
     super.attributes,
     super.eventHandlers,
     super.key,
-  }) : super(null, style: styles);
+  }) : super(null, style: style);
 
   /// The main content area of the page.
   final DrawerContent content;
@@ -97,81 +87,76 @@ class Drawer extends UiComponent {
   @override
   String get baseClass => 'drawer';
 
-  /// Creates a new instance of [Drawer] with the provided properties replaced.
   @override
-  Drawer copyWith({
-    String? id,
-    String? classes,
-    Styles? css,
-    Map<String, String>? attributes,
-    Map<String, List<UiEventHandler>>? eventHandlers,
-    Key? key,
-    DrawerContent? content,
-    DrawerSide? side,
-    bool? isOpen,
-    ValueChanged<bool>? onToggle,
-    String? drawerId,
-  }) {
-    return Drawer(
-      content: content ?? this.content,
-      side: side ?? this.side,
-      isOpen: isOpen ?? this.isOpen,
-      onToggle: onToggle ?? this.onToggle,
-      drawerId: drawerId ?? this.drawerId,
-      tag: tag,
-      styles: style as List<DrawerStyling>?,
-      id: id ?? this.id,
-      classes: mergeClasses(this.classes, classes),
-      css: css ?? this.css,
-      attributes: attributes ?? userProvidedAttributes,
-      eventHandlers: eventHandlers ?? this.eventHandlers,
-      key: key ?? this.key,
-    );
-  }
-
-  /// The public `Drawer` remains stateless and delegates its rendering to the
-  /// private `_DrawerInternal` stateful component, which handles the synchronization logic.
-  @override
-  Component build(BuildContext context) {
-    return Component.element(
-      tag: tag,
-      id: id,
-      classes: combinedClasses,
-      styles: this.css,
-      attributes: componentAttributes,
-      events: eventMap,
-      children: [
-        input(
-          type: InputType.checkbox,
-          id: drawerId,
-          classes: 'drawer-toggle',
-          // Jaspr bug see https://github.com/schultek/jaspr/issues/631
-          checked: isOpen ? true : null,
-          // Use the raw event parameter
-          events: {
-            'change': (dynamic rawEvent) {
-              if (kIsWeb && onToggle != null) {
-                final target = (rawEvent as Event).target! as HTMLInputElement;
-                onToggle!(target.checked);
-              }
-            },
-          },
-        ),
-        content,
-        side.copyWith(htmlFor: drawerId),
-        // Render the invisible synchronizer component, passing only primitive data.
-        DrawerSynchronizer(
-          checkboxId: drawerId,
-          shouldBeOpen: isOpen,
-        ),
-      ],
-    );
-  }
+  State<Drawer> createState() => _DrawerState();
 
   // --- Static Drawer Modifiers ---
 
   /// Changes the drawer to open from the right side. `drawer-end`
   static const DrawerStyle end = DrawerStyle('drawer-end', type: StyleType.layout);
+}
+
+class _DrawerState extends StatefulUiComponentState<Drawer> {
+  @override
+  String get baseClass => component.baseClass;
+
+  @override
+  void initState() {
+    super.initState();
+    _synchronizeCheckboxState();
+  }
+
+  @override
+  void didUpdateComponent(Drawer oldComponent) {
+    super.didUpdateComponent(oldComponent);
+    if (oldComponent.isOpen != component.isOpen) {
+      _synchronizeCheckboxState();
+    }
+  }
+
+  /// Updates the underlying checkbox's `checked` property via JS interop.
+  /// This ensures the DOM stays in sync with the declarative [component.isOpen] state.
+  void _synchronizeCheckboxState() {
+    if (!kIsWeb) return;
+
+    Future.delayed(Duration.zero, () {
+      final checkbox = document.getElementById(component.drawerId) as HTMLInputElement?;
+      if (checkbox != null && checkbox.checked != component.isOpen) {
+        checkbox.checked = component.isOpen;
+      }
+    });
+  }
+
+  @override
+  Component build(BuildContext context) {
+    return Component.element(
+      tag: component.tag,
+      id: component.id,
+      classes: combinedClasses,
+      styles: component.css,
+      attributes: componentAttributes,
+      events: eventMap,
+      children: [
+        // The hidden checkbox that drives the CSS-only toggle behavior.
+        input(
+          type: InputType.checkbox,
+          id: component.drawerId,
+          classes: 'drawer-toggle',
+          // We bind the checked attribute to our state to ensure initial render is correct.
+          checked: component.isOpen ? true : null,
+          onChange: (dynamic _) {
+            // When the checkbox changes (e.g. overlay click), we notify the parent.
+            // In a controlled flow, we expect the parent to update `isOpen`,
+            // which will then trigger `didUpdateComponent` to sync the checkbox if needed.
+            component.onToggle?.call(!component.isOpen);
+          },
+        ),
+        component.content,
+        // Pass the ID to the side component so the overlay knows what to close.
+        component.side.copyWith(htmlFor: component.drawerId),
+      ],
+    );
+  }
 }
 
 /// The main content area of a [Drawer].
@@ -203,12 +188,9 @@ class DrawerContent extends UiComponent {
     Map<String, String>? attributes,
     Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
-    List<Component>? children,
-    Component? child,
   }) {
     return DrawerContent(
-      children ?? this.children ?? [],
-      child: child ?? this.child,
+      children,
       tag: tag,
       style: style,
       id: id ?? this.id,
@@ -216,6 +198,7 @@ class DrawerContent extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
+      child: child,
       key: key ?? this.key,
     );
   }
@@ -294,62 +277,5 @@ class DrawerSide extends UiComponent {
         menuContent,
       ],
     );
-  }
-}
-
-/// An invisible, client-side only stateful component that synchronizes the
-/// DOM state of the drawer's checkbox with the declarative `isOpen` property.
-///
-/// This component accepts only primitive, serializable types, allowing it to
-/// safely cross the server-client boundary in Jaspr. It renders nothing to the
-/// DOM and exists solely to encapsulate the imperative synchronization logic.
-@client
-class DrawerSynchronizer extends StatefulComponent {
-  const DrawerSynchronizer({
-    required this.checkboxId,
-    required this.shouldBeOpen,
-  });
-
-  final String checkboxId;
-  final bool shouldBeOpen;
-
-  @override
-  State<DrawerSynchronizer> createState() => DrawerSynchronizerState();
-}
-
-class DrawerSynchronizerState extends State<DrawerSynchronizer> {
-  /// Schedules a client-side DOM update to synchronize the checkbox state.
-  void synchronizeCheckboxState() {
-    // This logic is guaranteed to run only on the client because the
-    // component is marked with @client.
-    Future.delayed(Duration.zero, () {
-      if (!mounted) return;
-      final checkbox = document.getElementById(component.checkboxId) as HTMLInputElement?;
-      if (checkbox != null && checkbox.checked != component.shouldBeOpen) {
-        checkbox.checked = component.shouldBeOpen;
-      }
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    if (kIsWeb) {
-      synchronizeCheckboxState();
-    }
-  }
-
-  @override
-  void didUpdateComponent(DrawerSynchronizer oldComponent) {
-    super.didUpdateComponent(oldComponent);
-    if (kIsWeb) {
-      synchronizeCheckboxState();
-    }
-  }
-
-  @override
-  Component build(BuildContext context) {
-    // This component renders nothing. Its only purpose is its lifecycle methods.
-    return const Component.empty();
   }
 }
