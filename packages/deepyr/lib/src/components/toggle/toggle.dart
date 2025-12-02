@@ -1,60 +1,46 @@
-import 'package:jaspr/jaspr.dart'
-    show BuildContext, Component, EventCallback, Key, Styles, ValueChanged, kIsWeb;
-import 'package:universal_web/web.dart' show Event, HTMLInputElement;
+import 'package:jaspr/jaspr.dart';
+import 'package:universal_web/web.dart' show HTMLInputElement, document;
 
+import '../../base/stateful_ui_component.dart';
 import '../../base/style_type.dart';
-import '../../base/ui_component.dart';
 import '../../base/ui_component_attributes.dart';
-import '../../base/ui_events.dart';
 import 'toggle_style.dart';
 
 /// A checkbox styled to look like a switch button.
+/// It renders an `<input type="checkbox">`.
 ///
 /// The `Toggle` is a **controlled component**. Its state is not managed internally.
 /// Instead, you must provide its current state via the [isChecked] property and
 /// handle state changes with the [onToggle] callback. This ensures that the UI
 /// is always a direct reflection of your application's state.
 ///
-/// Example of state management in a `StatefulComponent`:
+/// ### Indeterminate State
+/// The [indeterminate] property allows the toggle to be in a "partially checked" state.
+/// This is a visual state only and does not affect the value submission.
+/// The component automatically handles the necessary JavaScript to apply this state.
+///
+/// ### Example:
 /// ```dart
-/// class MySettings extends StatefulComponent {
-///   bool _notificationsEnabled = true;
-///
-///   @override
-///   State<MySettings> createState() => _MySettingsState();
-/// }
-///
-/// class _MySettingsState extends State<MySettings> {
-///   @override
-///   Component build(BuildContext context) {
-///     return Toggle(
-///       isChecked: _notificationsEnabled,
-///       onToggle: (newValue) {
-///         setState(() => _notificationsEnabled = newValue);
-///       },
-///       style: [Toggle.primary],
-///     );
-///   }
-/// }
+/// Toggle(
+///   isChecked: _notificationsEnabled,
+///   onToggle: (newValue) => setState(() => _notificationsEnabled = newValue),
+///   style: [Toggle.primary],
+/// )
 /// ```
-class Toggle extends UiComponent {
-  /// Creates a Toggle component.
+class Toggle extends StatefulUiComponent {
+  /// Creates a controlled Toggle component.
   ///
   /// - [isChecked]: The current checked state of the toggle.
-  /// - [onToggle]: A callback that fires when the user clicks the toggle. It
-  ///   receives the new potential boolean state. You should use this callback
-  ///   to update your application's state.
+  /// - [onToggle]: A callback that fires when the user clicks the toggle.
+  /// - [indeterminate]: If true, sets the visual indeterminate state via JavaScript.
   /// - [disabled]: If true, the toggle will be non-interactive.
-  /// - [indeterminate]: If true, the toggle will be in an indeterminate state.
-  ///   **Note:** This property must be managed via JavaScript after the component has
-  ///   rendered. See the documentation for an example.
   /// - [style]: A list of [ToggleStyling] instances for styling.
-  /// - Other parameters are inherited from [UiComponent].
+  /// - [tag]: The HTML tag for the root element, defaults to 'input'.
   const Toggle({
     this.isChecked = false,
     this.onToggle,
-    this.disabled = false,
     this.indeterminate = false,
+    this.disabled = false,
     super.tag = 'input',
     List<ToggleStyling>? style,
     super.id,
@@ -63,10 +49,13 @@ class Toggle extends UiComponent {
     super.attributes,
     super.eventHandlers,
     super.key,
-  }) : super(null, style: style); // Toggle elements have no children.
+  }) : super(null, style: style);
 
   /// The current checked state of the toggle.
   final bool isChecked;
+
+  /// If true, the toggle will be in an indeterminate state (visual only).
+  final bool indeterminate;
 
   /// Callback function invoked when the toggle's state changes.
   final ValueChanged<bool>? onToggle;
@@ -74,77 +63,24 @@ class Toggle extends UiComponent {
   /// If true, the toggle is non-interactive.
   final bool disabled;
 
-  /// If true, the toggle will be in an indeterminate state.
-  /// This is a visual state that is not submitted with the form value and must
-  /// be set via JavaScript after the element has rendered.
-  final bool indeterminate;
-
   @override
   String get baseClass => 'toggle';
 
   @override
+  State<Toggle> createState() => _ToggleState();
+
+  @override
   void configureAttributes(UiComponentAttributes attributes) {
-    super.configureAttributes(attributes);
     attributes.add('type', 'checkbox');
-    if (isChecked) {
-      attributes.add('checked', '');
+
+    // NOTE: We DO NOT set 'checked' or 'disabled' attributes here.
+    // Those are managed via the `input` component's named parameters to control
+    // the DOM properties directly. This avoids conflicts between attributes and properties.
+
+    // Set aria-checked to mixed if indeterminate for accessibility
+    if (indeterminate) {
+      attributes.addAria('checked', 'mixed');
     }
-    if (disabled) {
-      attributes.add('disabled', '');
-    }
-  }
-
-  @override
-  Toggle copyWith({
-    String? id,
-    String? classes,
-    Styles? css,
-    Map<String, String>? attributes,
-    Map<String, List<UiEventHandler>>? eventHandlers,
-    Key? key,
-  }) {
-    return Toggle(
-      isChecked: isChecked,
-      onToggle: onToggle,
-      disabled: disabled,
-      indeterminate: indeterminate,
-      tag: tag,
-      style: style as List<ToggleStyling>?,
-      id: id ?? this.id,
-      classes: mergeClasses(this.classes, classes),
-      css: css ?? this.css,
-      attributes: attributes ?? userProvidedAttributes,
-      eventHandlers: eventHandlers ?? this.eventHandlers,
-      key: key ?? this.key,
-    );
-  }
-
-  @override
-  Component build(BuildContext context) {
-    // Start with the standard events from the base class.
-    final eventMap = Map<String, EventCallback>.from(this.eventMap);
-
-    if (onToggle != null) {
-      eventMap['change'] = (dynamic event) {
-        // Guard for web-only execution to prevent errors during SSR.
-        if (kIsWeb) {
-          // Use explicit casting (`as`) which is the idiomatic way to handle
-          // known event types from JS interop, avoiding analyzer warnings.
-          final target = (event as Event).target! as HTMLInputElement;
-          onToggle!(target.checked);
-        }
-      };
-    }
-
-    return Component.element(
-      tag: tag,
-      id: id,
-      classes: combinedClasses,
-      styles: css,
-      attributes: componentAttributes,
-      events: eventMap,
-      // A toggle has no children.
-    );
   }
 
   // --- Static Style Modifiers ---
@@ -189,4 +125,62 @@ class Toggle extends UiComponent {
 
   /// Extra large size. `toggle-xl`
   static const ToggleStyle xl = ToggleStyle('toggle-xl', type: StyleType.sizing);
+}
+
+class _ToggleState extends StatefulUiComponentState<Toggle> {
+  /// Generates a unique ID if one wasn't provided to find the element for JS interop.
+  String get _elementId => component.id ?? 'toggle_${component.hashCode}';
+
+  @override
+  String get baseClass => component.baseClass;
+
+  @override
+  void initState() {
+    super.initState();
+    _updateIndeterminateState();
+  }
+
+  @override
+  void didUpdateComponent(Toggle oldComponent) {
+    super.didUpdateComponent(oldComponent);
+    if (oldComponent.indeterminate != component.indeterminate) {
+      _updateIndeterminateState();
+    }
+  }
+
+  /// Updates the JavaScript `indeterminate` property.
+  void _updateIndeterminateState() {
+    if (!kIsWeb) return;
+
+    Future.delayed(Duration.zero, () {
+      final input = document.getElementById(_elementId) as HTMLInputElement?;
+      if (input != null) {
+        input.indeterminate = component.indeterminate;
+      }
+    });
+  }
+
+  @override
+  Component build(BuildContext context) {
+    return input(
+      // Use the ID we generated/retrieved to allow finding the element
+      id: _elementId,
+      type: InputType.checkbox,
+      classes: combinedClasses,
+      styles: component.css,
+      attributes: componentAttributes,
+
+      // Explicitly bind checked state using the robust true/null pattern.
+      checked: component.isChecked ? true : null,
+
+      // Bind disabled state similarly
+      disabled: component.disabled ? true : null,
+
+      // Handle changes via callback
+      onChange: (value) {
+        // We assume the intent was to toggle the current state.
+        component.onToggle?.call(!component.isChecked);
+      },
+    );
+  }
 }
