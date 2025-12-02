@@ -1,7 +1,6 @@
-import 'package:jaspr/jaspr.dart' show BuildContext, Component, Key, Styles;
+import 'package:jaspr/jaspr.dart' show BuildContext, Component, InputType, Key, Styles, input, text;
 
 import '../../base/style_type.dart';
-import '../../base/styling.dart' show Styling;
 import '../../base/ui_component.dart';
 import '../../base/ui_component_attributes.dart';
 import '../../base/ui_events.dart';
@@ -11,18 +10,49 @@ import 'tabs_style.dart';
 /// A container for a set of [Tab] components, allowing users to switch between
 /// different views or sections of content.
 ///
-/// The `styles` list accepts [TabsStyling] (the interface) instances,
-/// which includes specific tabs container styles (like [Tabs.border], [Tabs.lifted])
-/// and general utility classes.
-/// It should typically render as an HTML `<div>` with `role="tablist"`.
+/// It renders as an HTML `<div>` with `role="tablist"` and applies layout modifiers.
+///
+/// ### Modes of Operation
+///
+/// 1.  **Navigation/Button Mode (Default):**
+///     Standard tabs using `<a>` or `<button>` elements. Selection is handled
+///     by your own routing or state management logic interacting with the `isActive` property.
+///
+/// 2.  **Radio Input Mode (DaisyUI "Lifted" / "Bordered" logic):**
+///     Uses `<input type="radio">` elements. This enables DaisyUI's pure CSS content switching.
+///     To use this mode safely in Jaspr, `Tab` components must be used as **Controlled Components**
+///     by explicitly passing `isChecked` and `onChange`.
+///
+/// ### Example (Standard):
+/// ```dart
+/// Tabs(
+///   style: [Tabs.lifted],
+///   [
+///     Tab([text('Home')], isActive: _index == 0, onClick: (_) => _setIndex(0)),
+///     Tab([text('About')], isActive: _index == 1, onClick: (_) => _setIndex(1)),
+///   ],
+/// )
+/// ```
+///
+/// ### Example (Radio Inputs):
+/// ```dart
+/// Tabs(
+///   style: [Tabs.lifted],
+///   [
+///     Tab(tag: 'input', name: 'tabs', ariaLabel: 'Home', isChecked: _idx == 0, onChange: (_) => _setIndex(0)),
+///     TabContent([text('Home Content')]),
+///     Tab(tag: 'input', name: 'tabs', ariaLabel: 'About', isChecked: _idx == 1, onChange: (_) => _setIndex(1)),
+///     TabContent([text('About Content')]),
+///   ],
+/// )
+/// ```
 class Tabs extends UiComponent {
-  /// Creates a Tabs container component.
+  /// Creates a Tabs container.
   ///
-  /// - [children]: A list of [Tab] components, or for radio-tab patterns,
-  ///   a sequence of input/TabContent pairs.
+  /// - [children]: A list of [Tab] and optionally [TabContent] components.
   /// - [tag]: The HTML tag for the root element, defaults to 'div'.
-  /// - [style]: A list of [TabsStyling] (the interface) instances.
-  /// - [ariaLabel]: An accessible name for the tab list (e.g., "Content sections").
+  /// - [style]: A list of [TabsStyling] modifiers (e.g., `Tabs.lifted`, `Tabs.boxed`).
+  /// - [ariaLabel]: An accessible name for the tab list (e.g., "Settings Navigation").
   /// - Other parameters are inherited from [UiComponent].
   const Tabs(
     super.children, {
@@ -42,20 +72,20 @@ class Tabs extends UiComponent {
   final String? ariaLabel;
 
   @override
-  String get baseClass => 'tabs'; // DaisyUI base class
+  String get baseClass => 'tabs';
 
   @override
   void configureAttributes(UiComponentAttributes attributes) {
     super.configureAttributes(attributes);
-    attributes.addRole('tablist');
-    if (ariaLabel != null && ariaLabel!.isNotEmpty) {
-      attributes.addAria('label', ariaLabel!);
+
+    // Only add role="tablist" if it's not already present.
+    if (!userProvidedAttributes.containsKey('role')) {
+      attributes.addRole('tablist');
     }
 
-    // Determine orientation based on modifiers if needed, though default is horizontal
-    // bool isBottom = modifiers?.any((m) => m is TabsStyleModifier && m.cssClass == Tabs.bottom.cssClass) ?? false;
-    // attributes.addAria('orientation', isBottom ? 'vertical' : 'horizontal'); // Simplified, check DaisyUI actual behavior for orientation based on bottom
-    attributes.addAria('orientation', 'horizontal'); // Default for tabs
+    if (ariaLabel != null) {
+      attributes.addAria('label', ariaLabel!);
+    }
   }
 
   @override
@@ -81,178 +111,114 @@ class Tabs extends UiComponent {
       key: key ?? this.key,
     );
   }
-  // --- Static Tabs Modifiers ---
 
-  /// Bottom border style for tabs. `tabs-border`
-  static const TabsStyle border = TabsStyle(
-    'tabs-border',
-    type: StyleType.style,
-  );
+  // --- Static Style Modifiers ---
 
-  /// Lifted tabs style. `tabs-lift`
-  static const TabsStyle lift = TabsStyle(
-    'tabs-lift',
-    type: StyleType.style,
-  );
+  /// Applies the boxed style. `tabs-box`
+  static const TabsStyle box = TabsStyle('tabs-box', type: StyleType.style);
 
-  /// Boxed tabs style. `tabs-box`
-  static const TabsStyle box = TabsStyle(
-    'tabs-box',
-    type: StyleType.style,
-  );
+  /// Applies the bottom border style. `tabs-border`
+  static const TabsStyle border = TabsStyle('tabs-border', type: StyleType.style);
+
+  /// Applies the lifted style (looks like file folder tabs). `tabs-lift`
+  static const TabsStyle lift = TabsStyle('tabs-lift', type: StyleType.style);
 
   // Placement
-  /// Puts tab buttons on top of the tab-content (default). `tabs-top`
-  static const TabsStyle top = TabsStyle(
-    'tabs-top',
-    type: StyleType.layout,
-  );
+  /// Puts tab buttons on top of the content (default). `tabs-top`
+  static const TabsStyle top = TabsStyle('tabs-top', type: StyleType.layout);
 
-  /// Puts tabs under the tab-content. `tabs-bottom`
-  static const TabsStyle bottom = TabsStyle(
-    'tabs-bottom',
-    type: StyleType.layout,
-  );
+  /// Puts tab buttons below the content. `tabs-bottom`
+  static const TabsStyle bottom = TabsStyle('tabs-bottom', type: StyleType.layout);
 
   // Sizes
-  /// Extra small tabs size. `tabs-xs`
-  static const TabsStyle xs = TabsStyle(
-    'tabs-xs',
-    type: StyleType.sizing,
-  );
+  /// Extra small size. `tabs-xs`
+  static const TabsStyle xs = TabsStyle('tabs-xs', type: StyleType.sizing);
 
-  /// Small tabs size. `tabs-sm`
-  static const TabsStyle sm = TabsStyle(
-    'tabs-sm',
-    type: StyleType.sizing,
-  );
+  /// Small size. `tabs-sm`
+  static const TabsStyle sm = TabsStyle('tabs-sm', type: StyleType.sizing);
 
-  /// Medium tabs size (default). `tabs-md`
-  static const TabsStyle md = TabsStyle(
-    'tabs-md',
-    type: StyleType.sizing,
-  );
+  /// Medium size (default). `tabs-md`
+  static const TabsStyle md = TabsStyle('tabs-md', type: StyleType.sizing);
 
-  /// Large tabs size. `tabs-lg`
-  static const TabsStyle lg = TabsStyle(
-    'tabs-lg',
-    type: StyleType.sizing,
-  );
+  /// Large size. `tabs-lg`
+  static const TabsStyle lg = TabsStyle('tabs-lg', type: StyleType.sizing);
 
-  /// Extra large tabs size. `tabs-xl`
-  static const TabsStyle xl = TabsStyle(
-    'tabs-xl',
-    type: StyleType.sizing,
-  );
+  /// Extra large size. `tabs-xl`
+  static const TabsStyle xl = TabsStyle('tabs-xl', type: StyleType.sizing);
 }
 
-/// Represents an individual tab item within a [Tabs] container.
+/// Represents a single tab item within a [Tabs] container.
 ///
-/// It typically renders as an HTML `<a>` or `<button>` element with `role="tab"`.
-/// The `modifiers` list accepts [TabStyling] (the interface) instances.
-/// An active tab should have the `Tab.active` modifier or `isActive` set to true.
+/// It can render as:
+/// 1.  A **Button/Link** (`tag: 'a'` or `'button'`) - Requires [isActive] prop for styling.
+/// 2.  A **Radio Input** (`tag: 'input'`) - Requires [name], [isChecked], and [ariaLabel].
+///
+/// **Note on Radio Inputs:** When using `tag: 'input'`, this component acts as a
+/// **controlled component**. You must provide [isChecked] to control the state
+/// and prevent race conditions during rendering.
 class Tab extends UiComponent {
   /// Creates a Tab component.
   ///
-  /// - [children] or [child]: The label or content of the tab. For radio input tabs,
-  ///   this is usually null, and `ariaLabel` is used for the visible text.
-  /// - [tag]: The HTML tag, defaults to 'button'. Can be 'a' for links, or 'input' for radio tabs.
-  /// - [isActive]: If true, this tab is marked as active (applies `Tab.active` modifier and `aria-selected`).
-  /// - [isDisabled]: If true, this tab is marked as disabled (applies `Tab.disabled` modifier and `aria-disabled`).
-  /// - [controlsPanelId]: The ID of the tab panel this tab controls (for `aria-controls`).
-  /// - [styles]: A list of [TabStyling] (the interface) instances.
-  /// - [customStyles]: A Jaspr [Styles] object for applying raw CSS, primarily for
-  ///   custom properties (variables) like `--tab-bg` to override theme colors.
-  /// - [onClick]: Callback for when the tab is clicked.
-  /// - For radio input tabs (`tag == 'input'`):
-  ///   - `name`: The name for the radio group.
-  ///   - `ariaLabel`: The visible label for the radio tab.
-  ///   - `isChecked`: If this radio tab is checked.
-  /// - Other parameters are inherited from [UiComponent].
+  /// - [children]: The content of the tab (text, icon). Ignored if `tag` is 'input' (use `ariaLabel` instead).
+  /// - [tag]: Defaults to 'a'. Set to 'input' for radio-based tabs.
+  /// - [isActive]: For non-input tabs, determines if the tab is visually active.
+  /// - [isDisabled]: If true, applies disabled styling and attributes.
+  /// - [isChecked]: For radio inputs, determines if the radio is checked. **Required** for controlled inputs.
+  /// - [name]: The HTML `name` attribute, **required** for radio groups.
+  /// - [ariaLabel]: The accessible label. For radio tabs in DaisyUI, this text is displayed visually.
+  /// - [customStyles]: Optional [Styles] to apply raw CSS variables (e.g., `--tab-bg`) for overrides.
+  /// - [onClick]: Callback when a button/link tab is clicked.
+  /// - [onChange]: Callback when a radio tab is selected.
+  /// - [style]: A list of [TabStyling] modifiers.
   const Tab(
     super.children, {
-    super.tag = 'button',
+    super.tag = 'a',
     this.isActive = false,
     this.isDisabled = false,
-    this.controlsPanelId,
-    List<TabStyling>? styles,
-    this.customStyles,
+    this.isChecked,
     this.name,
     this.ariaLabel,
-    this.isChecked,
+    this.customStyles,
+    List<TabStyling>? style,
     super.id,
     super.classes,
     super.css,
     super.attributes,
     super.eventHandlers,
     super.onClick,
+    super.onChange, // Use for radio inputs
     super.child,
     super.key,
-  }) : _initialModifiers = styles,
-       super(style: styles);
+  }) : super(style: style);
 
-  /// Whether this tab is currently active.
+  /// Whether this tab is currently active (visual state for buttons/links).
   final bool isActive;
 
   /// Whether this tab is disabled.
   final bool isDisabled;
 
-  /// The ID of the tab panel element that this tab controls.
-  final String? controlsPanelId;
-
-  /// A Jaspr [Styles] object for applying raw CSS properties.
-  /// This is the recommended way to apply DaisyUI CSS custom properties
-  /// (variables) like `--tab-bg` or `--tab-border-color` to override the
-  /// theme for a specific tab.
-  ///
-  /// Example:
-  /// ```dart
-  /// Tab(
-  ///   [text('Custom Tab')],
-  ///   isActive: true,
-  ///   customStyles: Styles(raw: {
-  ///     '--tab-bg': 'orange',
-  ///     '--tab-border-color': 'red',
-  ///   }),
-  /// )
-  /// ```
-  final Styles? customStyles;
-
-  /// The HTML `name` attribute, used when `tag` is 'input' (e.g., for radio button groups).
-  final String? name;
-
-  /// The `aria-label` attribute. For radio tabs, this is used by DaisyUI as the visible label.
-  final String? ariaLabel;
-
-  /// For radio tabs (`tag == 'input'`, `type == 'radio'`), determines if it's checked.
+  /// Whether this radio tab is checked. Only used when [tag] is 'input'.
   final bool? isChecked;
 
-  final List<TabStyling>? _initialModifiers;
+  /// The HTML name attribute. Required for radio groups to function mutually exclusively.
+  final String? name;
+
+  /// The accessible label. For radio tabs in DaisyUI, this string is displayed
+  /// visually as the tab text via CSS.
+  final String? ariaLabel;
+
+  /// Additional raw styles, useful for CSS variables like `--tab-bg`.
+  final Styles? customStyles;
 
   @override
   String get baseClass => 'tab';
 
   @override
   String get combinedClasses {
-    final effectiveClasses = <String>[baseClass];
-
-    if (_initialModifiers != null) {
-      for (final modifier in _initialModifiers) {
-        effectiveClasses.add(modifier.toString());
-      }
-    }
-
-    if (isActive) {
-      effectiveClasses.add(Tab.active.toString());
-    }
-    if (isDisabled) {
-      effectiveClasses.add(Tab.disabled.toString());
-    }
-
-    if (classes != null && classes!.isNotEmpty) {
-      effectiveClasses.add(classes!);
-    }
-    return effectiveClasses.where((c) => c.isNotEmpty).join(' ');
+    var classes = super.combinedClasses;
+    if (isActive) classes += ' tab-active';
+    if (isDisabled) classes += ' tab-disabled';
+    return classes;
   }
 
   @override
@@ -260,42 +226,21 @@ class Tab extends UiComponent {
     super.configureAttributes(attributes);
 
     if (tag == 'input') {
-      attributes.add(
-        'type',
-        'radio',
-      ); // Assuming 'input' tag for Tab means radio for now
-      if (name != null) {
-        attributes.add('name', name!);
-      }
-      if (ariaLabel != null) {
-        attributes.addAria('label', ariaLabel!);
-      }
-      if (isChecked ?? false) {
-        attributes.add('checked', 'checked');
-      }
-      // For radio inputs acting as tabs, role="tab" might not be appropriate on the input itself.
-      // The label wrapping it, or the visual representation, might get the role.
-      // DaisyUI applies .tab class to the input. ARIA role="tab" is on the input in their examples.
-      attributes.addRole('tab');
+      attributes.add('type', 'radio');
+      if (name != null) attributes.add('name', name!);
+      if (ariaLabel != null) attributes.add('aria-label', ariaLabel!);
+
+      // IMPORTANT: We do NOT set the 'checked' attribute here manually.
+      // It is controlled via the `checked` property in the `build` method
+      // to ensure correct synchronization with the DOM.
     } else {
-      // For button, a, etc.
-      attributes
-        ..addRole('tab')
-        ..addAria('selected', isActive.toString());
-      if (isDisabled) {
-        attributes.addAria('disabled', 'true');
-        // For non-button elements acting as tabs, tabindex might need explicit management
-        // if native 'disabled' attribute isn't applicable.
-        if (tag != 'button') {
-          attributes.add('tabindex', '-1');
-        }
-      } else {
-        attributes.add('tabindex', isActive ? '0' : '-1');
-      }
+      // Standard ARIA roles for link/button tabs
+      attributes.addRole('tab');
+      if (isActive) attributes.addAria('selected', 'true');
     }
 
-    if (controlsPanelId != null) {
-      attributes.addAria('controls', controlsPanelId!);
+    if (isDisabled) {
+      attributes.add('disabled', '');
     }
   }
 
@@ -307,26 +252,30 @@ class Tab extends UiComponent {
     Map<String, String>? attributes,
     Map<String, List<UiEventHandler>>? eventHandlers,
     Key? key,
-    // Add customStyles to the copyWith method
+    bool? isActive,
+    bool? isDisabled,
+    bool? isChecked,
+    String? name,
+    String? ariaLabel,
     Styles? customStyles,
   }) {
     return Tab(
       children,
       tag: tag,
-      isActive: isActive,
-      isDisabled: isDisabled,
-      controlsPanelId: controlsPanelId,
-      styles: style as List<TabStyling>?,
+      isActive: isActive ?? this.isActive,
+      isDisabled: isDisabled ?? this.isDisabled,
+      isChecked: isChecked ?? this.isChecked,
+      name: name ?? this.name,
+      ariaLabel: ariaLabel ?? this.ariaLabel,
       customStyles: customStyles ?? this.customStyles,
-      name: name,
-      ariaLabel: ariaLabel,
-      isChecked: isChecked,
+      style: style as List<TabStyling>?,
       id: id ?? this.id,
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
       onClick: onClick,
+      onChange: onChange,
       child: child,
       key: key ?? this.key,
     );
@@ -334,53 +283,71 @@ class Tab extends UiComponent {
 
   @override
   Component build(BuildContext context) {
+    // Combine standard CSS with custom styles (e.g., variables for colors)
+    final finalStyles = Styles.combine([
+      if (css != null) css!,
+      if (customStyles != null) customStyles!,
+    ]);
+
+    if (tag == 'input') {
+      // Special handling for input to ensure event listeners and checked state
+      // are bound correctly, resolving the Jaspr 0.21.6 race condition.
+      return input(
+        type: InputType.radio,
+        name: name,
+        id: id,
+        classes: combinedClasses,
+        styles: finalStyles,
+        attributes: componentAttributes,
+
+        // CRITICAL: Explicitly bind the checked property to the Dart state.
+        // Using true/null ensures Jaspr enforces the state during reconciliation.
+        checked: (isChecked ?? false) ? true : null,
+
+        disabled: isDisabled,
+
+        onChange: (val) {
+          // Jaspr's onChange passes the value string, but for radio logic
+          // we trigger the callback to let the parent update state.
+          if (val is String) {
+            onChange?.call(val);
+          }
+        },
+      );
+    }
+
+    // Standard rendering for <a>, <button>, etc.
     return Component.element(
       tag: tag,
       id: id,
       classes: combinedClasses,
-      // Combine base `css` with `customStyles`. `customStyles` will take precedence.
-      styles: Styles.combine([
-        if (css != null) css!,
-        if (customStyles != null) customStyles!,
-      ]),
+      styles: finalStyles,
       attributes: componentAttributes,
       events: eventMap,
-      children: children ?? [?child],
+      children: children ?? (ariaLabel != null ? [text(ariaLabel!)] : null),
     );
   }
 
-  // --- Static Tab Modifiers ---
+  // --- Static Modifiers ---
 
   /// Marks the tab as active. `tab-active`
-  static const TabStyle active = TabStyle(
-    'tab-active',
-    type: StyleType.state,
-  );
+  static const TabStyle active = TabStyle('tab-active', type: StyleType.state);
 
   /// Marks the tab as disabled. `tab-disabled`
-  static const TabStyle disabled = TabStyle(
-    'tab-disabled',
-    type: StyleType.state,
-  );
+  static const TabStyle disabled = TabStyle('tab-disabled', type: StyleType.state);
 }
 
-/// Represents the content area associated with a tab.
-/// Typically renders as an HTML `<div>` with the 'tab-content' class.
+/// Represents the content area associated with a [Tab] when using the radio input pattern.
+///
+/// It renders as a `div` with the `tab-content` class. In DaisyUI's CSS-only tabs,
+/// this component must be placed immediately after its corresponding radio [Tab].
 class TabContent extends UiComponent {
-  /// Creates a TabContent component.
-  ///
-  /// - [children] or [child]: The content of the tab panel.
-  /// - [tag]: The HTML tag for the root element, defaults to 'div'.
-  /// - [style]: A list of general [Styling] instances for styling.
-  /// - [id]: The ID of this panel, to be referenced by a `Tab`'s `aria-controls`.
-  /// - [labelledByTabId]: The ID of the `Tab` that labels this panel (for `aria-labelledby`).
-  /// - Other parameters are inherited from [UiComponent].
+  /// Creates a TabContent container.
   const TabContent(
     super.children, {
     super.tag = 'div',
     super.style,
     super.id,
-    this.labelledByTabId,
     super.classes,
     super.css,
     super.attributes,
@@ -389,9 +356,6 @@ class TabContent extends UiComponent {
     super.key,
   });
 
-  /// The ID of the tab that labels this panel.
-  final String? labelledByTabId;
-
   @override
   String get baseClass => 'tab-content';
 
@@ -399,11 +363,6 @@ class TabContent extends UiComponent {
   void configureAttributes(UiComponentAttributes attributes) {
     super.configureAttributes(attributes);
     attributes.addRole('tabpanel');
-    if (labelledByTabId != null) {
-      attributes.addAria('labelledby', labelledByTabId!);
-    }
-    // `aria-hidden` or `hidden` attribute would be managed by user/state to show/hide content.
-    // attributes.add('tabindex', '0'); // Make panel focusable if it contains interactive content
   }
 
   @override
@@ -420,7 +379,6 @@ class TabContent extends UiComponent {
       tag: tag,
       style: style,
       id: id ?? this.id,
-      labelledByTabId: labelledByTabId,
       classes: mergeClasses(this.classes, classes),
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
