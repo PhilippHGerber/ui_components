@@ -1,10 +1,21 @@
 # Changelog
 
-## Next release
+## 0.4.0
+
+### Fixed
+
+* **Critical State Sync:** Resolved a race condition with Jaspr v0.21.6+ where interactive components (Accordion, Collapse, Drawer, etc.) would lose state/snap shut during re-renders.
 
 ### Changed
 
-* **`Drawer`:** The `Drawer` component is now a fully self-synchronizing controlled component. Programmatic changes to the `isOpen` prop (for example, setting it to `false` to close the drawer on navigation) are now automatically and reliably reflected in the UI. This provides a cleaner, purely declarative API.
+* **Controlled Components:** `Drawer`, `Modal`, `Swap`, `Checkbox`, `Toggle`, `ThemeController`, `Accordion`, and `Collapse` have been refactored to `StatefulUiComponent`. They now strictly follow the **Controlled Component** pattern (requiring state to be passed in).
+* **Tabs:** The `Tab` component now correctly handles radio-input logic to prevent state desynchronization.
+
+### Added
+
+* **Indeterminate State:** Native support for the `indeterminate` visual state on `Checkbox`, `Toggle`, and `Swap` via JS interop.
+* **Styling Utilities:** Added `Transition`, `Transform`, and `Group` utility classes for advanced CSS effects.
+* **Custom Variants:** Added the `.when()` modifier to `BaseStyle`, allowing for custom state selectors (e.g., `Size.w64.when(DrawerIs.open)`).
 
 ## 0.3.0
 

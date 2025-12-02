@@ -32,7 +32,7 @@ Explore all available components and see them in action on the official document
 
     ```yaml
     dependencies:
-      deepyr: ^0.3.0
+      deepyr: ^0.4.0
     ```
 
 2. **Setup Tailwind CSS**
