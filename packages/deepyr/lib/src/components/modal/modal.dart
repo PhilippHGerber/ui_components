@@ -1,5 +1,9 @@
-import 'package:jaspr/jaspr.dart' show Key, Styles;
+import 'dart:async';
 
+import 'package:jaspr/jaspr.dart';
+import 'package:universal_web/web.dart' show HTMLDialogElement, document;
+
+import '../../base/stateful_ui_component.dart';
 import '../../base/style_type.dart';
 import '../../base/ui_component.dart';
 import '../../base/ui_component_attributes.dart';
@@ -8,44 +12,49 @@ import 'modal_style.dart';
 
 /// A modal component that shows a dialog or box when triggered.
 ///
-/// The Modal component supports multiple activation methods:
-/// 1. **HTML `<dialog>` element (recommended):**
-///    Set `tag: 'dialog'` and use JavaScript `showModal()` and `close()` methods.
-/// 2. **Checkbox method (legacy):**
-///    Use a hidden checkbox with `modal-toggle` class to control the modal state.
-/// 3. **Anchor links method (legacy):**
-///    Use URL anchors to show/hide the modal.
+/// The `Modal` component works as a controlled component via the [open] property.
+/// It supports two rendering modes based on the [tag]:
 ///
-/// Example usage:
+/// 1.  **`<dialog>` (Recommended):** Uses the native HTML Dialog API.
+///     -   Handles focus trapping and accessibility automatically.
+///     -   Closes on ESC key.
+///     -   Requires [open] state synchronization via JS interop (handled internally).
+///
+/// 2.  **`<div>` (Legacy/CSS-only):**
+///     -   Toggles visibility by adding/removing the `modal-open` class.
+///     -   Useful for simple overlays or environments where `<dialog>` isn't desired.
+///
+/// ### Example (Recommended):
 /// ```dart
-/// // Method 1: Dialog (recommended)
 /// Modal(
+///   open: isModalOpen,
+///   onToggle: (isOpen) => setState(() => isModalOpen = isOpen),
+///   tag: 'dialog',
 ///   [
 ///     ModalBox([
 ///       h3([text('Hello!')]),
-///       p([text('Press ESC key or click the button below to close')]),
 ///       ModalAction([
-///         form(attributes: {'method': 'dialog'}, [
-///           Button([text('Close')]),
-///         ]),
+///         Button([text('Close')], onClick: () => setState(() => isModalOpen = false)),
 ///       ]),
 ///     ]),
 ///   ],
-///   tag: 'dialog',
-///   id: 'my_modal_1',
 /// )
 /// ```
-class Modal extends UiComponent {
+class Modal extends StatefulUiComponent {
   /// Creates a Modal component.
   ///
   /// - [children]: The content of the modal, typically containing [ModalBox].
-  /// - [tag]: The HTML tag, defaults to 'div'. Use 'dialog' for the recommended method.
+  /// - [open]: Whether the modal is currently visible.
+  /// - [onToggle]: Callback triggered when the modal opens or closes (e.g., via ESC key).
+  /// - [tag]: The HTML tag. Defaults to 'dialog' (recommended). Set to 'div' for CSS-class mode.
   /// - [style]: A list of [ModalStyling] instances for positioning and behavior.
-  /// - [role]: ARIA role, defaults to 'dialog' when tag is not 'dialog'.
+  /// - [role]: ARIA role, defaults to 'dialog'.
   /// - Other parameters are inherited from [UiComponent].
   const Modal(
     super.children, {
-    super.tag = 'div',
+    this.open = false,
+    this.onToggle,
+    super.tag = 'dialog',
     List<ModalStyling>? style,
     this.role,
     super.id,
@@ -57,6 +66,12 @@ class Modal extends UiComponent {
     super.key,
   }) : super(style: style);
 
+  /// Whether the modal is currently open.
+  final bool open;
+
+  /// Callback called when the modal state changes (e.g. closed by ESC key).
+  final ValueChanged<bool>? onToggle;
+
   /// Optional ARIA role for the modal.
   final String? role;
 
@@ -64,42 +79,19 @@ class Modal extends UiComponent {
   String get baseClass => 'modal';
 
   @override
-  void configureAttributes(UiComponentAttributes attributes) {
-    super.configureAttributes(attributes);
+  State<Modal> createState() => _ModalState();
 
-    // Set ARIA role if not using dialog element
+  @override
+  void configureAttributes(UiComponentAttributes attributes) {
+    // Static attributes logic
     if (role != null) {
       attributes.addRole(role!);
-    } else if (tag != 'dialog') {
+    } else {
       attributes.addRole('dialog');
     }
   }
 
-  @override
-  Modal copyWith({
-    String? id,
-    String? classes,
-    Styles? css,
-    Map<String, String>? attributes,
-    Map<String, List<UiEventHandler>>? eventHandlers,
-    Key? key,
-  }) {
-    return Modal(
-      children,
-      tag: tag,
-      style: style as List<ModalStyling>?,
-      role: role,
-      id: id ?? this.id,
-      classes: mergeClasses(this.classes, classes),
-      css: css ?? this.css,
-      attributes: attributes ?? userProvidedAttributes,
-      eventHandlers: eventHandlers ?? this.eventHandlers,
-      child: child,
-      key: key ?? this.key,
-    );
-  }
-
-  // --- Static Modal Modifiers (Placement & Behavior) ---
+  // --- Static Static Style Modifiers ---
 
   /// Moves the modal to the top of the screen. `modal-top`
   static const ModalStyle top = ModalStyle('modal-top', type: StyleType.layout);
@@ -115,9 +107,99 @@ class Modal extends UiComponent {
 
   /// Moves the modal to the end horizontally. `modal-end`
   static const ModalStyle end = ModalStyle('modal-end', type: StyleType.layout);
+}
 
-  /// Keeps the modal open (can be controlled via JavaScript). `modal-open`
-  static const ModalStyle open = ModalStyle('modal-open', type: StyleType.state);
+class _ModalState extends StatefulUiComponentState<Modal> {
+  /// Generates a unique ID if one wasn't provided, ensuring we can find the element.
+  String get _elementId => component.id ?? 'modal_${component.hashCode}'; // Fallback ID
+
+  @override
+  String get baseClass => component.baseClass;
+
+  @override
+  void configureAttributes(UiComponentAttributes attributes) {
+    super.configureAttributes(attributes);
+
+    // Dynamic attributes
+    if (component.tag != 'dialog') {
+      // For div-based modals, we manage visibility via aria-hidden
+      attributes.addAria('hidden', (!component.open).toString());
+    }
+  }
+
+  @override
+  String get combinedClasses {
+    var classes = super.combinedClasses;
+    // For div-based modals, we use the 'modal-open' class to control visibility.
+    if (component.tag != 'dialog' && component.open) {
+      classes += ' modal-open';
+    }
+    return classes;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (component.tag == 'dialog') {
+      _syncDialogState();
+    }
+  }
+
+  @override
+  void didUpdateComponent(Modal oldComponent) {
+    super.didUpdateComponent(oldComponent);
+    // Sync state if the open prop changed
+    if (component.tag == 'dialog' && oldComponent.open != component.open) {
+      _syncDialogState();
+    }
+  }
+
+  /// Synchronizes the <dialog> element with the [component.open] state.
+  void _syncDialogState() {
+    if (!kIsWeb) return;
+
+    // Schedule execution to ensure DOM is ready (post-render)
+    Future.delayed(Duration.zero, () {
+      final dialog = document.getElementById(_elementId) as HTMLDialogElement?;
+      if (dialog == null) return;
+
+      if (component.open) {
+        if (!dialog.open) {
+          dialog.showModal();
+        }
+      } else {
+        if (dialog.open) {
+          dialog.close();
+        }
+      }
+    });
+  }
+
+  @override
+  Component build(BuildContext context) {
+    // We need to attach an event listener for the native 'close' event
+    // to sync state when the user presses ESC.
+    final events = Map<String, EventCallback>.from(eventMap);
+
+    if (component.tag == 'dialog') {
+      events['close'] = (dynamic event) {
+        if (component.open && component.onToggle != null) {
+          // If the dialog closed natively but we think it's open, update state.
+          component.onToggle!(false);
+        }
+      };
+    }
+
+    return Component.element(
+      tag: component.tag,
+      id: _elementId, // Use the guaranteed ID
+      classes: combinedClasses,
+      styles: component.css,
+      attributes: componentAttributes,
+      events: events,
+      children: children ?? (child != null ? [child!] : null),
+    );
+  }
 }
 
 /// The content container of a modal.
@@ -126,11 +208,6 @@ class Modal extends UiComponent {
 /// Should be placed as a child of [Modal].
 class ModalBox extends UiComponent {
   /// Creates a ModalBox component.
-  ///
-  /// - [children]: The content to display within the modal box.
-  /// - [tag]: The HTML tag, defaults to 'div'.
-  /// - [styles]: A list of general utility modifiers for styling.
-  /// - Other parameters are inherited from [UiComponent].
   const ModalBox(
     super.children, {
     super.tag = 'div',
@@ -146,6 +223,7 @@ class ModalBox extends UiComponent {
 
   @override
   String get baseClass => 'modal-box';
+
   @override
   ModalBox copyWith({
     String? id,
@@ -176,11 +254,6 @@ class ModalBox extends UiComponent {
 /// like "OK", "Cancel", "Close", etc.
 class ModalAction extends UiComponent {
   /// Creates a ModalAction component.
-  ///
-  /// - [children]: The action elements, typically buttons.
-  /// - [tag]: The HTML tag, defaults to 'div'.
-  /// - [styles]: A list of general utility modifiers for styling.
-  /// - Other parameters are inherited from [UiComponent].
   const ModalAction(
     super.children, {
     super.tag = 'div',
@@ -223,19 +296,16 @@ class ModalAction extends UiComponent {
 
 /// A backdrop that covers the screen when the modal is open.
 ///
-/// When clicked, it can close the modal. Used primarily with the checkbox
-/// and anchor link methods. For dialog method, use a form with method="dialog".
+/// Typically used with `form method="dialog"` to allow clicking outside to close.
+/// Can also be used with the legacy checkbox method.
 class ModalBackdrop extends UiComponent {
   /// Creates a ModalBackdrop component.
   ///
-  /// - [children]: Optional content, typically just text like "Close".
-  /// - [tag]: The HTML tag, defaults to 'label' for checkbox method, 'div' for others.
-  /// - [htmlFor]: The 'for' attribute, used with checkbox method to target the checkbox ID.
-  /// - [styles]: A list of general utility modifiers for styling.
-  /// - Other parameters are inherited from [UiComponent].
+  /// - [tag]: Defaults to 'form' (for dialog method) or 'label' (for checkbox method).
+  /// - [htmlFor]: used if tag is 'label'.
   const ModalBackdrop(
     super.children, {
-    super.tag = 'label',
+    super.tag = 'form',
     this.htmlFor,
     super.style,
     super.id,
@@ -256,9 +326,11 @@ class ModalBackdrop extends UiComponent {
   @override
   void configureAttributes(UiComponentAttributes attributes) {
     super.configureAttributes(attributes);
-
     if (htmlFor != null && tag == 'label') {
       attributes.add('for', htmlFor!);
+    }
+    if (tag == 'form') {
+      attributes.add('method', 'dialog');
     }
   }
 
@@ -288,15 +360,10 @@ class ModalBackdrop extends UiComponent {
 }
 
 /// A hidden checkbox that controls the modal state (legacy method).
-///
-/// Used with the checkbox method where labels toggle the checkbox
-/// to open/close the modal.
 class ModalToggle extends UiComponent {
   /// Creates a ModalToggle component.
   ///
   /// - [id]: Required unique ID that labels will reference.
-  /// - [styles]: A list of general utility modifiers.
-  /// - Other parameters are inherited from [UiComponent].
   ModalToggle({
     required String id,
     super.style,
@@ -306,7 +373,7 @@ class ModalToggle extends UiComponent {
     super.eventHandlers,
     super.key,
   }) : super(
-         [], // No children for input element
+         [],
          tag: 'input',
          id: id,
        );
