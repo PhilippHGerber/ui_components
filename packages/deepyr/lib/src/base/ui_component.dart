@@ -86,7 +86,6 @@ abstract class UiComponent extends _UiComponentBase with UiComponentLogicMixin {
   @override
   final Styles? css;
 
-
   @override
   final Map<String, List<UiEventHandler>> eventHandlers;
 
