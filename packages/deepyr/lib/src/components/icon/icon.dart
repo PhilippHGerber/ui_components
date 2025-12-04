@@ -132,7 +132,7 @@ class Icon extends UiComponent {
   /// or by using a "Filled" variant of the font/icon name.
   /// If DaisyUI/Tailwind provide a utility class for this, we use it.
   /// Assuming a class like `.icon-fill` or similar.
-  static const IconStyle fill = IconStyle('filled', type: StyleType.style);
+  static const IconStyle filled = IconStyle('filled', type: StyleType.style);
 
   // Material Symbols weights are typically 100-700.
   // These can be controlled by `font-variation-settings: 'wght' <value>;`
