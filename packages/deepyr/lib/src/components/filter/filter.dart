@@ -5,67 +5,68 @@ import '../../base/ui_component.dart';
 import '../../base/ui_component_attributes.dart';
 import '../../base/ui_events.dart';
 import '../button/button_style.dart';
-import '../join/join.dart';
 import 'filter_style.dart';
 
 /// Defines the underlying HTML structure and reset mechanism for a [Filter] component.
 enum FilterMethod {
   /// Renders the `Filter` container as a `<form>` element.
   ///
-  /// This method automatically includes an `<input type="reset">` button,
-  /// providing a native, accessible way to clear the filter selection.
-  /// This is the recommended method.
+  /// This method automatically includes a native `<input type="reset">` button
+  /// at the beginning of the group, styled as a square button with an "×".
+  /// This allows for native form reset behavior.
   form,
 
   /// Renders the `Filter` container as a `<div>` element.
   ///
-  /// With this method, one of the `FilterItem`s must have `isResetItem: true`.
-  /// This designated item will act as the "All" or reset option, controlled by CSS.
+  /// Use this when you cannot use a form. You should designate one of the
+  /// [FilterItem]s as the reset option by setting `isResetItem: true`.
+  /// This applies the `.filter-reset` style to that item, typically making it
+  /// appear as the "All" or default option.
   div,
 }
 
-/// A "smart container" that groups `FilterItem` components to create a visually
+/// A "smart container" that groups [FilterItem] components to create a visually
 /// connected set of filter buttons.
 ///
 /// `Filter` is a **controlled component**. Its state must be managed by a parent
-/// stateful component. The parent provides the currently selected `groupValue` and
-/// an `onValueChanged` callback to handle state updates.
+/// stateful component. The parent provides the currently selected [groupValue] and
+/// an [onValueChanged] callback to handle state updates.
 ///
-/// The component ensures its `FilterItem` children function as a single,
-/// mutually exclusive radio group and automatically wraps them in a `Join` component
-/// for correct visual styling.
+/// The component ensures its [FilterItem] children function as a single,
+/// mutually exclusive radio group.
 ///
-/// ### Example Usage:
+/// ### Example (Form Method):
 /// ```dart
-/// class MyFilterExample extends StatefulComponent {
-///   String _selectedValue = 'Svelte';
+/// Filter<String>(
+///   name: 'frameworks',
+///   groupValue: _selectedValue,
+///   onValueChanged: (val) => setState(() => _selectedValue = val),
+///   onReset: () => setState(() => _selectedValue = null),
+///   children: [
+///     FilterItem(value: 'Svelte', label: 'Svelte'),
+///     FilterItem(value: 'Vue', label: 'Vue'),
+///   ],
+/// )
+/// ```
 ///
-///   @override
-///   State<MyFilterExample> createState() => _MyFilterExampleState();
-/// }
-///
-/// class _MyFilterExampleState extends State<MyFilterExample> {
-///   @override
-///   Component build(BuildContext context) {
-///     return Filter<String>(
-///       name: 'frameworks',
-///       groupValue: _selectedValue,
-///       onValueChanged: (newValue) {
-///         setState(() => _selectedValue = newValue);
-///       },
-///       [
-///         FilterItem(value: 'Svelte', label: 'Svelte'),
-///         FilterItem(value: 'Vue', label: 'Vue'),
-///         FilterItem(value: 'React', label: 'React'),
-///       ],
-///     );
-///   }
-/// }
+/// ### Example (Div Method):
+/// ```dart
+/// Filter<String>(
+///   name: 'frameworks',
+///   method: FilterMethod.div,
+///   groupValue: _selectedValue,
+///   onValueChanged: (val) => setState(() => _selectedValue = val),
+///   children: [
+///     // The item marked as resetItem acts as the "All" or "Clear" option
+///     FilterItem(value: 'All', label: 'All', isResetItem: true),
+///     FilterItem(value: 'Svelte', label: 'Svelte'),
+///   ],
+/// )
 /// ```
 class Filter<T> extends UiComponent {
   /// Creates a `Filter` container.
   ///
-  /// - [children]: A list of `FilterItem<T>` components that represent the filter options.
+  /// - [children]: A list of [FilterItem<T>] components that represent the filter options.
   /// - [groupValue]: The currently selected value of type `T?` for the filter group.
   /// - [onValueChanged]: A callback that fires when the user selects a new item.
   /// - [name]: The HTML `name` attribute, which must be the same for all items in the group.
@@ -89,7 +90,7 @@ class Filter<T> extends UiComponent {
     super.key,
   }) : assert(children.isNotEmpty, 'Filter must have at least one FilterItem child.'),
        super(
-         // Correctly pass the tag to the super constructor based on the method.
+         // Dynamically set the tag based on the selected method.
          tag: method == FilterMethod.form ? 'form' : 'div',
          style: style,
        );
@@ -97,7 +98,7 @@ class Filter<T> extends UiComponent {
   /// The currently selected value for the entire filter group.
   ///
   /// This property is nullable to represent the state where no
-  /// filter is selected (e.g., after a reset).
+  /// filter is selected (e.g., after a reset in form mode).
   final T? groupValue;
 
   /// A callback invoked with the new value when a different `FilterItem` is selected.
@@ -150,67 +151,76 @@ class Filter<T> extends UiComponent {
   Component build(BuildContext context) {
     final effectiveChildren = <Component>[];
 
-    // If using the form method, prepend the native reset button.
+    // 1. Automatic Reset Button (Form Method Only)
+    // If using a form, we prepend a native reset input. This matches the DaisyUI spec:
+    // <input class="btn btn-square" type="reset" value="×"/>
     if (method == FilterMethod.form) {
       effectiveChildren.add(
         input(
           type: InputType.reset,
           value: '×',
-          // The Join component will automatically add `join-item`.
           classes: 'btn btn-square',
+          // No click handler needed; the form 'reset' event handles the logic.
         ),
       );
     }
 
-    // Inject the necessary props into each FilterItem child.
+    // 2. Inject State into Children
+    // We iterate over the provided children to inject the group name, selected state,
+    // and callback into each `FilterItem`.
     if (children != null) {
       for (final child in children!) {
-        final item = child as FilterItem<T>;
-        effectiveChildren.add(
-          item.copyWith(
-            name: name,
-            groupValue: groupValue,
-            onSelect: onValueChanged,
-          ),
-        );
+        if (child is FilterItem<T>) {
+          effectiveChildren.add(
+            child.copyWith(
+              name: name,
+              groupValue: groupValue,
+              onSelect: onValueChanged,
+            ),
+          );
+        } else {
+          // Pass through non-FilterItem children if any exist (unlikely but safe).
+          effectiveChildren.add(child);
+        }
       }
     }
 
-    // Add the onReset event handler if applicable.
+    // 3. Handle Form Reset Event
     final eventMap = Map<String, EventCallback>.from(this.eventMap);
     if (method == FilterMethod.form && onReset != null) {
       eventMap['reset'] = (_) => onReset!();
     }
 
     return Component.element(
-      tag: tag, // The tag is correctly set by the constructor.
+      tag: tag,
       id: id,
       classes: combinedClasses,
       styles: this.css,
       attributes: componentAttributes,
       events: eventMap.isNotEmpty ? eventMap : null,
-      // The `Join` component visually groups the filter items.
-      // Its "smart" logic will apply `join-item` to all direct `UiComponent` children.
-      children: [Join(effectiveChildren)],
+      children: effectiveChildren,
     );
   }
 }
 
 /// Represents a single selectable option within a [Filter] container.
 ///
-/// It renders as an `<input type="radio">` but is styled to look like a `Button`.
-/// This is a controlled component whose state is managed by its parent `Filter`.
+/// It renders as an `<input type="radio">` with the `btn` class. DaisyUI uses the
+/// `aria-label` attribute to display the text content of the button.
+///
+/// This is a controlled component whose state is typically managed by its parent [Filter].
 class FilterItem<T> extends UiComponent {
   /// Creates a single filter option.
   ///
   /// - [value]: The unique value of type `T` that this item represents.
-  /// - [label]: The text to be displayed on the button, which is set as the `aria-label`.
-  /// - [style]: A list of `ButtonStyling` utilities to customize its appearance
+  /// - [label]: The visible text displayed on the button (rendered as `aria-label`).
+  /// - [style]: A list of [ButtonStyling] utilities to customize its appearance
   ///   (e.g., `Button.primary`, `Button.sm`).
-  /// - [isResetItem]: If `true` and the parent `Filter` uses `FilterMethod.div`,
-  ///   this item will act as the "All" or reset option.
-  /// - The `name`, `groupValue`, and `onSelect` properties are typically injected
-  ///   by the parent `Filter` container and should not be set manually.
+  /// - [isResetItem]: If `true`, applies the `filter-reset` class. This is used in
+  ///   `FilterMethod.div` to style the "All" or "Clear" option. It does NOT replace
+  ///   the label text with an "X"; it displays the [label] text (e.g. "All").
+  /// - The `name`, `groupValue`, and `onSelect` properties are injected
+  ///   by the parent `Filter` container.
   const FilterItem({
     required this.value,
     required this.label,
@@ -228,25 +238,25 @@ class FilterItem<T> extends UiComponent {
     super.key,
   }) : super(null, tag: 'input', style: style);
 
-  /// The unique value this radio button represents within its group.
+  /// The unique value this radio button represents.
   final T value;
 
   /// The visible text label for the button.
   final String label;
 
-  /// If `true`, this item will be styled as the reset option when used in a
-  /// `Filter` with `method: FilterMethod.div`.
+  /// If `true`, applies the `filter-reset` CSS class.
+  /// This is a styling hook for DaisyUI.
   final bool isResetItem;
 
   // --- Injected Properties ---
 
-  /// The name for the radio button group, injected by the parent `Filter`.
+  /// The name for the radio button group.
   final String? name;
 
-  /// The currently selected value for the group, injected by the parent `Filter`.
+  /// The currently selected value for the group.
   final T? groupValue;
 
-  /// The callback to invoke when this item is selected, injected by the parent `Filter`.
+  /// The callback to invoke when this item is selected.
   final ValueChanged<T>? onSelect;
 
   /// Internally computed checked state.
@@ -269,13 +279,13 @@ class FilterItem<T> extends UiComponent {
     super.configureAttributes(attributes);
     attributes
       ..add('type', 'radio')
-      ..add('aria-label', label);
+      ..add('aria-label', label)
+      ..add('value', value.toString());
     if (name != null) {
       attributes.add('name', name!);
     }
-    if (isChecked) {
-      attributes.add('checked', '');
-    }
+    // Note: We don't set the 'checked' attribute here.
+    // We bind the DOM property directly in build() to prevent race conditions.
   }
 
   @override
@@ -324,13 +334,20 @@ class FilterItem<T> extends UiComponent {
       };
     }
 
-    return Component.element(
-      tag: tag,
-      id: id,
+    // We must explicitly bind the `checked` parameter to the Dart state using the
+    // `condition ? true : null` pattern. This ensures Jaspr reconciles the DOM
+    // property correctly during re-renders, forcing the visual state to match
+    // the logical state (`isChecked`).
+    return input(
+      type: InputType.radio,
+      name: name,
       classes: combinedClasses,
+      id: id,
       styles: this.css,
       attributes: componentAttributes,
-      events: eventMap.isNotEmpty ? eventMap : null,
+      events: eventMap,
+      // The source of truth for the state.
+      checked: isChecked ? true : null,
     );
   }
 }
