@@ -57,6 +57,16 @@ class Icon extends UiComponent {
   /// Useful for decorative icons or when an adjacent text label exists.
   final bool? ariaHidden;
 
+  /// CSS rules associated with the Icon component.
+  /// This is automatically collected by the Jaspr build system.
+  @css
+  static final List<StyleRule> styles = [
+    // Applies the FILL variation when the .filled class is present on a material symbol
+    css('.m-symbols.filled').styles(
+      raw: {'font-variation-settings': "'FILL' 1"},
+    ),
+  ];
+
   @override
   String get baseClass => 'm-symbols'; // Base class for Material Symbols
 
@@ -103,43 +113,19 @@ class Icon extends UiComponent {
     );
   }
 
-  //   @override
-  //   Component build(BuildContext context) {
-  //     // Combine user-provided CSS with our default reset.
-  //     final combinedCss = Styles.combine([
-  //       const Styles(raw: {'font-size': 'inherit'}), // Our default reset
-  //       ?this.css,
-  //     ]);
-  //
-  //     return Component.element(
-  //       tag: tag,
-  //       id: id,
-  //       classes: combinedClasses,
-  //       // Use the combined styles.
-  //       styles: combinedCss,
-  //       attributes: componentAttributes,
-  //       events: this.events,
-  //       children: children ?? [?child],
-  //     );
-  //   }
+  // --- Static Icon Modifiers ---
 
-  // --- Static Icon Modifiers (Type: IconModifier interface, Instantiating: IconStyleModifier) ---
-  // These would correspond to specific Material Symbols CSS styling classes or font variation settings
-  // if they are controlled by classes rather than font-variation-settings CSS.
-
-  /// Applies a "filled" style to the icon (if supported by the icon set).
-  /// For Material Symbols, this is often controlled by `font-variation-settings: 'FILL' 1;`
-  /// or by using a "Filled" variant of the font/icon name.
-  /// If DaisyUI/Tailwind provide a utility class for this, we use it.
-  /// Assuming a class like `.icon-fill` or similar.
+  /// Applies a "filled" style to the icon.
+  ///
+  /// This adds the `.filled` class which sets `font-variation-settings: 'FILL' 1`.
+  /// **Note:** Ensure your font import in `index.html` includes the `FILL` axis
+  /// (e.g. `...:opsz,wght,FILL,GRAD@...`).
   static const IconStyle filled = IconStyle('filled', type: StyleType.style);
 
   // Material Symbols weights are typically 100-700.
   // These can be controlled by `font-variation-settings: 'wght' <value>;`
-  // If there are utility classes like `font-weight-thin`, `font-weight-bold` from Typography,
-  // those should be preferred. These are examples if specific icon classes existed.
-  // For Material Symbols, it's often direct CSS or `font-variation-settings`.
-  // If `deepyr` aims to abstract `font-variation-settings` via classes, they'd be defined here.
+  // Currently we rely on general Typography utilities or classes if available,
+  // but specific weight styles can be added here if we define the CSS for them.
 
   /// Thin stroke weight for the icon.
   static const IconStyle weightThin = IconStyle('weight-200', type: StyleType.style);
@@ -149,13 +135,4 @@ class Icon extends UiComponent {
 
   /// Bold stroke weight for the icon.
   static const IconStyle weightBold = IconStyle('weight-700', type: StyleType.style);
-
-  // Sizes: DaisyUI/Tailwind text size utilities are typically used for font icons.
-  // e.g., Text(modifiers: [Typography.textLg], [Icon(...)]) or Icon(..., modifiers: [Typography.textLg])
-  // If you want dedicated Icon.sizeSm, Icon.sizeMd, etc., they would map to text size classes.
-  // Your original example had text-xs, text-sm, etc. These should come from Typography utility.
-
-  // Color: Similarly, text color utilities from Typography/Colors should be used.
-  // e.g., Icon(..., modifiers: [Colors.textPrimary])
-  // Your original example had text-primary etc.
 }
