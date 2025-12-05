@@ -1,11 +1,8 @@
-import 'package:jaspr/jaspr.dart'
-    show BuildContext, Component, EventCallback, Key, Styles, ValueChanged, kIsWeb;
-import 'package:universal_web/web.dart' show Event, HTMLInputElement;
+import 'package:jaspr/jaspr.dart';
 
+import '../../base/stateful_ui_component.dart';
 import '../../base/style_type.dart';
-import '../../base/ui_component.dart';
 import '../../base/ui_component_attributes.dart';
-import '../../base/ui_events.dart';
 import 'radio_style.dart';
 
 /// A radio button component that allows users to select one option from a group.
@@ -19,30 +16,20 @@ import 'radio_style.dart';
 /// checked by comparing its own `value` to the `groupValue`. When clicked, it
 /// notifies the parent of the selection via the `onSelect` callback.
 ///
-/// Example of state management in a `StatefulComponent`:
+/// ### Example:
 /// ```dart
-/// enum Flavor { vanilla, chocolate, strawberry }
+/// enum Flavor { vanilla, chocolate }
 ///
-/// class MyFormState extends State<MyForm> {
-///   Flavor _selectedFlavor = Flavor.vanilla;
-///
-///   @override
-///   Component build(BuildContext context) {
-///     for (final flavor in Flavor.values) {
-///       return Radio<Flavor>(
-///         value: flavor,
-///         groupValue: _selectedFlavor,
-///         name: 'flavor-group',
-///         onSelect: (newValue) {
-///           setState(() => _selectedFlavor = newValue);
-///         },
-///       );
-///     }
-///   }
-/// }
+/// Radio<Flavor>(
+///   value: Flavor.vanilla,
+///   groupValue: _selectedFlavor,
+///   name: 'flavors',
+///   onSelect: (val) => setState(() => _selectedFlavor = val),
+///   style: [Radio.primary],
+/// )
 /// ```
-class Radio<T> extends UiComponent {
-  /// Creates a Radio button component.
+class Radio<T> extends StatefulUiComponent {
+  /// Creates a controlled Radio button component.
   ///
   /// - [value]: The unique value of type `T` that this radio button represents.
   /// - [groupValue]: The currently selected value of type `T` for the entire radio group.
@@ -50,10 +37,10 @@ class Radio<T> extends UiComponent {
   /// - [name]: The HTML `name` attribute, which must be the same for all radio
   ///   buttons in a group to ensure they are mutually exclusive.
   /// - [onSelect]: A callback that fires when the user selects this radio button.
-  ///   It receives the `value` of this component.
+  ///   It receives the [value] of this component.
   /// - [disabled]: If true, the radio button will be non-interactive.
   /// - [style]: A list of [RadioStyling] instances for styling.
-  /// - Other parameters are inherited from [UiComponent].
+  /// - [tag]: The HTML tag for the root element, defaults to 'input'.
   const Radio({
     required this.value,
     required this.groupValue,
@@ -68,7 +55,7 @@ class Radio<T> extends UiComponent {
     super.attributes,
     super.eventHandlers,
     super.key,
-  }) : super(null, style: style); // Radio elements have no children.
+  }) : super(null, style: style);
 
   /// The unique value this radio button represents within its group.
   final T value;
@@ -92,75 +79,19 @@ class Radio<T> extends UiComponent {
   String get baseClass => 'radio';
 
   @override
+  State<Radio<T>> createState() => _RadioState<T>();
+
+  @override
   void configureAttributes(UiComponentAttributes attributes) {
-    super.configureAttributes(attributes);
     attributes
       ..add('type', 'radio')
       ..add('name', name)
       // The HTML value attribute is always a string.
       ..add('value', value.toString());
-    if (isChecked) {
-      attributes.add('checked', '');
-    }
-    if (disabled) {
-      attributes.add('disabled', '');
-    }
-  }
 
-  @override
-  Radio<T> copyWith({
-    String? id,
-    String? classes,
-    Styles? css,
-    Map<String, String>? attributes,
-    Map<String, List<UiEventHandler>>? eventHandlers,
-    Key? key,
-  }) {
-    // This copyWith implementation is complex due to generics and required fields.
-    // It is provided for completeness of the UiComponent contract but may need
-    // adjustments based on specific use cases for copying Radio components.
-    return Radio<T>(
-      value: value,
-      groupValue: groupValue,
-      name: name,
-      onSelect: onSelect,
-      disabled: disabled,
-      tag: tag,
-      style: style as List<RadioStyling>?,
-      id: id ?? this.id,
-      classes: mergeClasses(this.classes, classes),
-      css: css ?? this.css,
-      attributes: attributes ?? userProvidedAttributes,
-      eventHandlers: eventHandlers ?? this.eventHandlers,
-      key: key ?? this.key,
-    );
-  }
-
-  @override
-  Component build(BuildContext context) {
-    final eventMap = Map<String, EventCallback>.from(this.eventMap);
-
-    // The 'change' event fires when a radio button is selected.
-    eventMap['change'] = (dynamic event) {
-      // Guard for web-only execution.
-      if (kIsWeb) {
-        // Use explicit casting for type safety and to avoid analyzer warnings.
-        final target = (event as Event).target! as HTMLInputElement;
-        // Only trigger the callback if this radio button just became checked.
-        if (target.checked) {
-          onSelect?.call(value);
-        }
-      }
-    };
-
-    return Component.element(
-      tag: tag,
-      id: id,
-      classes: combinedClasses,
-      styles: css,
-      attributes: componentAttributes,
-      events: eventMap,
-    );
+    // NOTE: We DO NOT set 'checked' or 'disabled' attributes here.
+    // Those are managed via the `input` component's named parameters in the state
+    // to control the DOM properties directly.
   }
 
   // --- Static Style Modifiers ---
@@ -205,4 +136,34 @@ class Radio<T> extends UiComponent {
 
   /// Renders an extra-large radio button. `radio-xl`
   static const RadioStyle xl = RadioStyle('radio-xl', type: StyleType.sizing);
+}
+
+class _RadioState<T> extends StatefulUiComponentState<Radio<T>> {
+  @override
+  String get baseClass => component.baseClass;
+
+  @override
+  Component build(BuildContext context) {
+    return input(
+      id: component.id,
+      type: InputType.radio,
+      classes: combinedClasses,
+      styles: component.css,
+      attributes: componentAttributes,
+
+      // Explicitly bind checked state using the true/null pattern.
+      // This ensures the DOM property is strictly controlled by our Dart state.
+      checked: component.isChecked ? true : null,
+
+      // Bind disabled state similarly
+      disabled: component.disabled ? true : null,
+
+      // Handle changes via callback
+      onChange: (dynamic val) {
+        // HTML Radio inputs only trigger 'change' when they are selected.
+        // We simply notify the parent of the new value.
+        component.onSelect?.call(component.value);
+      },
+    );
+  }
 }
