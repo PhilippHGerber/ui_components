@@ -1,3 +1,4 @@
+import 'package:jaspr/dom.dart' show Styles, div, span;
 import 'package:jaspr/jaspr.dart';
 import 'package:universal_web/js_interop.dart';
 import 'package:universal_web/web.dart';
@@ -142,7 +143,7 @@ class Fab extends UiComponent {
       tag: tag,
       id: id,
       classes: combinedClasses,
-      styles: this.css,
+      styles: css,
       attributes: componentAttributes,
       events: eventMap,
       children: [
@@ -229,7 +230,7 @@ class FabAction extends UiComponent {
       tag: tag,
       id: id,
       classes: combinedClasses,
-      styles: this.css,
+      styles: css,
       attributes: componentAttributes,
       events: eventMap,
       children: [label!, children!.first],

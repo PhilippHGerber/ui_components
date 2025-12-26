@@ -1,4 +1,5 @@
-import 'package:jaspr/jaspr.dart' show BuildContext, Component, InputType, Key, Styles, input, text;
+import 'package:jaspr/dom.dart' show InputType, Styles, input;
+import 'package:jaspr/jaspr.dart' show BuildContext, Component, Key;
 
 import '../../base/style_type.dart';
 import '../../base/ui_component.dart';
@@ -324,7 +325,7 @@ class Tab extends UiComponent {
       styles: finalStyles,
       attributes: componentAttributes,
       events: eventMap,
-      children: children ?? (ariaLabel != null ? [text(ariaLabel!)] : null),
+      children: children ?? (ariaLabel != null ? [Component.text(ariaLabel!)] : null),
     );
   }
 

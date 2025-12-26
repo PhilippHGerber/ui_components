@@ -1,8 +1,8 @@
+import 'package:jaspr/dom.dart' show StyleRule, Styles, css;
 import 'package:jaspr/jaspr.dart';
 
 import '../../../deepyr.dart';
 import '../../base/style_type.dart';
-import '../../base/ui_component.dart';
 import 'label_style.dart';
 
 /// An enum defining the contextual container roles a [Label] can adopt

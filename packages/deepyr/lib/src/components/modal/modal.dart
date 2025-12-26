@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
 import 'package:universal_web/web.dart' show HTMLDialogElement, document;
 
@@ -154,7 +155,7 @@ class _ModalState extends StatefulUiComponentState<Modal> {
     }
   }
 
-  /// Synchronizes the <dialog> element with the [component.open] state.
+  /// Synchronizes the \<dialog> element with the [component.open] state.
   void _syncDialogState() {
     if (!kIsWeb) return;
 

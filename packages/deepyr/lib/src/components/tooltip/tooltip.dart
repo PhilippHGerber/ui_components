@@ -1,3 +1,4 @@
+import 'package:jaspr/dom.dart' show Styles;
 import 'package:jaspr/jaspr.dart';
 
 import '../../base/style_type.dart';
@@ -71,7 +72,7 @@ class Tooltip extends UiComponent {
       tag: tag,
       id: id,
       classes: combinedClasses,
-      styles: this.css,
+      styles: css,
       attributes: componentAttributes,
       events: eventMap,
       children: effectiveChildren,

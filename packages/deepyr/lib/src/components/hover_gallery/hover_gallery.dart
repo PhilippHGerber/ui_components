@@ -1,3 +1,4 @@
+import 'package:jaspr/dom.dart' show Styles;
 import 'package:jaspr/jaspr.dart';
 
 import '../../base/ui_component.dart';

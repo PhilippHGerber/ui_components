@@ -1,3 +1,4 @@
+import 'package:jaspr/dom.dart' show InputType, Styles, input;
 import 'package:jaspr/jaspr.dart';
 import 'package:universal_web/web.dart' show Event, HTMLInputElement;
 
@@ -156,7 +157,7 @@ class Filter<T> extends UiComponent {
     // <input class="btn btn-square" type="reset" value="×"/>
     if (method == FilterMethod.form) {
       effectiveChildren.add(
-        input(
+        const input(
           type: InputType.reset,
           value: '×',
           classes: 'btn btn-square',
@@ -195,7 +196,7 @@ class Filter<T> extends UiComponent {
       tag: tag,
       id: id,
       classes: combinedClasses,
-      styles: this.css,
+      styles: css,
       attributes: componentAttributes,
       events: eventMap.isNotEmpty ? eventMap : null,
       children: effectiveChildren,
@@ -343,7 +344,7 @@ class FilterItem<T> extends UiComponent {
       name: name,
       classes: combinedClasses,
       id: id,
-      styles: this.css,
+      styles: css,
       attributes: componentAttributes,
       events: eventMap,
       // The source of truth for the state.

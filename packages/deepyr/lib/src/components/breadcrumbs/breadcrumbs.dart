@@ -1,3 +1,4 @@
+import 'package:jaspr/dom.dart' show Styles, li, ul;
 import 'package:jaspr/jaspr.dart';
 
 import '../../base/ui_component.dart';
@@ -80,7 +81,7 @@ class Breadcrumbs extends UiComponent {
       tag: tag,
       id: id,
       classes: combinedClasses,
-      styles: this.css,
+      styles: css,
       attributes: componentAttributes,
       events: eventMap,
       // DaisyUI structure is `div.breadcrumbs > ul > li > a`

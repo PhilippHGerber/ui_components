@@ -1,3 +1,4 @@
+import 'package:jaspr/dom.dart' show Styles;
 import 'package:jaspr/jaspr.dart';
 
 import '../../base/style_type.dart';
@@ -183,7 +184,7 @@ class FooterNav extends UiComponent {
   Component build(BuildContext context) {
     final navChildren = <Component>[];
     if (_title != null && _title.isNotEmpty) {
-      navChildren.add(FooterTitle([text(_title)]));
+      navChildren.add(FooterTitle([Component.text(_title)]));
     }
     if (children != null) {
       navChildren.addAll(children!);

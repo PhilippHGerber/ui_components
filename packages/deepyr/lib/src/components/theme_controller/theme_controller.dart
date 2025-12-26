@@ -1,3 +1,4 @@
+import 'package:jaspr/dom.dart' show InputType, Styles, input;
 import 'package:jaspr/jaspr.dart';
 
 import '../../base/stateful_ui_component.dart';
@@ -173,9 +174,9 @@ abstract class ThemeController extends StatefulUiComponent {
 
   @override
   void configureAttributes(UiComponentAttributes attributes) {
-    attributes.add('type', inputType);
-    attributes.add('name', name);
-    attributes.add('value', value.value);
+    attributes..add('type', inputType)
+    ..add('name', name)
+    ..add('value', value.value);
 
     // Attributes for theme-change.js
     var toggleThemeValue = value.value;

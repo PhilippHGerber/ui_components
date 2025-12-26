@@ -1,9 +1,9 @@
+import 'package:jaspr/dom.dart' show Styles;
 import 'package:jaspr/jaspr.dart';
 
 import '../base/base_style.dart';
 import '../base/styling.dart';
 import '../base/ui_component.dart';
-import '../base/ui_component_attributes.dart';
 import '../base/ui_events.dart';
 import '../base/ui_prefix_modifier.dart';
 
@@ -40,16 +40,6 @@ class Container extends UiComponent {
   @override
   String get baseClass => ''; // Container itself has no specific DaisyUI base class
 
-  @override
-  void configureAttributes(UiComponentAttributes attributes) {
-    super.configureAttributes(attributes);
-    // A generic container typically doesn't require specific ARIA roles by default.
-    // Roles like 'region', 'main', 'complementary', 'form', etc., should be
-    // applied by the user via the `attributes` prop or by more specialized
-    // components that might extend or use Container.
-    // For example, if used as a main content area:
-    // Container([...], attributes: {'role': 'main', 'aria-label': 'Main content'})
-  }
 
   @override
   Container copyWith({

@@ -1,3 +1,4 @@
+import 'package:jaspr/dom.dart' show InputType, input;
 import 'package:jaspr/jaspr.dart';
 import 'package:universal_web/web.dart' show HTMLInputElement, document;
 
@@ -171,7 +172,7 @@ class _CheckboxState extends StatefulUiComponentState<Checkbox> {
       checked: component.isChecked ? true : null,
 
       // Bind disabled state similarly
-      disabled: component.disabled ? true : null,
+      disabled: component.disabled,
 
       // Handle changes via callback
       onChange: (value) {

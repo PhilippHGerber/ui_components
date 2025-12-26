@@ -1,3 +1,4 @@
+import 'package:jaspr/dom.dart' show InputType, div, input;
 import 'package:jaspr/jaspr.dart';
 import 'package:universal_web/web.dart' show HTMLInputElement, document;
 

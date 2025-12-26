@@ -1,3 +1,4 @@
+import 'package:jaspr/dom.dart' show Styles;
 import 'package:jaspr/jaspr.dart';
 
 import '../../base/style_type.dart';
@@ -72,7 +73,7 @@ class Carousel extends UiComponent {
       tag: tag,
       id: id,
       classes: combinedClasses,
-      styles: this.css,
+      styles: css,
       attributes: componentAttributes,
       events: eventMap,
       children: processedChildren ?? (child != null ? [child!] : null),

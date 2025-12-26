@@ -1,4 +1,5 @@
-import 'package:jaspr/jaspr.dart' show Key, Styles, text;
+import 'package:jaspr/dom.dart' show Styles;
+import 'package:jaspr/jaspr.dart' show Component, Key;
 
 import '../../base/style_type.dart';
 import '../../base/ui_component.dart';
@@ -38,7 +39,7 @@ class Textarea extends UiComponent {
     super.onChange,
     super.key,
   }) : _value = value,
-       super(value != null ? [text(value)] : null, style: style);
+       super(value != null ? [Component.text(value)] : null, style: style);
 
   /// The text content of the textarea.
   final String? _value;
