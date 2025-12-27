@@ -1,3 +1,4 @@
+import 'package:jaspr/dom.dart' show Styles, div;
 import 'package:jaspr/jaspr.dart';
 
 import '../../base/ui_component.dart';
@@ -52,12 +53,12 @@ class MockupPhone extends UiComponent {
       tag: tag,
       id: id,
       classes: combinedClasses,
-      styles: this.css,
+      styles: css,
       attributes: componentAttributes,
       events: eventMap,
       children: [
         // The camera notch is rendered automatically.
-        div(classes: 'mockup-phone-camera', []),
+        const div(classes: 'mockup-phone-camera', []),
         // The display area wraps the user-provided content.
         div(classes: 'mockup-phone-display', [content]),
       ],

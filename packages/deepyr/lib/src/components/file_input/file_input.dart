@@ -1,5 +1,6 @@
+import 'package:jaspr/dom.dart' show Styles;
 import 'package:jaspr/jaspr.dart'
-    show BuildContext, Component, EventCallback, Key, Styles, ValueChanged, kIsWeb;
+    show BuildContext, Component, EventCallback, Key, ValueChanged, kIsWeb;
 import 'package:universal_web/web.dart' show Event, FileList, HTMLInputElement;
 
 import '../../base/style_type.dart';

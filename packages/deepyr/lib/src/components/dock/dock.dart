@@ -1,3 +1,4 @@
+import 'package:jaspr/dom.dart' show Styles;
 import 'package:jaspr/jaspr.dart';
 
 import '../../../deepyr.dart' show Icon;

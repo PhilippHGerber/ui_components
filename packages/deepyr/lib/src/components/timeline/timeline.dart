@@ -1,4 +1,5 @@
-import 'package:jaspr/jaspr.dart' hide Flex;
+import 'package:jaspr/dom.dart' show Styles, hr;
+import 'package:jaspr/jaspr.dart';
 
 import '../../base/style_type.dart';
 import '../../base/styling.dart';
@@ -208,7 +209,7 @@ class TimelineItem extends UiComponent {
       tag: tag,
       id: id,
       classes: combinedClasses,
-      styles: this.css,
+      styles: css,
       attributes: componentAttributes,
       events: eventMap,
       children: kids,
@@ -313,7 +314,7 @@ class Timeline extends UiComponent {
       tag: tag,
       id: id,
       classes: combinedClasses,
-      styles: this.css,
+      styles: css,
       attributes: componentAttributes,
       events: eventMap,
       children: finalChildren,

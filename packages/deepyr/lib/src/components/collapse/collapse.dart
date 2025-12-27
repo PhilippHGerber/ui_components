@@ -1,3 +1,4 @@
+import 'package:jaspr/dom.dart' show InputType, Styles, div, input, summary;
 import 'package:jaspr/jaspr.dart';
 import 'package:universal_web/web.dart' show Event, HTMLDetailsElement;
 
@@ -199,7 +200,7 @@ class Collapse extends UiComponent {
       tag: effectiveTag,
       id: id,
       classes: combinedClasses,
-      styles: this.css,
+      styles: css,
       attributes: componentAttributes,
       events: eventMap,
       children: children,

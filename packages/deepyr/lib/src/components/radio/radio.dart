@@ -1,3 +1,4 @@
+import 'package:jaspr/dom.dart' show InputType, input;
 import 'package:jaspr/jaspr.dart';
 
 import '../../base/stateful_ui_component.dart';
@@ -156,7 +157,7 @@ class _RadioState<T> extends StatefulUiComponentState<Radio<T>> {
       checked: component.isChecked ? true : null,
 
       // Bind disabled state similarly
-      disabled: component.disabled ? true : null,
+      disabled: component.disabled,
 
       // Handle changes via callback
       onChange: (dynamic val) {

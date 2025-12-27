@@ -1,4 +1,5 @@
-import 'package:jaspr/jaspr.dart' hide css;
+import 'package:jaspr/dom.dart' show Styles;
+import 'package:jaspr/jaspr.dart';
 
 import 'styling.dart';
 import 'ui_component_attributes.dart';

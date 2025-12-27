@@ -1,3 +1,4 @@
+import 'package:jaspr/dom.dart' show Styles;
 import 'package:jaspr/jaspr.dart';
 
 import '../../base/style_type.dart';
@@ -169,7 +170,7 @@ class Button extends UiComponent {
         tag: tag,
         id: id,
         classes: combinedClasses,
-        styles: this.css,
+        styles: css,
         attributes: nativeAttributes,
         // Do NOT pass the `events` map.
         children: children ?? [?child],

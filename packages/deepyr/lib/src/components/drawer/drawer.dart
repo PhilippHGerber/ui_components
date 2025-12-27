@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:jaspr/dom.dart' show InputType, Styles, input, label;
 import 'package:jaspr/jaspr.dart';
 import 'package:universal_web/web.dart' show HTMLInputElement, document;
 
@@ -263,7 +264,7 @@ class DrawerSide extends UiComponent {
       tag: tag,
       id: id,
       classes: combinedClasses,
-      styles: this.css,
+      styles: css,
       attributes: componentAttributes,
       events: eventMap,
       children: [

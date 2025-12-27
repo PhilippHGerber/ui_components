@@ -1,7 +1,7 @@
+import 'package:jaspr/dom.dart' show Styles, span;
 import 'package:jaspr/jaspr.dart';
 
 import '../../base/ui_component.dart';
-import '../../base/ui_component_attributes.dart';
 import '../../base/ui_events.dart';
 import 'countdown_style.dart';
 
@@ -52,11 +52,6 @@ class Countdown extends UiComponent {
   @override
   String get baseClass => 'countdown';
 
-  @override
-  void configureAttributes(UiComponentAttributes attributes) {
-    super.configureAttributes(attributes);
-    // The inner span's aria-live attribute will handle announcements.
-  }
 
   @override
   Countdown copyWith({
@@ -90,11 +85,11 @@ class Countdown extends UiComponent {
       tag: tag,
       id: id,
       classes: combinedClasses,
-      styles: this.css,
+      styles: css,
       attributes: componentAttributes,
       children: [
         span(
-          [text(clampedValue.toString())],
+          [Component.text(clampedValue.toString())],
           // The CSS variable `--value` is what drives the animation.
           styles: Styles(raw: {'--value': clampedValue.toString()}),
           // Accessibility attributes for screen readers.

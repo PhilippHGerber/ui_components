@@ -1,3 +1,4 @@
+import 'package:jaspr/dom.dart' show InputType, Styles, div, input;
 import 'package:jaspr/jaspr.dart';
 
 import '../../../deepyr.dart';
@@ -217,7 +218,7 @@ class AccordionItem<T> extends UiComponent {
       tag: tag,
       id: id,
       classes: combinedClasses,
-      styles: this.css,
+      styles: css,
       attributes: componentAttributes,
       events: eventMap,
       children: [

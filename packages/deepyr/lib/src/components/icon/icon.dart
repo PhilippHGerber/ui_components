@@ -1,3 +1,4 @@
+import 'package:jaspr/dom.dart' show StyleRule, Styles, css;
 import 'package:jaspr/jaspr.dart';
 
 import '../../base/style_type.dart';

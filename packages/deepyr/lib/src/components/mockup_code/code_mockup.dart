@@ -1,7 +1,7 @@
+import 'package:jaspr/dom.dart' show Styles, code, pre;
 import 'package:jaspr/jaspr.dart';
 
 import '../../../deepyr.dart';
-import 'code_mockup_style.dart';
 
 /// A data class representing a single line of code within a [MockupCode] component.
 ///
@@ -146,7 +146,7 @@ class MockupCode extends UiComponent {
       tag: tag,
       id: id,
       classes: combinedClasses,
-      styles: this.css,
+      styles: css,
       attributes: componentAttributes,
       events: eventMap,
       children: [
@@ -155,7 +155,7 @@ class MockupCode extends UiComponent {
             attributes: line.prefix != null ? {'data-prefix': line.prefix!} : null,
             classes: line.style?.toClasses(),
             [
-              code([text(line.text)]),
+              code([Component.text(line.text)]),
             ],
           ),
       ],

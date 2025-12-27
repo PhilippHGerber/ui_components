@@ -1,7 +1,7 @@
-import 'package:jaspr/jaspr.dart' show Key, Styles;
+import 'package:jaspr/dom.dart' show Styles;
+import 'package:jaspr/jaspr.dart' show Key;
 
 import '../../base/ui_component.dart';
-import '../../base/ui_component_attributes.dart';
 import '../../base/ui_events.dart';
 import '../label/label.dart' show Label;
 import 'form_label_style.dart';
@@ -38,11 +38,6 @@ class FormLabel extends UiComponent {
   @override
   String get baseClass => 'label'; // The DaisyUI base class
 
-  @override
-  void configureAttributes(UiComponentAttributes attributes) {
-    super.configureAttributes(attributes);
-    // No specific ARIA roles needed by default for a simple styled paragraph or span.
-  }
 
   @override
   FormLabel copyWith({

@@ -1,4 +1,5 @@
-import 'package:jaspr/jaspr.dart' show Key, Styles;
+import 'package:jaspr/dom.dart' show Styles;
+import 'package:jaspr/jaspr.dart' show Key;
 
 import '../../../deepyr.dart' show Badge;
 import '../../base/style_type.dart';
