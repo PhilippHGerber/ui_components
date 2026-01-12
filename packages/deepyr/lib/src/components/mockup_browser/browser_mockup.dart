@@ -1,3 +1,4 @@
+import 'package:jaspr/dom.dart' show Styles, div;
 import 'package:jaspr/jaspr.dart';
 
 import '../../base/ui_component.dart';
@@ -59,7 +60,7 @@ class BrowserMockup extends UiComponent {
       tag: tag,
       id: id,
       classes: combinedClasses,
-      styles: this.css,
+      styles: css,
       attributes: componentAttributes,
       events: eventMap,
       children: [

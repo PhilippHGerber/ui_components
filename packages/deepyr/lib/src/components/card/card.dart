@@ -1,3 +1,4 @@
+import 'package:jaspr/dom.dart' show Styles, img;
 import 'package:jaspr/jaspr.dart';
 
 import '../../base/style_type.dart';
@@ -168,10 +169,6 @@ class CardBody extends UiComponent {
   @override
   String get baseClass => 'card-body';
 
-  @override
-  void configureAttributes(UiComponentAttributes attributes) {
-    super.configureAttributes(attributes);
-  }
 
   @override
   CardBody copyWith({
@@ -219,10 +216,6 @@ class CardTitle extends UiComponent {
   @override
   String get baseClass => 'card-title';
 
-  @override
-  void configureAttributes(UiComponentAttributes attributes) {
-    super.configureAttributes(attributes);
-  }
 
   @override
   CardTitle copyWith({
@@ -269,10 +262,6 @@ class CardActions extends UiComponent {
   @override
   String get baseClass => 'card-actions';
 
-  @override
-  void configureAttributes(UiComponentAttributes attributes) {
-    super.configureAttributes(attributes);
-  }
 
   @override
   CardActions copyWith({

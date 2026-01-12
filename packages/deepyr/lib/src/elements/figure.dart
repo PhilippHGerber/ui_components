@@ -1,4 +1,5 @@
-import 'package:jaspr/jaspr.dart' show Key, Styles;
+import 'package:jaspr/dom.dart' show Styles;
+import 'package:jaspr/jaspr.dart' show Key;
 
 import '../base/styling.dart';
 import '../base/ui_component.dart';

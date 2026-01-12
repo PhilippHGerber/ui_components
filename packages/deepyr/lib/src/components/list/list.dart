@@ -1,5 +1,5 @@
-import 'package:jaspr/jaspr.dart' show Component, Key, Styles;
-import 'package:jaspr/ui.dart' show BuildContext;
+import 'package:jaspr/dom.dart' show Styles;
+import 'package:jaspr/jaspr.dart' show BuildContext, Component, Key;
 
 import '../../../deepyr.dart' show Flex;
 import '../../base/style_type.dart';

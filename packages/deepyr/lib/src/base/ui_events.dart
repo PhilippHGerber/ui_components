@@ -74,14 +74,14 @@ class UiKeyboardEventData extends UiEventData {
 
 EventCallback createEventHandler(void Function(Event event) handler) {
   return (dynamic rawEvent) {
-    final Event event = rawEvent as Event;
+    final event = rawEvent as Event;
     handler(event);
   };
 }
 
 EventCallback createMouseEventHandler(void Function(MouseEvent event) handler) {
   return (dynamic rawEvent) {
-    final MouseEvent event = rawEvent as MouseEvent;
+    final event = rawEvent as MouseEvent;
     handler(event);
   };
 }

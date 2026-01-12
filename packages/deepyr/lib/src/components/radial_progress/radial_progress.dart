@@ -1,3 +1,4 @@
+import 'package:jaspr/dom.dart' show Styles;
 import 'package:jaspr/jaspr.dart';
 
 import '../../base/ui_component.dart';
@@ -70,8 +71,9 @@ class RadialProgress extends UiComponent {
   void configureAttributes(UiComponentAttributes attributes) {
     super.configureAttributes(attributes);
     // Add accessibility attributes for screen readers.
-    attributes.addRole('progressbar');
-    attributes.addAria('valuenow', value.toInt().toString());
+    attributes
+    ..addRole('progressbar')
+    ..addAria('valuenow', value.toInt().toString());
   }
 
   @override
@@ -128,7 +130,7 @@ class RadialProgress extends UiComponent {
     // Determine the children to render.
     var finalChildren = children;
     if (finalChildren == null && showValueText) {
-      finalChildren = [text('${clampedValue.toInt()}%')];
+      finalChildren = [Component.text('${clampedValue.toInt()}%')];
     }
 
     return Component.element(
