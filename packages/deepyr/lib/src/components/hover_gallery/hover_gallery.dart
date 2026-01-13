@@ -1,4 +1,4 @@
-import 'package:jaspr/dom.dart' show Styles;
+import 'package:jaspr/dom.dart' show Styles, img;
 import 'package:jaspr/jaspr.dart';
 
 import '../../base/ui_component.dart';
@@ -59,8 +59,8 @@ class HoverGallery extends UiComponent {
     // This runtime assertion provides clear feedback to the developer if the
     // component is used incorrectly, preventing a common source of errors.
     assert(
-      children?.every((child) => child is DomComponent && child.tag == 'img') ?? true,
-      'All direct children of HoverGallery must be primitive img() components for the CSS hover effect to work correctly.',
+      children?.every((child) => child is img) ?? true,
+      'All direct children of HoverGallery must be img components for the CSS hover effect to work correctly. ',
     );
     return super.build(context);
   }
