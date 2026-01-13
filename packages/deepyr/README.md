@@ -32,7 +32,7 @@ Explore all available components and see them in action on the official document
 
     ```yaml
     dependencies:
-      deepyr: ^0.4.0
+      deepyr: ^0.5.0
     ```
 
 2. **Setup Tailwind CSS**
@@ -125,7 +125,7 @@ class MyComponent extends StatelessComponent {
 
 ### **Data input**
 
-- 🔲 **Calendar** (coming soon in v0.5)
+- 🔲 **Calendar** (coming soon in v0.x)
 - ✅ **Checkbox**
 - ✅ **Fieldset**
 - ✅ **File Input**
