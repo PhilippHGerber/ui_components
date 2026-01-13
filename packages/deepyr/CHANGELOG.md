@@ -1,5 +1,15 @@
 # Changelog
 
+## Next release
+
+### Changed
+
+* **Update to Jaspr 0.22.0**, apply all changed imports and replace all depracated methods and classes. (PR #4, thanks @nemr0)
+
+### Fixed
+
+* **HoverGallery:** update child component assertion to use img type
+
 ## 0.4.0
 
 ### Fixed
