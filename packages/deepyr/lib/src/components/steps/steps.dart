@@ -103,7 +103,6 @@ class Step extends UiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
-    super.child,
     super.key,
   }) : super(style: style);
 
@@ -141,7 +140,6 @@ class Step extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
-      child: child,
       key: key ?? this.key,
     );
   }
@@ -192,7 +190,6 @@ class StepIcon extends UiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
-    super.child,
     super.key,
   }) : super(style: style);
 
@@ -217,7 +214,6 @@ class StepIcon extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
-      child: child,
       key: key ?? this.key,
     );
   }

@@ -47,7 +47,6 @@ class Carousel extends UiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
-    super.child,
     super.key,
   }) : super(style: style);
 
@@ -76,7 +75,7 @@ class Carousel extends UiComponent {
       styles: css,
       attributes: componentAttributes,
       events: eventMap,
-      children: processedChildren ?? (child != null ? [child!] : null),
+      children: processedChildren,
     );
   }
 
@@ -98,7 +97,6 @@ class Carousel extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
-      child: child,
       key: key ?? this.key,
     );
   }

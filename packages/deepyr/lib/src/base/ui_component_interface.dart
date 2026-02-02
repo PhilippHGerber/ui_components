@@ -16,12 +16,7 @@ import 'ui_events.dart';
 /// This pattern ensures maximum code reuse and type safety across the component hierarchy.
 abstract interface class UiComponentInterface {
   /// The list of child components to be rendered within this component.
-  /// Mutually exclusive with [child].
   List<Component>? get children;
-
-  /// A single child component to be rendered.
-  /// Mutually exclusive with [children].
-  Component? get child;
 
   /// The HTML tag for the root element of this component (e.g., "div", "button").
   String get tag;

@@ -36,7 +36,7 @@ enum ButtonHtmlType {
 class Button extends UiComponent {
   /// Creates a Button component.
   ///
-  /// - [children] or [child]: The content of the button (e.g., text, an icon).
+  /// - [children]: The content of the button (e.g., text, an icon).
   /// - [tag]: The HTML tag to use for the button, defaults to 'button'.
   /// - [htmlType]: The HTML 'type' attribute (e.g., submit, reset, button).
   ///   Relevant if `tag` is 'button'.
@@ -57,7 +57,6 @@ class Button extends UiComponent {
     super.attributes,
     super.eventHandlers,
     super.onClick,
-    super.child,
     super.key,
   }) : super(style: style);
 
@@ -147,7 +146,6 @@ class Button extends UiComponent {
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
-      child: child,
     );
   }
 
@@ -173,7 +171,7 @@ class Button extends UiComponent {
         styles: css,
         attributes: nativeAttributes,
         // Do NOT pass the `events` map.
-        children: children ?? [?child],
+        children: children,
       );
     }
 

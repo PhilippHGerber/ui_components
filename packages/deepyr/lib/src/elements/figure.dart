@@ -3,7 +3,6 @@ import 'package:jaspr/jaspr.dart' show Key;
 
 import '../base/styling.dart';
 import '../base/ui_component.dart';
-import '../base/ui_component_attributes.dart';
 import '../base/ui_events.dart';
 
 /// Represents an HTML `<figure>` element, typically used to encapsulate media
@@ -14,7 +13,7 @@ import '../base/ui_events.dart';
 class Figure extends UiComponent {
   /// Creates a Figure component.
   ///
-  /// - [children] or [child]: The content of the figure, usually an `img` tag and
+  /// - [children]: The content of the figure, usually an `img` tag and
   ///   optionally a `Figcaption` (not yet defined in this snippet).
   /// - [tag]: The HTML tag to use, defaults to 'figure'.
   /// - [styles]: A list of general [Styling] instances for styling.
@@ -28,17 +27,11 @@ class Figure extends UiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
-    super.child,
     super.key,
   });
 
   @override
   String get baseClass => '';
-
-  @override
-  void configureAttributes(UiComponentAttributes attributes) {
-    super.configureAttributes(attributes);
-  }
 
   @override
   Figure copyWith({
@@ -58,7 +51,6 @@ class Figure extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
-      child: child,
       key: key ?? this.key,
     );
   }

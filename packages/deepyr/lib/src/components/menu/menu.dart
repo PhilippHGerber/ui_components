@@ -34,7 +34,6 @@ class Menu extends UiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
-    super.child,
     super.key,
   }) : super(style: style);
 
@@ -84,7 +83,6 @@ class Menu extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
-      child: child,
       key: key ?? this.key,
     );
   }
@@ -128,7 +126,6 @@ class MenuTitle extends UiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
-    super.child,
     super.key,
   });
 
@@ -153,7 +150,6 @@ class MenuTitle extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
-      child: child,
       key: key ?? this.key,
     );
   }
@@ -185,7 +181,6 @@ class MenuItem extends UiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
-    super.child,
     super.key,
   }) : super(tag: 'a');
 
@@ -247,7 +242,6 @@ class MenuItem extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
-      child: child,
       key: key ?? this.key,
     );
   }
@@ -309,7 +303,7 @@ class MenuSubmenu extends UiComponent {
           children: [
             summary([label]),
             ul(
-              children ?? [?child],
+              children ?? [],
               // Apply the ulStyle classes to the <ul> element.
               classes: ulStyle?.toClasses(),
             ),
@@ -381,7 +375,7 @@ class MenuHoverSubmenu extends UiComponent {
       children: [
         a([label], href: '#'), // The trigger is now a proper anchor
         ul(
-          children ?? [?child],
+          children ?? [],
           // Apply the ulStyle classes to the <ul> element.
           classes: ulStyle?.toClasses(),
         ),
@@ -423,7 +417,6 @@ class MenuDropdownToggle extends UiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
-    super.child,
     super.key,
     super.onClick,
   }) : super();
@@ -448,7 +441,6 @@ class MenuDropdownToggle extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
-      child: child,
       onClick: onClick,
       key: key ?? this.key,
     );
@@ -467,7 +459,6 @@ class MenuDropdownContent extends UiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
-    super.child,
     super.key,
   }) : super();
 
@@ -491,7 +482,6 @@ class MenuDropdownContent extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
-      child: child,
       key: key ?? this.key,
     );
   }

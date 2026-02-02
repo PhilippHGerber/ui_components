@@ -13,7 +13,7 @@ import 'avatar_style.dart';
 class Avatar extends UiComponent {
   /// Creates an Avatar component.
   ///
-  /// - [children] or [child]: The content of the avatar, usually a styled `div`
+  /// - [children]: The content of the avatar, usually a styled `div`
   ///   wrapping an `img` or `span` element.
   /// - [isPlaceholder]: If true, applies the `avatar-placeholder` class, styling
   ///   the avatar for use with text initials instead of an image.
@@ -30,7 +30,6 @@ class Avatar extends UiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
-    super.child,
     super.key,
   }) : super(style: style);
 
@@ -39,13 +38,11 @@ class Avatar extends UiComponent {
   /// This is a convenience factory that sets `isPlaceholder` to true.
   factory Avatar.placeholder(
     List<Component>? children, {
-    Component? child,
     List<AvatarStyling>? style,
     Key? key,
   }) {
     return Avatar(
       children,
-      child: child,
       isPlaceholder: true,
       style: style,
       key: key,
@@ -88,7 +85,6 @@ class Avatar extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
-      child: child,
       key: key ?? this.key,
     );
   }
@@ -108,7 +104,7 @@ class Avatar extends UiComponent {
 class AvatarGroup extends UiComponent {
   /// Creates an AvatarGroup component.
   ///
-  /// - [children] or [child]: A list of [Avatar] components.
+  /// - [children]: A list of [Avatar] components.
   /// - [style]: A list of general styling utilities.
   /// - Other parameters are inherited from [UiComponent].
   const AvatarGroup(
@@ -120,7 +116,6 @@ class AvatarGroup extends UiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
-    super.child,
     super.key,
   });
 
@@ -144,7 +139,6 @@ class AvatarGroup extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
-      child: child,
       key: key ?? this.key,
     );
   }

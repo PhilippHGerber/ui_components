@@ -123,7 +123,7 @@ class RadialProgress extends UiComponent {
 
     // Combine dynamically generated styles with any user-provided styles.
     final combinedStyles = Styles.combine([
-      if (this.css != null) this.css!,
+      ?css,
       Styles(raw: rawStyles),
     ]);
 

@@ -3,7 +3,6 @@ import 'package:jaspr/jaspr.dart' show Key;
 
 import '../../../deepyr.dart';
 import '../../base/style_type.dart';
-import '../../base/ui_component.dart';
 import 'stack_style.dart';
 
 /// A layout component that visually places its children on top of each other.
@@ -57,7 +56,6 @@ class Stack extends UiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
-    super.child,
     super.key,
   }) : super(style: style);
 
@@ -82,7 +80,6 @@ class Stack extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
-      child: child,
       key: key ?? this.key,
     );
   }

@@ -17,7 +17,7 @@ import 'card_style.dart';
 class Card extends UiComponent {
   /// Creates a Card component.
   ///
-  /// - [children] or [child]: The content, typically [CardBody], [Figure], [CardActions].
+  /// - [children]: The content, typically [CardBody], [Figure], [CardActions].
   /// - [tag]: The HTML tag, defaults to 'div'.
   /// - [style]: A list of [CardStyling] (the interface) instances.
   /// - [ariaLabel], [ariaLabelledBy]: For accessibility.
@@ -33,7 +33,6 @@ class Card extends UiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
-    super.child,
     super.onClick,
     super.key,
   }) : super(style: style);
@@ -78,7 +77,6 @@ class Card extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
-      child: child,
       onClick: onClick,
       key: key ?? this.key,
     );
@@ -162,13 +160,11 @@ class CardBody extends UiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
-    super.child,
     super.key,
   });
 
   @override
   String get baseClass => 'card-body';
-
 
   @override
   CardBody copyWith({
@@ -188,7 +184,6 @@ class CardBody extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
-      child: child,
       key: key ?? this.key,
     );
   }
@@ -209,13 +204,11 @@ class CardTitle extends UiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
-    super.child,
     super.key,
   });
 
   @override
   String get baseClass => 'card-title';
-
 
   @override
   CardTitle copyWith({
@@ -235,7 +228,6 @@ class CardTitle extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
-      child: child,
       key: key ?? this.key,
     );
   }
@@ -255,13 +247,11 @@ class CardActions extends UiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
-    super.child,
     super.key,
   });
 
   @override
   String get baseClass => 'card-actions';
-
 
   @override
   CardActions copyWith({
@@ -281,7 +271,6 @@ class CardActions extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
-      child: child,
       key: key ?? this.key,
     );
   }

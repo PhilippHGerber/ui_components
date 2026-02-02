@@ -16,7 +16,7 @@ import 'form_label_style.dart';
 class FormLabel extends UiComponent {
   /// Creates a FormLabel component.
   ///
-  /// - [children] or [child]: The content of the label, typically text.
+  /// - [children]: The content of the label, typically text.
   /// - [tag]: The HTML tag for the root element. Defaults to 'p', which is
   ///   semantically appropriate for descriptions within a `Fieldset`. Can be
   ///   changed to 'span' for inline usage within a `Label`.
@@ -31,13 +31,11 @@ class FormLabel extends UiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
-    super.child,
     super.key,
   }) : super(style: style);
 
   @override
   String get baseClass => 'label'; // The DaisyUI base class
-
 
   @override
   FormLabel copyWith({
@@ -57,7 +55,6 @@ class FormLabel extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
-      child: child,
       key: key ?? this.key,
     );
   }

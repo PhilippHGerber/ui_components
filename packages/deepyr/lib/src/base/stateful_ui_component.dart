@@ -16,9 +16,6 @@ import 'ui_events.dart';
 abstract class StatefulUiComponent extends StatefulComponent implements UiComponentInterface {
   /// Creates the base for a stateful UI component.
   ///
-  /// This constructor's only job is to receive the component's immutable properties and
-  /// make them available to its `State` object via the `component` getter, which Jaspr
-  /// provides on all `State` objects.
   const StatefulUiComponent(
     this.children, {
     required this.tag,
@@ -27,7 +24,6 @@ abstract class StatefulUiComponent extends StatefulComponent implements UiCompon
     this.classes,
     this.css,
     Map<String, String>? attributes,
-    this.child,
     this.onMouseEnter,
     this.onMouseLeave,
     this.onKeyDown,
@@ -38,11 +34,7 @@ abstract class StatefulUiComponent extends StatefulComponent implements UiCompon
     Map<String, List<UiEventHandler>>? eventHandlers,
     super.key,
   }) : _userProvidedAttributes = attributes,
-       eventHandlers = eventHandlers ?? const {},
-       assert(
-         !(child != null && children != null),
-         'A component can have either a child or children, but not both.',
-       );
+       eventHandlers = eventHandlers ?? const {};
 
   // Store attributes internally
   final Map<String, String>? _userProvidedAttributes;
@@ -50,8 +42,6 @@ abstract class StatefulUiComponent extends StatefulComponent implements UiCompon
   // UiComponentInterface Properties (Identical to stateless version)
   @override
   final List<Component>? children;
-  @override
-  final Component? child;
   @override
   final String tag;
   @override
@@ -102,8 +92,6 @@ abstract class _StatefulUiComponentStateBase<T extends StatefulUiComponent> exte
   // Delegate all Interface calls to the 'component' property provided by State<T>
   @override
   List<Component>? get children => component.children;
-  @override
-  Component? get child => component.child;
   @override
   String get tag => component.tag;
   @override
@@ -160,7 +148,7 @@ abstract class StatefulUiComponentState<T extends StatefulUiComponent>
       styles: css,
       attributes: componentAttributes, // Calculated by Mixin
       events: eventMap, // Calculated by Mixin
-      children: children ?? (child != null ? [child!] : null),
+      children: children,
     );
   }
 }

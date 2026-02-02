@@ -39,7 +39,6 @@ class Divider extends UiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
-    super.child,
     super.key,
   });
 
@@ -73,7 +72,6 @@ class Divider extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
-      child: child,
       key: key ?? this.key,
     );
   }
@@ -106,6 +104,10 @@ class Divider extends UiComponent {
   static const DividerStyle error = DividerStyle('divider-error', type: StyleType.style);
 
   // Direction
+  // Renders the divider vertically, to separate stacked content.
+  /// `divider-vertical`
+  static const DividerStyle vertical = DividerStyle('divider-vertical', type: StyleType.layout);
+
   /// Renders the divider horizontally, to separate side-by-side content.
   /// The default is vertical. `divider-horizontal`
   static const DividerStyle horizontal = DividerStyle('divider-horizontal', type: StyleType.layout);

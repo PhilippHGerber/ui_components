@@ -315,7 +315,7 @@ class Rating extends UiComponent {
         id: id,
         classes: classes,
         // Pass accessibility attributes to the container
-        attributes: {'role': 'img', if (groupAriaLabel != null) 'aria-label': groupAriaLabel!},
+        attributes: {'role': 'img', 'aria-label': ?groupAriaLabel},
       );
     }
 
@@ -371,7 +371,7 @@ class Rating extends UiComponent {
       id: id,
       classes: classes,
       // Pass accessibility attributes to the container
-      attributes: {'role': 'radiogroup', if (groupAriaLabel != null) 'aria-label': groupAriaLabel!},
+      attributes: {'role': 'radiogroup', 'aria-label': ?groupAriaLabel},
     );
   }
 

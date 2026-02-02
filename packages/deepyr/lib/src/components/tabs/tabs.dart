@@ -48,13 +48,6 @@ import 'tabs_style.dart';
 /// )
 /// ```
 class Tabs extends UiComponent {
-  /// Creates a Tabs container.
-  ///
-  /// - [children]: A list of [Tab] and optionally [TabContent] components.
-  /// - [tag]: The HTML tag for the root element, defaults to 'div'.
-  /// - [style]: A list of [TabsStyling] modifiers (e.g., `Tabs.lifted`, `Tabs.boxed`).
-  /// - [ariaLabel]: An accessible name for the tab list (e.g., "Settings Navigation").
-  /// - Other parameters are inherited from [UiComponent].
   const Tabs(
     super.children, {
     super.tag = 'div',
@@ -65,7 +58,6 @@ class Tabs extends UiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
-    super.child,
     super.key,
   }) : super(style: style);
 
@@ -108,7 +100,6 @@ class Tabs extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
-      child: child,
       key: key ?? this.key,
     );
   }
@@ -158,19 +149,6 @@ class Tabs extends UiComponent {
 /// **controlled component**. You must provide [isChecked] to control the state
 /// and prevent race conditions during rendering.
 class Tab extends UiComponent {
-  /// Creates a Tab component.
-  ///
-  /// - [children]: The content of the tab (text, icon). Ignored if `tag` is 'input' (use `ariaLabel` instead).
-  /// - [tag]: Defaults to 'a'. Set to 'input' for radio-based tabs.
-  /// - [isActive]: For non-input tabs, determines if the tab is visually active.
-  /// - [isDisabled]: If true, applies disabled styling and attributes.
-  /// - [isChecked]: For radio inputs, determines if the radio is checked. **Required** for controlled inputs.
-  /// - [name]: The HTML `name` attribute, **required** for radio groups.
-  /// - [ariaLabel]: The accessible label. For radio tabs in DaisyUI, this text is displayed visually.
-  /// - [customStyles]: Optional [Styles] to apply raw CSS variables (e.g., `--tab-bg`) for overrides.
-  /// - [onClick]: Callback when a button/link tab is clicked.
-  /// - [onChange]: Callback when a radio tab is selected.
-  /// - [style]: A list of [TabStyling] modifiers.
   const Tab(
     super.children, {
     super.tag = 'a',
@@ -188,7 +166,6 @@ class Tab extends UiComponent {
     super.eventHandlers,
     super.onClick,
     super.onChange, // Use for radio inputs
-    super.child,
     super.key,
   }) : super(style: style);
 
@@ -277,7 +254,6 @@ class Tab extends UiComponent {
       eventHandlers: eventHandlers ?? this.eventHandlers,
       onClick: onClick,
       onChange: onChange,
-      child: child,
       key: key ?? this.key,
     );
   }
@@ -286,8 +262,8 @@ class Tab extends UiComponent {
   Component build(BuildContext context) {
     // Combine standard CSS with custom styles (e.g., variables for colors)
     final finalStyles = Styles.combine([
-      if (css != null) css!,
-      if (customStyles != null) customStyles!,
+      ?css,
+      ?customStyles,
     ]);
 
     if (tag == 'input') {
@@ -343,7 +319,6 @@ class Tab extends UiComponent {
 /// It renders as a `div` with the `tab-content` class. In DaisyUI's CSS-only tabs,
 /// this component must be placed immediately after its corresponding radio [Tab].
 class TabContent extends UiComponent {
-  /// Creates a TabContent container.
   const TabContent(
     super.children, {
     super.tag = 'div',
@@ -353,7 +328,6 @@ class TabContent extends UiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
-    super.child,
     super.key,
   });
 
@@ -384,7 +358,6 @@ class TabContent extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
-      child: child,
       key: key ?? this.key,
     );
   }

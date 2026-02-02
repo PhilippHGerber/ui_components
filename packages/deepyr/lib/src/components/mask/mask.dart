@@ -24,7 +24,7 @@ import 'mask_style.dart';
 class Mask extends UiComponent {
   /// Creates a Mask component.
   ///
-  /// - [children] or [child]: The content to be masked (e.g., an `img` or `div`).
+  /// - [children]: The content to be masked (e.g., an `img` or `div`).
   /// - [tag]: The HTML tag for the root element, defaults to 'div'.
   /// - [style]: A list of [MaskStyling] instances to define the shape and behavior.
   /// - Other parameters are inherited from [UiComponent].
@@ -37,7 +37,6 @@ class Mask extends UiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
-    super.child,
     super.key,
   }) : super(style: style);
 
@@ -62,7 +61,6 @@ class Mask extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
-      child: child,
       key: key ?? this.key,
     );
   }

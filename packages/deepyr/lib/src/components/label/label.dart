@@ -30,7 +30,7 @@ enum LabelContainerType {
 class Label extends UiComponent {
   /// Creates a styled `<label>` container for form elements.
   ///
-  /// - [children] or [child]: The content of the container, typically an `Input`
+  /// - [children]: The content of the container, typically an `Input`
   ///   or `Select` component along with its descriptive text.
   /// - [type]: **Required.** The contextual role of the container, which
   ///   determines its base class (e.g., `input` or `select`).
@@ -49,7 +49,6 @@ class Label extends UiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
-    super.child,
     super.key,
   }) : super(style: style);
 
@@ -117,7 +116,6 @@ class Label extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
-      child: child,
       key: key ?? this.key,
     );
   }

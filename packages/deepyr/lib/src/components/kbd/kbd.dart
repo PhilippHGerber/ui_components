@@ -13,7 +13,7 @@ import 'kbd_style.dart';
 class Kbd extends UiComponent {
   /// Creates a Kbd component.
   ///
-  /// - [children] or [child]: The content to display within the key (e.g., text like "Ctrl", "A", or "⌘").
+  /// - [children]: The content to display within the key (e.g., text like "Ctrl", "A", or "⌘").
   /// - [tag]: The HTML tag for the root element, defaults to 'kbd'.
   /// - [style]: A list of [KbdStyling] instances, primarily for setting the size.
   /// - Other parameters are inherited from [UiComponent].
@@ -26,7 +26,6 @@ class Kbd extends UiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
-    super.child,
     super.key,
   }) : super(style: style);
 
@@ -51,7 +50,6 @@ class Kbd extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
-      child: child,
       key: key ?? this.key,
     );
   }

@@ -36,7 +36,6 @@ abstract class _UiComponentBase extends StatelessComponent implements UiComponen
 /// 3. The `configureAttributes` method (if needed).
 @immutable
 abstract class UiComponent extends _UiComponentBase with UiComponentLogicMixin {
-  /// Creates the base for a stateless UI component.
   const UiComponent(
     this.children, {
     required this.tag,
@@ -45,7 +44,6 @@ abstract class UiComponent extends _UiComponentBase with UiComponentLogicMixin {
     this.classes,
     this.css,
     Map<String, String>? attributes,
-    this.child,
     this.onMouseEnter,
     this.onMouseLeave,
     this.onKeyDown,
@@ -56,11 +54,7 @@ abstract class UiComponent extends _UiComponentBase with UiComponentLogicMixin {
     Map<String, List<UiEventHandler>>? eventHandlers,
     super.key,
   }) : _userProvidedAttributes = attributes,
-       eventHandlers = eventHandlers ?? const {},
-       assert(
-         !(child != null && children != null),
-         'A component can have either a child or children, but not both.',
-       );
+       eventHandlers = eventHandlers ?? const {};
 
   /// User-provided HTML attributes. These are merged with component-defined attributes,
   /// with these taking precedence in case of conflicts.
@@ -68,9 +62,6 @@ abstract class UiComponent extends _UiComponentBase with UiComponentLogicMixin {
 
   @override
   final List<Component>? children;
-
-  @override
-  final Component? child;
 
   @override
   final String tag;
@@ -143,7 +134,7 @@ abstract class UiComponent extends _UiComponentBase with UiComponentLogicMixin {
       styles: css,
       attributes: componentAttributes,
       events: eventMap,
-      children: children ?? [?child],
+      children: children,
     );
   }
 }

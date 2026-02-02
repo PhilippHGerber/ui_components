@@ -63,7 +63,6 @@ class Modal extends StatefulUiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
-    super.child,
     super.key,
   }) : super(style: style);
 
@@ -198,7 +197,7 @@ class _ModalState extends StatefulUiComponentState<Modal> {
       styles: component.css,
       attributes: componentAttributes,
       events: events,
-      children: children ?? (child != null ? [child!] : null),
+      children: children,
     );
   }
 }
@@ -218,7 +217,6 @@ class ModalBox extends UiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
-    super.child,
     super.key,
   });
 
@@ -243,7 +241,6 @@ class ModalBox extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
-      child: child,
       key: key ?? this.key,
     );
   }
@@ -264,7 +261,6 @@ class ModalAction extends UiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
-    super.child,
     super.key,
   });
 
@@ -289,7 +285,6 @@ class ModalAction extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
-      child: child,
       key: key ?? this.key,
     );
   }
@@ -314,7 +309,6 @@ class ModalBackdrop extends UiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
-    super.child,
     super.key,
   });
 
@@ -354,7 +348,6 @@ class ModalBackdrop extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
-      child: child,
       key: key ?? this.key,
     );
   }

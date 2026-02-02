@@ -1,5 +1,13 @@
 # Changelog
 
+## Next release
+
+## 0.6.0
+
+### Removed
+
+* **Breaking Change: Removed `child` named parameter.** The package now strictly follows a "No Child Named Parameter" approach. All components that previously accepted either a `child` (named) or `children` (positional) now **require `children` as a required positional parameter**. This simplifies the API and ensures consistency across the library.
+
 ## 0.5.0
 
 ### Changed

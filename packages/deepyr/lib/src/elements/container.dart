@@ -18,7 +18,7 @@ import '../base/ui_prefix_modifier.dart';
 class Container extends UiComponent {
   /// Creates a generic Container component.
   ///
-  /// - [children] or [child]: The content to be placed within the container.
+  /// - [children]: The content to be placed within the container.
   /// - [tag]: The HTML tag for the container element, defaults to 'div'.
   /// - [styles]: A list of general [Styling] instances for styling
   ///   and layout (e.g., Spacing, Sizing, Flex, Background).
@@ -32,14 +32,12 @@ class Container extends UiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
-    super.child,
     super.onClick, // If the container itself needs to be clickable
     super.key,
   });
 
   @override
   String get baseClass => ''; // Container itself has no specific DaisyUI base class
-
 
   @override
   Container copyWith({
@@ -59,7 +57,6 @@ class Container extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
-      child: child,
       onClick: onClick,
       key: key ?? this.key,
     );
@@ -80,7 +77,7 @@ class Container extends UiComponent {
   /// )
   /// ```
   ///
-  /// - [children] or [child]: The content of the container.
+  /// - [children]: The content of the container.
   /// - [tag]: The HTML tag for the container.
   /// - [mobile]: List of [Styling] for mobile and smaller screens (default).
   /// - [tablet]: List of [Styling] applied from the 'md' breakpoint upwards.
@@ -90,7 +87,6 @@ class Container extends UiComponent {
   /// - [id], [classes], [css], [attributes], [key]: Standard [UiComponent] parameters.
   static Container responsive({
     List<Component>? children,
-    Component? child,
     String tag = 'div',
     List<Styling>? mobile,
     List<Styling>? tablet,
@@ -139,7 +135,7 @@ class Container extends UiComponent {
     }
 
     return Container(
-      children ?? (child != null ? [child] : null),
+      children,
       tag: tag,
       style: responsiveStyles.isNotEmpty ? responsiveStyles : null,
       id: id,

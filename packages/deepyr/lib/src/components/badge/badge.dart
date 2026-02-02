@@ -12,7 +12,7 @@ import 'badge_style.dart';
 class Badge extends UiComponent {
   /// Creates a Badge component.
   ///
-  /// - [children] or [child]: The content to display within the badge (e.g., text, an icon).
+  /// - [children]: The content to display within the badge (e.g., text, an icon).
   /// - [tag]: The HTML tag for the root element, defaults to 'span'.
   /// - [style]: A list of [BadgeStyling].
   /// - [ariaLabel]: An optional accessible name for the badge.
@@ -27,7 +27,6 @@ class Badge extends UiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
-    super.child,
     super.key,
   }) : super(style: style);
 
@@ -67,7 +66,6 @@ class Badge extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
-      child: child,
       key: key ?? this.key,
     );
   }

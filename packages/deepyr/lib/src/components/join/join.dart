@@ -26,7 +26,7 @@ import 'join_style.dart';
 class Join extends UiComponent {
   /// Creates a "smart" Join container component.
   ///
-  /// - [children] or [child]: A list of components to be joined. The `Join`
+  /// - [children]: A list of components to be joined. The `Join`
   ///   component will automatically apply the `join-item` class to any direct
   ///   child that is a `deepyr` `UiComponent`.
   /// - [tag]: The HTML tag for the root element, defaults to 'div'.
@@ -42,7 +42,6 @@ class Join extends UiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
-    super.child,
     super.key,
   }) : super(style: style);
 
@@ -68,7 +67,6 @@ class Join extends UiComponent {
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
       key: key ?? this.key,
-      child: child,
     );
   }
 

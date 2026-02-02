@@ -29,7 +29,6 @@ class Indicator extends UiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
-    super.child,
     super.key,
   }) : super(style: style);
 
@@ -54,7 +53,6 @@ class Indicator extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
-      child: child,
       key: key ?? this.key,
     );
   }
@@ -89,7 +87,7 @@ class Indicator extends UiComponent {
 class IndicatorItem extends UiComponent {
   /// Creates an IndicatorItem.
   ///
-  /// - [children] or [child]: The component to display as the indicator (e.g., a `Badge`).
+  /// - [children]: The component to display as the indicator (e.g., a `Badge`).
   /// - [style]: A list of [IndicatorItemStyling] modifiers to control its position.
   /// - Other parameters are inherited from [UiComponent].
   const IndicatorItem(
@@ -101,7 +99,6 @@ class IndicatorItem extends UiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
-    super.child,
     super.key,
   }) : super(style: style);
 
@@ -144,7 +141,7 @@ class IndicatorItem extends UiComponent {
     return <String>[
       ...baseClasses,
       ...utilityClasses,
-      if (classes != null) classes!,
+      ?classes,
     ].where((c) => c.isNotEmpty).join(' ');
   }
 
@@ -166,7 +163,6 @@ class IndicatorItem extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
-      child: child,
       key: key ?? this.key,
     );
   }

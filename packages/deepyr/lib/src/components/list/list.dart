@@ -174,7 +174,7 @@ class ListRow extends UiComponent {
   /// mimics DaisyUI's default behavior, providing an intuitive API.
   @override
   Component build(BuildContext context) {
-    var effectiveChildren = children ?? [?child];
+    var effectiveChildren = children!;
 
     // Check if any child already has the `grow` modifier.
     final hasExplicitGrow = effectiveChildren.any(

@@ -105,7 +105,7 @@ class Dropdown extends UiComponent {
           styles: triggerComponent.css,
           attributes: triggerComponent.componentAttributes,
           events: triggerComponent.eventMap,
-          children: triggerComponent.children ?? [?triggerComponent.child],
+          children: triggerComponent.children,
         );
       } else {
         // For primitive components (like text()), wrap them in a basic summary.
@@ -146,7 +146,7 @@ class Dropdown extends UiComponent {
             'tabindex': userAttributes['tabindex'] ?? '0',
             'role': userAttributes['role'] ?? 'button',
           },
-          children: button.children ?? [?button.child],
+          children: button.children,
         );
       }
       // If the trigger is not a native <button>-based deepyr Button (e.g., it's
@@ -241,7 +241,6 @@ class DropdownContent extends UiComponent {
   /// - [css]: Custom CSS styles.
   /// - [attributes]: Additional HTML attributes to apply.
   /// - [eventHandlers]: Event handlers for user interactions.
-  /// - [child]: An optional single child component.
   /// - [key]: An optional key for the component.
   const DropdownContent(
     super.children, {
@@ -252,7 +251,6 @@ class DropdownContent extends UiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
-    super.child,
     super.key,
   }) : super(style: style);
 
@@ -286,7 +284,6 @@ class DropdownContent extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
-      child: child,
       key: key ?? this.key,
     );
   }

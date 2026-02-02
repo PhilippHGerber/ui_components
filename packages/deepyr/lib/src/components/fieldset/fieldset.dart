@@ -24,13 +24,12 @@ class Fieldset extends UiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
-    super.child,
     super.key,
   }) : super(style: style);
 
   /// Creates a Fieldset component.
   ///
-  /// - [children] or [child]: The content of the fieldset, typically including
+  /// - [children]: The content of the fieldset, typically including
   ///   a [Legend], one or more form controls (like `Input`), and optionally
   ///   a descriptive [FormLabel].
 
@@ -55,7 +54,6 @@ class Fieldset extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
-      child: child,
       key: key ?? this.key,
     );
   }
@@ -68,7 +66,7 @@ class Fieldset extends UiComponent {
 class Legend extends UiComponent {
   /// Creates a Legend component.
   ///
-  /// - [children] or [child]: The title text for the fieldset.
+  /// - [children]: The title text for the fieldset.
   /// - [tag]: The HTML tag for the root element, defaults to 'legend'.
   /// - [style]: A list of [LegendStyling] instances for styling.
   /// - Other parameters are inherited from [UiComponent].
@@ -81,7 +79,6 @@ class Legend extends UiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
-    super.child,
     super.key,
   }) : super(style: style);
 
@@ -106,7 +103,6 @@ class Legend extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
-      child: child,
       key: key ?? this.key,
     );
   }

@@ -61,7 +61,7 @@ class Icon extends UiComponent {
   /// CSS rules associated with the Icon component.
   /// This is automatically collected by the Jaspr build system.
   @css
-  static final List<StyleRule> styles = [
+  static List<StyleRule> get styles => [
     // Applies the FILL variation when the .filled class is present on a material symbol
     css('.m-symbols.filled').styles(
       raw: {'font-variation-settings': "'FILL' 1"},

@@ -15,7 +15,7 @@ import 'validator_hint_style.dart';
 class ValidatorHint extends UiComponent {
   /// Creates a ValidatorHint component.
   ///
-  /// - [children] or [child]: The validation message to display.
+  /// - [children]: The validation message to display.
   /// - [tag]: The HTML tag for the root element, defaults to 'p' for semantic
   ///   appropriateness as a descriptive message.
   /// - [style]: A list of [ValidatorHintStyling] instances. For example, use
@@ -30,7 +30,6 @@ class ValidatorHint extends UiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
-    super.child,
     super.key,
   }) : super(style: style);
 
@@ -55,7 +54,6 @@ class ValidatorHint extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
-      child: child,
       key: key ?? this.key,
     );
   }

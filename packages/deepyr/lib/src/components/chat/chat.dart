@@ -42,7 +42,6 @@ class Chat extends UiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
-    super.child,
     super.key,
   }) : super(style: style);
 
@@ -67,7 +66,6 @@ class Chat extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
-      child: child,
       key: key ?? this.key,
     );
   }
@@ -88,7 +86,7 @@ class Chat extends UiComponent {
 class ChatImage extends UiComponent {
   /// Creates a container for a chat avatar.
   ///
-  /// - [children] or [child]: The content, which should be a `deepyr` `Avatar` component.
+  /// - [children]: The content, which should be a `deepyr` `Avatar` component.
   const ChatImage(
     super.children, {
     super.tag = 'div',
@@ -98,7 +96,6 @@ class ChatImage extends UiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
-    super.child,
     super.key,
   });
 
@@ -123,7 +120,6 @@ class ChatImage extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
-      child: child,
       key: key ?? this.key,
     );
   }
@@ -145,7 +141,6 @@ class ChatHeader extends UiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
-    super.child,
     super.key,
   });
 
@@ -170,7 +165,6 @@ class ChatHeader extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
-      child: child,
       key: key ?? this.key,
     );
   }
@@ -194,7 +188,6 @@ class ChatBubble extends UiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
-    super.child,
     super.key,
   }) : super(style: style);
 
@@ -219,7 +212,6 @@ class ChatBubble extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
-      child: child,
       key: key ?? this.key,
     );
   }
@@ -269,7 +261,6 @@ class ChatFooter extends UiComponent {
     super.css,
     super.attributes,
     super.eventHandlers,
-    super.child,
     super.key,
   });
 
@@ -294,7 +285,6 @@ class ChatFooter extends UiComponent {
       css: css ?? this.css,
       attributes: attributes ?? userProvidedAttributes,
       eventHandlers: eventHandlers ?? this.eventHandlers,
-      child: child,
       key: key ?? this.key,
     );
   }

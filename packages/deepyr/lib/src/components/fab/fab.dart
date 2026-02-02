@@ -112,7 +112,6 @@ class Fab extends UiComponent {
 
     final buttonContent = <Component>[
       ...?visualButton.children,
-      if (visualButton.child != null) visualButton.child!,
     ];
 
     final nonFocusableButton = span(
@@ -198,10 +197,10 @@ class Fab extends UiComponent {
 class FabAction extends UiComponent {
   /// Creates a single speed dial action.
   ///
-  /// - [child]: **Required.** The `deepyr` component for the action, typically a `Button`.
+  /// - [children]: **Required.** The `deepyr` component for the action, typically a `Button`.
   /// - [label]: An optional `Component` (e.g., `text('Label')`) to display next to the button.
-  FabAction({
-    required Component child,
+  const FabAction(
+    super.children, {
     this.label,
     super.tag = 'div',
     super.style,
@@ -211,7 +210,7 @@ class FabAction extends UiComponent {
     super.attributes,
     super.eventHandlers,
     super.key,
-  }) : super([child]);
+  });
 
   /// An optional text label displayed next to the action button.
   final Component? label;
@@ -247,7 +246,7 @@ class FabAction extends UiComponent {
     Key? key,
   }) {
     return FabAction(
-      child: children!.first,
+      children ?? [],
       label: label,
       tag: tag,
       style: style,
@@ -266,11 +265,11 @@ class FabAction extends UiComponent {
 class FabClose extends UiComponent {
   /// Creates a close action for a `Fab`.
   ///
-  /// - [child]: **Required.** The `deepyr` component for the close button, typically a `Button`.
+  /// - [children]: **Required.** The `deepyr` component for the close button, typically a `Button`.
   /// - [label]: An optional `Component` to display next to the close button.
   /// - [onClick]: An optional callback to execute when the close button is clicked.
-  FabClose({
-    required Component child,
+  const FabClose(
+    super.children, {
     this.label,
     super.tag = 'div',
     super.style,
@@ -281,7 +280,7 @@ class FabClose extends UiComponent {
     super.eventHandlers,
     super.onClick,
     super.key,
-  }) : super([child]);
+  });
 
   /// An optional text label displayed next to the close button.
   final Component? label;
@@ -299,7 +298,7 @@ class FabClose extends UiComponent {
     Key? key,
   }) {
     return FabClose(
-      child: children!.first,
+      children ?? [],
       label: label,
       tag: tag,
       style: style,
@@ -319,11 +318,11 @@ class FabClose extends UiComponent {
 class FabMainAction extends UiComponent {
   /// Creates a main action for a `Fab`.
   ///
-  /// - [child]: **Required.** The `deepyr` `Button` component for the main action.
+  /// - [children]: **Required.** The `deepyr` `Button` component for the main action.
   /// - [label]: An optional `Component` to display next to the main action button.
   /// - [onClick]: An optional callback to execute when the main action is clicked.
-  FabMainAction({
-    required Component child,
+  const FabMainAction(
+    super.children, {
     this.label,
     super.tag = 'div',
     super.style,
@@ -334,7 +333,7 @@ class FabMainAction extends UiComponent {
     super.eventHandlers,
     super.onClick,
     super.key,
-  }) : super([child]);
+  });
 
   /// An optional text label displayed next to the main action button.
   final Component? label;
@@ -352,7 +351,7 @@ class FabMainAction extends UiComponent {
     Key? key,
   }) {
     return FabMainAction(
-      child: children!.first,
+      children ?? [],
       label: label,
       tag: tag,
       style: style,
