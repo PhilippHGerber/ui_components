@@ -29,6 +29,12 @@ class BorderUtil extends CommonStyle<BorderUtil> {
   /// `border-width: 8px`.
   static const BorderUtil border8 = BorderUtil('border-8');
 
+  /// `border-bottom-width: 1px`
+  static const borderB = BorderUtil('border-b');
+
+  /// `border-top-width: 1px`
+  static const borderT = BorderUtil('border-t');
+
   // --- Border Color (From DaisyUI Theme) ---
   /// `border-color: primary`.
   static const BorderUtil primary = BorderUtil('border-primary');
