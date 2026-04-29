@@ -8,8 +8,7 @@ abstract class InteractivityStyling implements Styling {}
 
 /// A utility class for applying interactivity styles.
 class Interactivity extends CommonStyle<Interactivity> implements InteractivityStyling {
-  const Interactivity(super.cssClass, {super.modifiers})
-      : super(type: StyleType.interactive);
+  const Interactivity(super.cssClass, {super.modifiers}) : super(type: StyleType.interactive);
 
   @override
   Interactivity create(List<PrefixModifier> modifiers) {
@@ -24,4 +23,12 @@ class Interactivity extends CommonStyle<Interactivity> implements InteractivityS
 
   /// `pointer-events-auto`
   static const Interactivity pointerEventsAuto = Interactivity('pointer-events-auto');
+
+  // --- Scroll Behavior ---
+
+  /// `scroll-behavior: auto`
+  static const scrollAuto = Interactivity('scroll-auto');
+
+  /// `scroll-behavior: smooth`
+  static const scrollSmooth = Interactivity('scroll-smooth');
 }
