@@ -1,7 +1,5 @@
 # Changelog
 
-## Next release
-
 ## 0.7.0
 
 ### Changed
