@@ -4,7 +4,10 @@ import '../ui_prefix_modifier.dart';
 
 /// A utility class for controlling the CSS `position` property.
 class Position extends CommonStyle<Position> {
-  const Position(super.cssClass, {super.modifiers}) : super(type: StyleType.layout);
+  const Position(
+    super.cssClass, {
+    super.modifiers,
+  }) : super(type: StyleType.layout);
 
   /// `position: static`
   static const Position static = Position('static');
