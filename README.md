@@ -42,9 +42,15 @@ npm install -D tailwindcss@latest daisyui@latest
 ````
 
 ```bash
+npm outdated
+
 npm list tailwindcss daisyui
 npm update tailwindcss daisyui
 npm install -D tailwindcss@latest daisyui@latest
+npm install tailwindcss@latest daisyui@latest @tailwindcss/cli@latest
+
+npx npm-check-updates
+
 ```
 
 ## Run Tailwind
