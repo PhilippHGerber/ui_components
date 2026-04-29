@@ -4,6 +4,17 @@ formatter:
   page_width: 100
   trailing_commas: preserve
 
+# Jaspr has a custom analyzer plugin 'jaspr_lints', which is enabled here.
+#
+# You can toggle Jaspr specific lint rules in the 'diagnostics' section below.
+plugins:
+  jaspr_lints:
+    version: ^0.6.0
+    diagnostics:
+      prefer_html_components: true
+      sort_children_last: true
+      styles_ordering: true
+
 analyzer:
   exclude:
     - "**/*.g.dart"
