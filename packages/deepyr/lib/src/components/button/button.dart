@@ -20,7 +20,8 @@ enum ButtonHtmlType {
   /// The button has no default behavior and does nothing when pressed by default.
   /// It can have client-side scripts listen to the element's events.
   /// This is the default if the `tag` is `<button>` and no `htmlType` is provided.
-  button('button');
+  button('button')
+  ;
 
   const ButtonHtmlType(this.value);
   final String value;

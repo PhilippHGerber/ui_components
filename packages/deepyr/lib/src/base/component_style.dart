@@ -13,8 +13,7 @@ import 'ui_prefix_modifier.dart';
 /// Type parameter:
 ///   `T`: The concrete type of the component-specific utility itself,
 ///        ensuring methods like `on()` and `at()` return the correct specific type.
-abstract class ComponentStyle<T extends ComponentStyle<T>>
-    extends BaseStyle<T> {
+abstract class ComponentStyle<T extends ComponentStyle<T>> extends BaseStyle<T> {
   /// Constructs a [ComponentStyle].
   ///
   /// [cssClass]: The core CSS class string (e.g., "btn-primary").

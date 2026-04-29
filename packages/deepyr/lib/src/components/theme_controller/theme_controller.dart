@@ -174,9 +174,10 @@ abstract class ThemeController extends StatefulUiComponent {
 
   @override
   void configureAttributes(UiComponentAttributes attributes) {
-    attributes..add('type', inputType)
-    ..add('name', name)
-    ..add('value', value.value);
+    attributes
+      ..add('type', inputType)
+      ..add('name', name)
+      ..add('value', value.value);
 
     // Attributes for theme-change.js
     var toggleThemeValue = value.value;

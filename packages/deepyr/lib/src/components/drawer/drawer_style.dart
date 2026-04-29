@@ -52,7 +52,8 @@ enum DrawerIs implements PrefixModifier {
   open('is-drawer-open', PrefixModifierType.variant),
 
   /// The `is-drawer-close:` variant, for styles that apply when the drawer is closed.
-  close('is-drawer-close', PrefixModifierType.variant);
+  close('is-drawer-close', PrefixModifierType.variant)
+  ;
 
   /// DrawerIs constructor
   const DrawerIs(this._prefix, this.type);

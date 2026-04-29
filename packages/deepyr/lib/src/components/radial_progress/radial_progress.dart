@@ -72,8 +72,8 @@ class RadialProgress extends UiComponent {
     super.configureAttributes(attributes);
     // Add accessibility attributes for screen readers.
     attributes
-    ..addRole('progressbar')
-    ..addAria('valuenow', value.toInt().toString());
+      ..addRole('progressbar')
+      ..addAria('valuenow', value.toInt().toString());
   }
 
   @override

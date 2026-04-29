@@ -108,7 +108,6 @@ abstract class BaseStyle<T extends BaseStyle<T>> implements Styling, Comparable<
     final existingModifiers = modifiers ?? [];
     return create([...existingModifiers, state]);
   }
-  
 
   /// Returns the string representation of this utility class, including all applied prefixes.
   /// For example, `hover:md:text-lg`.

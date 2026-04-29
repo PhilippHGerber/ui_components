@@ -1,6 +1,5 @@
 import 'package:jaspr/dom.dart' show Styles, div;
-import 'package:jaspr/jaspr.dart'
-    show BuildContext, Component, Key, ValueChanged, kIsWeb;
+import 'package:jaspr/jaspr.dart' show BuildContext, Component, Key, ValueChanged, kIsWeb;
 import 'package:universal_web/web.dart' show Event, HTMLInputElement;
 
 import '../../base/style_type.dart';
@@ -301,8 +300,8 @@ class Rating extends UiComponent {
       for (var i = 1; i <= max; i++) {
         if (allowHalf) {
           items
-          ..add(_buildReadOnlyDiv(i - 0.5))
-          ..add(_buildReadOnlyDiv(i));
+            ..add(_buildReadOnlyDiv(i - 0.5))
+            ..add(_buildReadOnlyDiv(i));
         } else {
           items.add(_buildReadOnlyDiv(i));
         }

@@ -8,9 +8,7 @@ abstract class TabStyling implements Styling {}
 
 /// Defines specific styling and state options for an individual [Tab] component.
 /// Implements the [TabStyling] interface.
-class TabStyle extends ComponentStyle<TabStyle>
-    with Breakpoints<TabStyle>
-    implements TabStyling {
+class TabStyle extends ComponentStyle<TabStyle> with Breakpoints<TabStyle> implements TabStyling {
   // Implements the TabModifier INTERFACE
   const TabStyle(super.cssClass, {required super.type, super.modifiers});
 

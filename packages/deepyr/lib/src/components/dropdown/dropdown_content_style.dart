@@ -22,8 +22,11 @@ class DropdownContentStyle extends ComponentStyle<DropdownContentStyle>
   /// [cssClass]: The core CSS class string (e.g., "menu").
   /// [type]: The [StyleType] categorizing this modifier.
   /// [modifiers]: An optional list of [PrefixModifier]s already applied.
-  const DropdownContentStyle(super.cssClass,
-      {required super.type, super.modifiers});
+  const DropdownContentStyle(
+    super.cssClass, {
+    required super.type,
+    super.modifiers,
+  });
 
   @override
   DropdownContentStyle create(List<PrefixModifier> modifiers) {

@@ -11,7 +11,11 @@ typedef UiEventHandler = void Function(Event event);
 /// Base class for event data
 @immutable
 class UiEventData {
-  const UiEventData({required this.originalEvent, required this.target, this.detail = const <String, Object>{}});
+  const UiEventData({
+    required this.originalEvent,
+    required this.target,
+    this.detail = const <String, Object>{},
+  });
   final Event originalEvent;
   final Object target;
   final Map<String, Object> detail;

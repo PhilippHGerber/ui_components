@@ -50,7 +50,8 @@ enum Group implements PrefixModifier {
   focus('group-focus', PrefixModifierType.groupState),
 
   /// `group-hover`
-  hover('group-hover', PrefixModifierType.groupState);
+  hover('group-hover', PrefixModifierType.groupState)
+  ;
 
   /// Group constructor
   const Group(this._prefix, this.type);
@@ -121,7 +122,8 @@ enum Is implements PrefixModifier {
   firstLine('first-line', PrefixModifierType.pseudoClass),
 
   /// `::backdrop`
-  backdrop('backdrop', PrefixModifierType.pseudoClass);
+  backdrop('backdrop', PrefixModifierType.pseudoClass)
+  ;
 
   @override
   final String _prefix;
@@ -151,7 +153,8 @@ enum Breakpoint implements PrefixModifier {
   xl('xl', PrefixModifierType.breakpoint),
 
   /// `min-width: 1536px`
-  xl2('2xl', PrefixModifierType.breakpoint);
+  xl2('2xl', PrefixModifierType.breakpoint)
+  ;
 
   /// Breakpoint constructor
   const Breakpoint(this._prefix, this.type);
@@ -216,7 +219,8 @@ enum Media implements PrefixModifier {
   portrait('portrait', PrefixModifierType.orientation),
 
   /// print
-  print('print', PrefixModifierType.variant);
+  print('print', PrefixModifierType.variant)
+  ;
 
   const Media(this._prefix, this.type);
 

@@ -12,8 +12,11 @@ abstract class ThemeControllerStyling implements Styling {}
 class ThemeControllerStyle extends ComponentStyle<ThemeControllerStyle>
     with Breakpoints<ThemeControllerStyle>
     implements ThemeControllerStyling {
-  const ThemeControllerStyle(super.cssClass,
-      {required super.type, super.modifiers});
+  const ThemeControllerStyle(
+    super.cssClass, {
+    required super.type,
+    super.modifiers,
+  });
 
   @override
   ThemeControllerStyle create(List<PrefixModifier> modifiers) {

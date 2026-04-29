@@ -36,7 +36,7 @@ extension DeepyrNullableUtilityGroupIterableExtensions on Iterable<Styling>? {
   /// Returns an empty string if the iterable is null or empty.
   String toClasses() {
     if (this == null) return '';
-    return this!
+    return this! //
         .map((utility) => utility.toString())
         .where((s) => s.isNotEmpty)
         .join(' ');

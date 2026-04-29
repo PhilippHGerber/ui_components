@@ -12,7 +12,8 @@ enum LabelContainerType {
   input('input'),
 
   /// Styles the label as a container for a `<select>` element (`class="select"`).
-  select('select');
+  select('select')
+  ;
 
   const LabelContainerType(this.cssClass);
   final String cssClass;

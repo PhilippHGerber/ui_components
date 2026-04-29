@@ -52,7 +52,6 @@ class Countdown extends UiComponent {
   @override
   String get baseClass => 'countdown';
 
-
   @override
   Countdown copyWith({
     String? id,
