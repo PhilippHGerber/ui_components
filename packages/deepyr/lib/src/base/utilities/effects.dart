@@ -11,6 +11,15 @@ class Effects extends CommonStyle<Effects> {
     return Effects(cssClass, modifiers: modifiers);
   }
 
+  /// `backdrop-filter: blur(8px)` (default tailwind value)
+  static const backdropBlur = Effects('backdrop-blur');
+
+  /// `backdrop-filter: blur(4px)`
+  static const backdropBlurSm = Effects('backdrop-blur-sm');
+
+  /// `backdrop-filter: blur(12px)`
+  static const backdropBlurMd = Effects('backdrop-blur-md');
+
   /// Glassmorphism effect. `glass` (This is a DaisyUI utility)
   static const Effects glass = Effects('glass');
 
