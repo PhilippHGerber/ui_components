@@ -2,6 +2,19 @@
 
 ## Next release
 
+## 0.7.0
+
+### Changed
+
+Upgraded jaspr from 0.22.1 to 0.23.0
+
+### Added
+
+* **BgUtil.withOpacity** method for Tailwind opacity syntax
+* **BorderUtil**: added borderB (border-bottom-width), borderT (border-top-width)
+* **Effects**: added backdropBlur, backdropBlurSm, backdropBlurMd
+* **Interactivity**: added Scroll Behavior: scrollAuto, scrollSmooth
+
 ## 0.6.0
 
 ### Removed

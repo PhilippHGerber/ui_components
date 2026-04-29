@@ -3,18 +3,18 @@ description: UI Components Jaspr libraries.
 publish_to: none
 
 environment:
-  sdk: ">=3.8.0 <4.0.0"
+  sdk: ^3.11.0
 
 workspace:
   - packages/deepyr
 
 dependencies:
-  jaspr: ^0.22.0
+  jaspr: ^0.23.0
 
-# Spezifiziere lint und test in den dev_dependencies damit diese sich alle Projekte teilen können.
 dev_dependencies:
+  analyzer: ^10.2.0
   build_runner: ^2.10.2
   build_web_compilers: ^4.4.1
-  jaspr_builder: ^0.22.0
+  jaspr_builder: ^0.23.0
   test: ^1.26.3
   very_good_analysis: ^10.0.0
